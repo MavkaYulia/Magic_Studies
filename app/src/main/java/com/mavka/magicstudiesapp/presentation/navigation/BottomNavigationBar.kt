@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -17,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -30,7 +27,6 @@ fun BottomNavigationBar(navController: NavController) {
 
     Surface(
         color = Color(0xFFEFE2B9),
-        shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -40,7 +36,6 @@ fun BottomNavigationBar(navController: NavController) {
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.Bottom
         ) {
-
             navigationItems.forEach { item ->
                 StandardItem(item, currentRoute, navController)
             }
@@ -55,14 +50,12 @@ fun StandardItem(item: NavigationItem, currentRoute: String?, navController: Nav
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .clip(CircleShape)
             .clickable { handleNavigation(navController, item.route, currentRoute) }
-            .padding(8.dp)
     ) {
         Icon(
             imageVector = item.icon,
             contentDescription = item.title,
-            tint = if (isSelected) Color(0xFF634D2E) else Color(0xFF8B7A5E),
+            tint = if (isSelected) Color(0xFF2F2312) else Color(0xFF8B7A5E),
             modifier = Modifier.size(26.dp)
         )
         Text(

@@ -28,11 +28,9 @@ fun MainScreen() {
 
     Scaffold(
         bottomBar = {
-            // Використовуємо наш компонент панелі, про який говорили раніше
             BottomNavigationBar(navController)
         }
     ) { innerPadding ->
-        // Викликаємо нашу винесену навігацію
         AppNavigation(
             navController = navController,
             modifier = Modifier.padding(innerPadding)
