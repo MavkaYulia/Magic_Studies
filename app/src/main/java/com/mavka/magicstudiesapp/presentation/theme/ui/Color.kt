@@ -1,4 +1,4 @@
-package com.mavka.magicstudiesapp.ui.theme
+package com.mavka.magicstudiesapp.presentation.theme.ui
 
 import androidx.compose.ui.graphics.Color
 
