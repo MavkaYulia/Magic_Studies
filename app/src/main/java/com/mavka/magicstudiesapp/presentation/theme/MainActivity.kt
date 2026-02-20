@@ -7,10 +7,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.BlendMode.Companion.Screen
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.createGraph
+import com.mavka.magicstudiesapp.presentation.navigation.AppNavigation
+import com.mavka.magicstudiesapp.presentation.navigation.BottomNavigationBar
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,30 +22,25 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MagicStudiesAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            MainScreen()
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun MainScreen() {
+    val navController = rememberNavController()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MagicStudiesAppTheme {
-        Greeting("Android")
+    Scaffold(
+        bottomBar = {
+            // Використовуємо наш компонент панелі, про який говорили раніше
+            BottomNavigationBar(navController)
+        }
+    ) { innerPadding ->
+        // Викликаємо нашу винесену навігацію
+        AppNavigation(
+            navController = navController,
+            modifier = Modifier.padding(innerPadding)
+        )
     }
 }
