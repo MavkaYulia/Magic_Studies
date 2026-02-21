@@ -20,7 +20,7 @@ class QuestsViewModel : ViewModel() {
     private var currentQuests = listOf(
         QuestModel(
             id = 5551,
-            title = "квест1",
+            title = "quest1",
             icon = Icons.Default.DateRange,
             subQuests = listOf(
                 SubQuest("підтаска1", true, Difficulty.LOW),
@@ -30,7 +30,7 @@ class QuestsViewModel : ViewModel() {
         ),
         QuestModel(
             id = 555,
-            title = "квест2",
+            title = "quest2",
             icon = Icons.Default.Build,
             subQuests = listOf(
                 SubQuest("підтаска1", true, Difficulty.LOW),
