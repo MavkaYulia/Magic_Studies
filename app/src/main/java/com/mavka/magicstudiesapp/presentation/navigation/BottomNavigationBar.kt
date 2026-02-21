@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.mavka.magicstudiesapp.presentation.theme.ui.Magic
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -55,13 +56,13 @@ fun StandardItem(item: NavigationItem, currentRoute: String?, navController: Nav
         Icon(
             imageVector = item.icon,
             contentDescription = item.title,
-            tint = if (isSelected) Color(0xFF2F2312) else Color(0xFF8B7A5E),
+            tint = if (isSelected) Magic.colors.IronInk else Magic.colors.FadedGold,
             modifier = Modifier.size(26.dp)
         )
         Text(
             text = item.title,
             style = MaterialTheme.typography.labelSmall,
-            color = if (isSelected) Color(0xFF634D2E) else Color(0xFF8B7A5E)
+            color = if (isSelected) Magic.colors.IronInk else Magic.colors.FadedGold
         )
     }
 }

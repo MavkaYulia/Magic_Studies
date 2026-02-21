@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_title">The Quests</string>
+    <string name="subtitle_quests">%1$d subjects • %2$d tasks remaining</string>
+
+</resources>

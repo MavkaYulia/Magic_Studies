@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="standard_margin">16dp</dimen>
+
+<!--    size    -->
+    <dimen name="icon_size">24dp</dimen>
+
+<!--    padding    -->
+    <dimen name="standard_padding">16dp</dimen>
+    <dimen name="small_padding">8dp</dimen>
     <dimen name="large_padding">24dp</dimen>
+
+<!--    margin    -->
+    <dimen name="standard_margin">12dp</dimen>
+
 </resources>

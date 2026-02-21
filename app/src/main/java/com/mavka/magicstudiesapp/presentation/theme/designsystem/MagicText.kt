@@ -5,18 +5,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import com.mavka.magicstudiesapp.presentation.theme.ui.Magic
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialTypography
 
 @Composable
-fun MagicTitle(title: String) {
+fun MagicText(
+    title: String,
+    style: TextStyle = MagicMaterialTypography.bodyLarge
+) {
     Box(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
     ) {
         Text(
             text = title,
-            style = MagicMaterialTypography.titleLarge,
+            style = style,
             color = Magic.colors.ForestGreen
         )
     }
@@ -24,6 +29,6 @@ fun MagicTitle(title: String) {
 
 @Preview(showBackground = true)
 @Composable
-private fun MagicTitlePreview() {
-    return MagicTitle(title = "MagicTitle")
+private fun MagicTextPreview() {
+    return MagicText(title = "MagicText")
 }

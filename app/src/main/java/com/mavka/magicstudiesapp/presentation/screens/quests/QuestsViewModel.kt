@@ -45,8 +45,18 @@ class QuestsViewModel : ViewModel() {
     }
 
     fun loadQuests() {
-        _uiState.update { it.copy(quests = currentQuests, isLoading = false) }
+        _uiState.update {
+            it.copy(
+                quests = currentQuests,
+                isLoading = false
+            )
+        }
     }
+
+    fun getSubQuestsSize() = currentQuests.sumOf { quest ->
+        quest.subQuests.count { !it.isDone }
+    }
+
 
     fun updateQuest(id: Int, newTitle: String) {
         _uiState.update { currentState ->
