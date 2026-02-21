@@ -4,5 +4,5 @@ object Magic {
     val colors = MagicColor
     val shape = MagicShapes
 
-   // val typography = MagicTypography
+    val typography = MagicTypography
 }

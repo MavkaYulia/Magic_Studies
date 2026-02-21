@@ -21,38 +21,38 @@ object MagicTypography {
 internal val MagicMaterialTypography = Typography(
 
     displayLarge = TextStyle(
-        fontFamily = MagicTypography.MedievalFontFamily,
+        fontFamily = Magic.typography.MedievalFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 32.sp
     ),
     headlineMedium = TextStyle(
-        fontFamily = MagicTypography.MedievalFontFamily,
+        fontFamily = Magic.typography.MedievalFontFamily,
         fontWeight = FontWeight.SemiBold,
         fontSize = 28.sp
     ),
     titleLarge = TextStyle(
-        fontFamily = MagicTypography.MedievalFontFamily,
+        fontFamily = Magic.typography.MedievalFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 28.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
     bodyLarge = TextStyle(
-        fontFamily = MagicTypography.MedievalFontFamily,
+        fontFamily = Magic.typography.MedievalFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     bodyMedium = TextStyle(
-        fontFamily = MagicTypography.MedievalFontFamily,
+        fontFamily = Magic.typography.MedievalFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.25.sp
     ),
     labelLarge = TextStyle(
-        fontFamily = MagicTypography.MedievalFontFamily,
+        fontFamily = Magic.typography.MedievalFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 20.sp,
