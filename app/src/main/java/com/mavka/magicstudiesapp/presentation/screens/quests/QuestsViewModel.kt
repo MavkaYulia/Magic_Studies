@@ -23,8 +23,8 @@ class QuestsViewModel : ViewModel() {
             title = "quest1",
             icon = Icons.Default.DateRange,
             subQuests = listOf(
-                SubQuest("підтаска1", true, Difficulty.LOW),
-                SubQuest("підтаска2", true, Difficulty.MEDIUM),
+                SubQuest("підтаска1", true, Difficulty.EASY),
+                SubQuest("підтаска2", false, Difficulty.MEDIUM),
                 SubQuest("підтаска3", true, Difficulty.HARD)
             )
         ),
@@ -33,8 +33,8 @@ class QuestsViewModel : ViewModel() {
             title = "quest2",
             icon = Icons.Default.Build,
             subQuests = listOf(
-                SubQuest("підтаска1", true, Difficulty.LOW),
-                SubQuest("підтаска2", true, Difficulty.MEDIUM),
+                SubQuest("підтаска1", true, Difficulty.EASY),
+                SubQuest("підтаска2", false, Difficulty.MEDIUM),
                 SubQuest("підтаска3", true, Difficulty.HARD)
             )
         )

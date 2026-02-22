@@ -16,5 +16,12 @@ data class SubQuest(
 )
 
 enum class Difficulty {
-    LOW, MEDIUM, HARD
+    EASY, MEDIUM, HARD
 }
+
+val Difficulty.time: Int
+    get() = when (this) {
+        Difficulty.EASY -> 1
+        Difficulty.MEDIUM -> 2
+        Difficulty.HARD -> 4
+    }

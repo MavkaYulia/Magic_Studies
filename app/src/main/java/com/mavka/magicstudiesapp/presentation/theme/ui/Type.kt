@@ -37,6 +37,13 @@ internal val MagicMaterialTypography = Typography(
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
+    titleMedium = TextStyle(
+        fontFamily = Magic.typography.MedievalFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
+    ),
     bodyLarge = TextStyle(
         fontFamily = Magic.typography.MedievalFontFamily,
         fontWeight = FontWeight.Normal,

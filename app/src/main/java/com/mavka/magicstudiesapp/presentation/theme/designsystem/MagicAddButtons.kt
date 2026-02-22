@@ -36,7 +36,7 @@ fun MagicAddButton(
         Icon(
             imageVector = Icons.Default.Add,
             contentDescription = "Add quest",
-            modifier = Modifier.size(dimensionResource(R.dimen.icon_size)),
+            modifier = Modifier.size(dimensionResource(R.dimen.button_icon_size)),
             tint = Color.White
         )
         Spacer(modifier = Modifier.width(dimensionResource(R.dimen.standard_padding)))

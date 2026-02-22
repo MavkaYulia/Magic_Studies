@@ -2,7 +2,8 @@
 <resources>
 
 <!--    size    -->
-    <dimen name="icon_size">24dp</dimen>
+    <dimen name="button_icon_size">24dp</dimen>
+    <dimen name="icon_size">40dp</dimen>
 
 <!--    padding    -->
     <dimen name="standard_padding">16dp</dimen>
