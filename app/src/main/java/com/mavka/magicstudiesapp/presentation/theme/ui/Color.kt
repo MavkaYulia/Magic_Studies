@@ -1,11 +1,34 @@
 package com.mavka.magicstudiesapp.presentation.theme.ui
 
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+object MagicColor {
+    val Parchment = Color(0xFFF5E6CA)
+    val OldPaper = Color(0xFFE8D4B4)
+    val CandleLight = Color(0xFFFFE082)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+    val WaxSealRed = Color(0xFF8C4A32)
+    val IronInk = Color(0xFF3E2723)
+    val ForestGreen = Color(0xFF2E4532)
+
+    val DeepNight = Color(0xFF1B1811)
+    val FadedGold = Color(0xFFC5A059)
+}
+
+internal val MagicColorScheme = lightColorScheme(
+    primary = MagicColor.WaxSealRed,
+    onPrimary = Color.White,
+
+    secondary = MagicColor.ForestGreen,
+    onSecondary = Color.White,
+
+    background = MagicColor.Parchment,
+    onBackground = MagicColor.IronInk,
+
+    surface = MagicColor.OldPaper,
+    onSurface = MagicColor.IronInk,
+
+    error = Color(0xFF7B1F16),
+    onError = Color.White
+)
