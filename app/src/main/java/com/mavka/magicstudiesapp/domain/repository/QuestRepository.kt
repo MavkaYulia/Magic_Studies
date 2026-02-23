@@ -9,8 +9,4 @@ interface QuestRepository {
 
     suspend fun addQuest(quest: QuestModel)
 
-  //  fun deleteQuest(quest: QuestModel)
-
-   // fun updateQuest(quest: QuestModel)
-
 }

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.mavka.magicstudiesapp.presentation.navigation.AppNavigation
 import com.mavka.magicstudiesapp.presentation.navigation.BottomNavigationBar
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 
 class MainActivity : ComponentActivity() {
 
@@ -18,7 +19,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MainScreen()
+            MagicStudiesAppTheme {
+                MainScreen()
+            }
         }
     }
 }

@@ -10,7 +10,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 
 class QuestRepositoryImpl(
     private val questDao: QuestDao,
@@ -27,17 +26,7 @@ class QuestRepositoryImpl(
     }
 
     override suspend fun addQuest(quest: QuestModel) {
-        withContext(Dispatchers.IO) {
-            questDao.addQuest(quest.toEntity(mapper::getIdByVector))
-        }
+        questDao.addQuest(quest.toEntity(mapper::getIdByVector))
     }
-
-    /*    override fun deleteQuest(quest: QuestModel) {
-            questDao.deleteQuest(quest.toEntity(mapper::getIdByVector))
-        }*/
-
-    /*  override fun updateQuest(quest: QuestModel) {
-          questDao.updateQuest(quest.toEntity(mapper::getIdByVector))
-      }*/
 
 }
