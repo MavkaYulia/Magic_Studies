@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddButton
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicDialog
@@ -32,7 +31,7 @@ import com.mavka.magicstudiesapp.presentation.theme.ui.Magic
 
 @Composable
 fun QuestsScreen(
-    viewModel: QuestsViewModel = viewModel()
+    viewModel: QuestsViewModel
 ) {
     var showMagicDialog by remember { mutableStateOf(false) }
 
@@ -71,6 +70,7 @@ fun QuestsScreen(
                     viewModel.addQuest(
                         title = subjectName,
                         icon = Icons.Default.AddReaction,
+                        order = 5, //todo() add to the end
                         subQuests = listOf()
                     )
 
@@ -96,5 +96,5 @@ fun QuestsScreen(
 @Composable
 fun QuestsScreenPreview() {
 
-    QuestsScreen()
+    // QuestsScreen()
 }

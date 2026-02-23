@@ -28,10 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mavka.magicstudiesapp.R
-import com.mavka.magicstudiesapp.domain.models.Difficulty
 import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.domain.models.SubQuest
-import com.mavka.magicstudiesapp.domain.models.time
 import com.mavka.magicstudiesapp.presentation.theme.ui.Magic
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialTypography
 
@@ -103,7 +101,7 @@ fun MagicQuestCard(questModel: QuestModel) {
 
             Row(verticalAlignment = Alignment.CenterVertically) { //TODO() finish UI of time view
                 Text(
-                    text = " ${questModel.getSpendedTime()} H",
+                    text = " ${questModel.getTimeSpent()} H",
                     color = Magic.colors.ForestGreen,
                     fontSize = 14.sp
                 )
@@ -119,7 +117,7 @@ fun MagicQuestCard(questModel: QuestModel) {
 }
 
 fun QuestModel.getRemainingQuest() = subQuests.count { it.isDone }
-fun QuestModel.getSpendedTime() = subQuests.sumOf { it.difficulty.time }
+fun QuestModel.getTimeSpent() = subQuests.sumOf { it.plannedTime }
 
 
 @Preview(showBackground = true)
@@ -127,10 +125,13 @@ fun QuestModel.getSpendedTime() = subQuests.sumOf { it.difficulty.time }
 private fun MagicQuestCardPreview() {
     return MagicQuestCard(
         QuestModel(
-            id = 939393, title = "title", icon = Icons.Default.AcUnit, subQuests = listOf(
-                SubQuest(name = "subtask1", isDone = true, difficulty = Difficulty.MEDIUM),
-                SubQuest(name = "subtask2", isDone = true, difficulty = Difficulty.HARD),
-                SubQuest(name = "subtask3", isDone = false, difficulty = Difficulty.EASY)
+            title = "title",
+            icon = Icons.Default.AcUnit,
+            order = 1,
+            subQuests = listOf(
+                SubQuest(name = "subtask1", isDone = true, plannedTime = 1),
+                SubQuest(name = "subtask2", isDone = true, plannedTime = 2),
+                SubQuest(name = "subtask3", isDone = false, plannedTime = 4)
             )
         )
     )

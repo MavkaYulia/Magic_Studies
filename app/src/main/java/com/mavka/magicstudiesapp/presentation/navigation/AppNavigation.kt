@@ -9,10 +9,12 @@ import com.mavka.magicstudiesapp.presentation.screens.atlas.AtlasScreen
 import com.mavka.magicstudiesapp.presentation.screens.hall.CentralHallScreen
 import com.mavka.magicstudiesapp.presentation.screens.music.MusicScreen
 import com.mavka.magicstudiesapp.presentation.screens.quests.QuestsScreen
+import com.mavka.magicstudiesapp.presentation.screens.quests.QuestsViewModel
 import com.mavka.magicstudiesapp.presentation.screens.timer.TimerScreen
 
 @Composable
 fun AppNavigation(
+    questsViewModel: QuestsViewModel,
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
@@ -30,7 +32,7 @@ fun AppNavigation(
         }
 
         composable(Screen.Quests.route) {
-            QuestsScreen()
+            QuestsScreen(questsViewModel)
         }
 
         composable(Screen.Timer.route) {
