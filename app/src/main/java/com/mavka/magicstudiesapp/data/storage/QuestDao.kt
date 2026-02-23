@@ -8,44 +8,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface QuestDao {
-    // додавати квести з підквестами , бо зараз це тільки квести без підквестів
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addQuest(quest: QuestEntity): Long
+    suspend fun addQuest(quest: QuestEntity)
 
-   /* @Query("SELECT * FROM quests WHERE id = :id")
-    suspend fun getQuest(id: Int): QuestEntity?
-
-    @Update
-    fun updateQuest(quest: QuestEntity)
-
-    @Delete
-    fun deleteQuest(quest: QuestEntity)
-*/
     @Query("SELECT * FROM quests ORDER BY orderNumber ASC")
     fun getAllQuests(): Flow<List<QuestWithSubQuests>>
-
-/*    @Query("DELETE FROM quests")
-    suspend fun deleteAllQuests()
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addSubQuest(quest: SubQuestEntity): Long
-
-
-
-    @Query("SELECT * FROM sub_quests WHERE id = :id")
-    suspend fun getSubQuest(id: Int): SubQuestEntity?
-
-    @Update
-    suspend fun updateQuest(subQuest: SubQuestEntity)
-
-    @Delete
-    suspend fun deleteQuest(subQuest: SubQuestEntity)
-
-    @Query("SELECT * FROM sub_quests")
-    fun getAllSubQuests(): Flow<List<SubQuestEntity>>
-
-    @Query("DELETE FROM sub_quests")
-    suspend fun deleteAllSubQuests()*/
 
 }

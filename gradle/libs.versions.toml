@@ -11,8 +11,10 @@ compose = "1.2.1"
 composeBom = "2024.09.00"
 navigationCompose = "2.9.7"
 androidxLifecycle = "2.8.7"
-room = "2.6.1"
-ksp = "1.9.24-1.0.20"
+room = "2.8.4"
+ksp = "2.0.21-1.0.25"
+koin = "4.1.1"
+koinCompose = "4.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,6 +38,10 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 room = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+#Koin
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

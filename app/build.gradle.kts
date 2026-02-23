@@ -50,12 +50,15 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.materialIcons)
-    implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.room)
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
+
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

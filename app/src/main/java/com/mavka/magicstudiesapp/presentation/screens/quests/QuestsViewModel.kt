@@ -29,16 +29,6 @@ class QuestsViewModel(private val questRepository: QuestRepository) : ViewModel(
         }
     }
 
-    fun getSubQuestsSize() = uiState.value.quests.sumOf { quest ->
-        quest.subQuests.count { !it.isDone }
-    }
-
-
-   /* fun updateQuest(quest: QuestModel) {
-        questRepository.updateQuest(quest)
-    }*/
-
-
     fun addQuest(title: String, icon: ImageVector, order: Int, subQuests: List<SubQuest>) {
         val newQuest = QuestModel(title = title, icon = icon, order = order, subQuests = subQuests)
         viewModelScope.launch {
@@ -46,11 +36,6 @@ class QuestsViewModel(private val questRepository: QuestRepository) : ViewModel(
         }
     }
 
-/*
-    fun deleteQuest(id: Int) {
-        val questToDelete = uiState.value.quests.find { it.id == id }
-        questToDelete?.let { questRepository.deleteQuest(it) }
-    }*/
 }
 
 data class QuestUiState(
