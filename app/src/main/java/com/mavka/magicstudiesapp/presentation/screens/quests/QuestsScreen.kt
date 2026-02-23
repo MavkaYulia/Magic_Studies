@@ -28,10 +28,11 @@ import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicQuestCard
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicText
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTitle
 import com.mavka.magicstudiesapp.presentation.theme.ui.Magic
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun QuestsScreen(
-    viewModel: QuestsViewModel
+    viewModel: QuestsViewModel = koinViewModel()
 ) {
     var showMagicDialog by remember { mutableStateOf(false) }
 

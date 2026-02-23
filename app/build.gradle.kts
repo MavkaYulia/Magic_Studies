@@ -57,6 +57,10 @@ dependencies {
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
 
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
