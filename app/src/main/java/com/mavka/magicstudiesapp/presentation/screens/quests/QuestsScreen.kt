@@ -42,7 +42,10 @@ fun QuestsScreen(
     viewModel: QuestsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
+    val countSubQuest = uiState.quests.sumOf { quest ->
+        quest.subQuests.count { !it.isDone }
+    }
+    val countQuest = uiState.quests.size
     QuestsScreenContent(
         uiState = uiState,
         onAddQuest = { title, icon, order, subQuests ->
@@ -53,8 +56,8 @@ fun QuestsScreen(
                 subQuests = subQuests
             )
         },
-        countSubQuest = viewModel.getSubQuestsSize(),
-        countQuest = viewModel.getQuestsSize()
+        countSubQuest = countSubQuest,
+        countQuest = countQuest
     )
 }
 
@@ -151,8 +154,8 @@ private fun QuestScreenPreview() {
         QuestsScreenContent(
             uiState = QuestUiState(quests = mockQuests, isLoading = false, errorMessage = null),
             onAddQuest = { _, _, _, _ -> },
-            countSubQuest = mockQuests.size,
-            countQuest = 5
+            countSubQuest = mockQuests.sumOf { it.subQuests.count { sub -> !sub.isDone } },
+            countQuest = mockQuests.size
         )
     }
 }
