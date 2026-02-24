@@ -21,45 +21,51 @@ object MagicTypography {
 internal val MagicMaterialTypography = Typography(
 
     displayLarge = TextStyle(
-        fontFamily = Magic.typography.MedievalFontFamily,
+        fontFamily = MagicTypography.MedievalFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 32.sp
     ),
     headlineMedium = TextStyle(
-        fontFamily = Magic.typography.MedievalFontFamily,
+        fontFamily = MagicTypography.MedievalFontFamily,
         fontWeight = FontWeight.SemiBold,
         fontSize = 28.sp
     ),
     titleLarge = TextStyle(
-        fontFamily = Magic.typography.MedievalFontFamily,
+        fontFamily = MagicTypography.MedievalFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 28.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
     titleMedium = TextStyle(
-        fontFamily = Magic.typography.MedievalFontFamily,
+        fontFamily = MagicTypography.MedievalFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 18.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
     bodyLarge = TextStyle(
-        fontFamily = Magic.typography.MedievalFontFamily,
+        fontFamily = MagicTypography.MedievalFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     bodyMedium = TextStyle(
-        fontFamily = Magic.typography.MedievalFontFamily,
+        fontFamily = MagicTypography.MedievalFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.25.sp
     ),
+    bodySmall = TextStyle(
+        fontFamily = MagicTypography.MedievalFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 10.sp,
+        lineHeight = 14.sp
+    ),
     labelLarge = TextStyle(
-        fontFamily = Magic.typography.MedievalFontFamily,
+        fontFamily = MagicTypography.MedievalFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 20.sp,

@@ -1,28 +1,27 @@
 package com.mavka.magicstudiesapp.presentation.theme.designsystem
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import com.mavka.magicstudiesapp.presentation.theme.ui.Magic
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialColor
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialTypography
 
 @Composable
 fun MagicText(
-    title: String,
+    modifier: Modifier = Modifier,
+    text: String,
     style: TextStyle = MagicMaterialTypography.bodyLarge
-) {
+    ) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
     ) {
         Text(
-            text = title,
+            text = text,
             style = style,
-            color = Magic.colors.ForestGreen
+            color = MagicMaterialColor.primary
         )
     }
 }
@@ -30,5 +29,5 @@ fun MagicText(
 @Preview(showBackground = true)
 @Composable
 private fun MagicTextPreview() {
-    return MagicText(title = "MagicText")
+    return MagicText(text = "MagicText")
 }

@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">MagicStudiesApp</string>
+
+    <string name="duration_minutes">%d min</string>
+    <string name="duration_hours">%d hour</string>
+    <string name="duration_custom">Custom time…</string>
+
+    <string name="dialog_confirm">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+
+    <string name="duration_dialog_title">Select duration</string>
+    <string name="label_hours">Hours</string>
+    <string name="label_minutes">Minutes</string>
+
+    <string name="back_to_presets">Back to quick selection</string>
+
 </resources>

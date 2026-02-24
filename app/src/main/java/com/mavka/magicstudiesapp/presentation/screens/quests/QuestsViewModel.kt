@@ -36,6 +36,12 @@ class QuestsViewModel(private val questRepository: QuestRepository) : ViewModel(
         }
     }
 
+    fun addSubQuest(quest: SubQuest, subName: String, subPlannedTime: Int) {
+
+
+    }
+
+
 }
 
 data class QuestUiState(
