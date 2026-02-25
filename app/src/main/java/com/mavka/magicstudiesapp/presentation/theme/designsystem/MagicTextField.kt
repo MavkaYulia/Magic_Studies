@@ -1,6 +1,7 @@
 package com.mavka.magicstudiesapp.presentation.theme.designsystem
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -16,11 +17,14 @@ fun MagicTextField(
     value: String,
     onValueChange: (String) -> Unit,
     hintText: String,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    isError: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
+        isError = isError,
         placeholder = {
             Text(
                 text = hintText,
@@ -29,7 +33,7 @@ fun MagicTextField(
         },
         modifier = modifier
             .fillMaxWidth(),
-        shape = MagicMaterialShapes.large,
+        shape = MagicMaterialShapes.medium,
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MagicMaterialColor.outline,
             unfocusedBorderColor = MagicMaterialColor.outlineVariant,
@@ -37,6 +41,7 @@ fun MagicTextField(
             unfocusedTextColor = MagicMaterialColor.secondary,
             cursorColor = MagicMaterialColor.primary
         ),
+        keyboardOptions = keyboardOptions,
         singleLine = true
     )
 }
@@ -45,7 +50,7 @@ fun MagicTextField(
 @Preview(showBackground = true)
 @Composable
 private fun MagicTextFieldPreview() {
-    return MagicTextField(
+    MagicTextField(
         "", {}, "Hint text"
     )
 }

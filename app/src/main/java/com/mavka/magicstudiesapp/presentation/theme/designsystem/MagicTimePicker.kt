@@ -10,8 +10,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,15 +29,12 @@ import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialTypography
 
 @Composable
 fun MagicTimePicker(
-    onSelectedMinutesChange: (Int) -> Unit,
-    onHoursInputChange: (String) -> Unit,
-    onMinutesInputChange: (String) -> Unit,
-    onCustomModeChange: (Boolean) -> Unit,
-    onConfirmClick: () -> Unit,
+    onConfirmClick: (Int) -> Unit,
     onDismissClick: () -> Unit
 ) {
     var selectedMinutes by remember { mutableIntStateOf(0) }
     var isCustomMode by remember { mutableStateOf(false) }
+
     var hoursInput by remember { mutableStateOf("") }
     var minutesInput by remember { mutableStateOf("") }
 
@@ -51,10 +46,19 @@ fun MagicTimePicker(
         containerColor = MagicMaterialColor.surface,
         onDismissRequest = onDismissClick,
         confirmButton = {
-            TextButton(onClick = onConfirmClick) {
+            TextButton(
+                onClick = {
+                    if (isCustomMode) {
+                        val hours = hoursInput.toIntOrNull() ?: 0
+                        val minutes = minutesInput.toIntOrNull() ?: 0
+                        selectedMinutes = (hours * 60) + minutes
+                    }
+                    onConfirmClick(selectedMinutes)
+                }
+            ) {
                 MagicText(
                     modifier = Modifier.wrapContentSize(),
-                    stringResource(R.string.dialog_confirm)
+                    text = stringResource(R.string.dialog_confirm)
                 )
             }
         },
@@ -63,7 +67,7 @@ fun MagicTimePicker(
             TextButton(onClick = onDismissClick) {
                 MagicText(
                     modifier = Modifier.wrapContentSize(),
-                    stringResource(R.string.dialog_cancel)
+                    text = stringResource(R.string.dialog_cancel)
                 )
             }
         },
@@ -77,33 +81,35 @@ fun MagicTimePicker(
                     DurationSelector(
                         presets = timePresets,
                         selectedMinutes = selectedMinutes,
-                        onSelect = onSelectedMinutesChange,
-                        onCustomClick = { onCustomModeChange(true) }
+                        onSelect = { selectedMinutes = it },
+                        onCustomClick = { isCustomMode = true }
                     )
                 } else {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_small))
                     ) {
-                        OutlinedTextField(
+                        MagicTextField(
                             value = hoursInput,
-                            onValueChange = onHoursInputChange,
-                            placeholder = {
-                                Text(stringResource(R.string.label_hours))
+                            onValueChange = { newValue ->
+                                if (newValue.all { it.isDigit() }) {
+                                    hoursInput = newValue
+                                }
                             },
-                            singleLine = true,
+                            hintText = stringResource(R.string.label_hours),
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Number
                             ),
                             modifier = Modifier.weight(1f)
                         )
 
-                        OutlinedTextField(
+                        MagicTextField(
                             value = minutesInput,
-                            onValueChange = onMinutesInputChange,
-                            placeholder = {
-                                Text(stringResource(R.string.label_minutes))
+                            onValueChange = { newValue ->
+                                if (newValue.all { it.isDigit() }) {
+                                    minutesInput = newValue
+                                }
                             },
-                            singleLine = true,
+                            hintText = stringResource(R.string.label_minutes),
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Number
                             ),
@@ -112,9 +118,9 @@ fun MagicTimePicker(
                     }
 
                     TextButton(
-                        onClick = { onCustomModeChange(false) }
+                        onClick = { isCustomMode = false }
                     ) {
-                        Text(stringResource(R.string.back_to_presets))
+                        MagicText(text = stringResource(R.string.back_to_presets))
                     }
                 }
             }
@@ -142,8 +148,8 @@ fun DurationSelector(
                 onClick = { onSelect(minutes) },
                 label = { MagicText(text = label, style = MagicMaterialTypography.bodySmall) },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = MagicMaterialColor.primary,
-                    selectedLabelColor = MagicMaterialColor.onPrimary
+                    selectedContainerColor = MagicMaterialColor.secondary.copy(0.8f),
+                    selectedLabelColor = MagicMaterialColor.onSecondary
                 )
             )
         }
@@ -159,10 +165,6 @@ fun DurationSelector(
 @Composable
 private fun MagicTimePickerPreview() {
     MagicTimePicker(
-        onSelectedMinutesChange = {},
-        onHoursInputChange = {},
-        onMinutesInputChange = {},
-        onCustomModeChange = {},
         onConfirmClick = {},
         onDismissClick = {}
     )

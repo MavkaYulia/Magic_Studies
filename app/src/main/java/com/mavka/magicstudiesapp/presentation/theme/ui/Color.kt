@@ -7,9 +7,6 @@ object MagicColor {
     val Parchment = Color(0xFFF5E6CA)
     val OldPaper = Color(0xFFE8D4B4)
     val CandleLight = Color(0xFFFFE082)
-
-    val AlchemistSand = Color(0xFFD9CA9D)
-
     val WaxSealRed = Color(0xFF8C4A32)
     val IronInk = Color(0xFF3E2723)
     val ForestGreen = Color(0xFF2E4532)
@@ -30,9 +27,9 @@ internal val MagicMaterialColor = lightColorScheme(
     background = MagicColor.Parchment,
     onBackground = MagicColor.IronInk,
 
-    tertiary = MagicColor.AlchemistSand,
+    tertiary = MagicColor.DeepNight,
 
-    outline = MagicColor.DeepNight,
+    outline = MagicColor.ForestGreen,
     outlineVariant = MagicColor.FadedGold,
 
     surface = MagicColor.OldPaper,

@@ -36,11 +36,12 @@ class QuestsViewModel(private val questRepository: QuestRepository) : ViewModel(
         }
     }
 
-    fun addSubQuest(quest: SubQuest, subName: String, subPlannedTime: Int) {
-
-
+    fun addSubQuest(questId: Int, subName: String, subPlannedTime: Int) {
+        val newSubQuest = SubQuest(name = subName, isDone = false, plannedTime = subPlannedTime)
+        viewModelScope.launch {
+            questRepository.addSubQuest(questId, newSubQuest)
+        }
     }
-
 
 }
 

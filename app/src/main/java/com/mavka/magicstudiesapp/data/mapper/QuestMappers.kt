@@ -27,6 +27,15 @@ fun SubQuestEntity.toDomain(): SubQuest {
     )
 }
 
+fun SubQuest.toEntity(questId: Int): SubQuestEntity {
+    return SubQuestEntity(
+        id = this.id,
+        questId = questId,
+        name = this.name,
+        isDone = this.isDone,
+        plannedTime = this.plannedTime
+    )
+}
 
 fun QuestModel.toEntity(mapIconToId: (ImageVector) -> Int): QuestEntity {
     return QuestEntity(

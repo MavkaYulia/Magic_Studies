@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Shield
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,6 +33,7 @@ import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddButtonE
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddDialog
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicQuestCard
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicText
+import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTimePicker
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTitle
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialColor
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
@@ -52,7 +54,16 @@ fun QuestsScreen(
                 subQuests = subQuests
             )
         },
-        onAddSubQuest = { }
+        onAddSubQuest = { questId, subName, plannedTime ->
+            viewModel.addSubQuest(
+                questId = questId,
+                subName = subName,
+                subPlannedTime = plannedTime
+            )
+        },
+        onDeleteSubQuest = {
+            viewModel
+        }
     )
 }
 
@@ -65,9 +76,18 @@ fun QuestsScreenContent(
         order: Int,
         subQuests: List<SubQuest>
     ) -> Unit,
-    onAddSubQuest: (subquest: SubQuest) -> Unit,
+    onAddSubQuest: (
+        questId: Int,
+        subName: String,
+        plannedTime: Int
+    ) -> Unit,
+    onDeleteSubQuest: () -> Unit
 ) {
     var showMagicDialog by remember { mutableStateOf(false) }
+    var showTimePicker by remember { mutableStateOf(false) }
+
+    var pendingQuestId by remember { mutableStateOf<Int?>(null) }
+    val pendingSubQuestNames = remember { mutableStateMapOf<Int, String>() }
 
     Column(
         modifier = Modifier
@@ -113,25 +133,54 @@ fun QuestsScreenContent(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
         ) {
             items(uiState.quests) { quest ->
+                val currentSubName = pendingSubQuestNames[quest.id] ?: ""
+
                 MagicQuestCard(
                     title = quest.title,
-                    subQuestStatus = Pair(quest.subQuests.count {
-                        !it.isDone
-                    }, quest.subQuests.size),
+                    subQuestStatus = Pair(
+                        quest.subQuests.count { !it.isDone },
+                        quest.subQuests.size
+                    ),
                     progress = 0.5f,
                     icon = quest.icon,
-                    spentTime = quest.subQuests.filter {
-                        it.isDone
-                    }.sumOf { it.plannedTime },
+                    spentTime = quest.subQuests.filter { it.isDone }.sumOf { it.plannedTime },
                     subQuests = quest.subQuests,
-                    onDeleteSubQuest = {}
+                    onDeleteSubQuest = { onDeleteSubQuest() },
+                    subQuestName = currentSubName,
+                    onSubQuestNameChange = { new ->
+                        pendingSubQuestNames[quest.id] = new
+                    },
+                    onAddSubQuest = {
+                        pendingQuestId = quest.id
+                        showTimePicker = true
+                    }
                 )
             }
         }
+
+        if (showTimePicker) {
+            MagicTimePicker(
+                onConfirmClick = { time ->
+                    val id = pendingQuestId
+                    if (id != null) {
+                        val name = pendingSubQuestNames[id].orEmpty()
+                        if (name.isNotBlank()) {
+                            onAddSubQuest(id, name, time)
+                            pendingSubQuestNames.remove(id)
+                        }
+                    }
+                    showTimePicker = false
+                    pendingQuestId = null
+                },
+                onDismissClick = {
+                    pendingQuestId?.let { pendingSubQuestNames.remove(it) }
+                    showTimePicker = false
+                    pendingQuestId = null
+                }
+            )
+        }
     }
-
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -165,7 +214,7 @@ private fun QuestScreenPreview() {
     MagicStudiesAppTheme {
         QuestsScreenContent(
             uiState = QuestUiState(quests = mockQuests, isLoading = false, errorMessage = null),
-            onAddQuest = { _, _, _, _ -> }, {}
+            onAddQuest = { _, _, _, _ -> }, { _, _, _ -> }, {}
         )
     }
 }

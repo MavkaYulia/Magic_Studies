@@ -6,6 +6,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -52,11 +53,13 @@ fun MagicQuestCard(
     icon: ImageVector,
     spentTime: Int,
     subQuests: List<SubQuest>,
-    onDeleteSubQuest: () -> Unit,
+    onDeleteSubQuest: (subQuestId: Int) -> Unit,
+    subQuestName: String,
+    onSubQuestNameChange: (String) -> Unit,
+    onAddSubQuest: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var isExpanded by remember { mutableStateOf(false) }
-    var subQuestName by remember { mutableStateOf("") }
+    var isExpanded by remember { mutableStateOf(true) }
 
     Card(
         modifier = modifier
@@ -131,7 +134,7 @@ fun MagicQuestCard(
                 ) {
 
                     HorizontalDivider(
-                        modifier = modifier.padding(horizontal = dimensionResource(R.dimen.padding_medium)),
+                        modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_medium)),
                         thickness = 0.5.dp,
                         color = MagicMaterialColor.primary
                     )
@@ -142,43 +145,63 @@ fun MagicQuestCard(
                         subQuests.forEach { subQuest ->
                             MagicSubQuestCard(
                                 subQuest = subQuest,
-                                onDeleteClick = { onDeleteSubQuest() }
+                                onDeleteClick = { onDeleteSubQuest(subQuest.id) }
                             )
                         }
 
                         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_small)))
 
                         HorizontalDivider(
-                            modifier = modifier.padding(horizontal = dimensionResource(R.dimen.padding_medium)),
+                            modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_medium)),
                             thickness = 0.5.dp,
                             color = MagicMaterialColor.primary
                         )
                     }
 
+                    var isError by remember { mutableStateOf(false) }
+
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_small))
+                        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_small)),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         MagicTextField(
                             value = subQuestName,
-                            onValueChange = { /*subQuest title*/ },
+                            onValueChange = {
+                                onSubQuestNameChange(it)
+                                if (it.isNotBlank()) isError = false
+                            },
                             hintText = stringResource(R.string.hint_add_subquest),
-                            modifier
+                            isError = isError,
+                            modifier = Modifier
                                 .weight(1f)
+                                .then(
+                                    if (isError) Modifier.border(
+                                        width = 1.dp,
+                                        color = MagicMaterialColor.error,
+                                        shape = MagicMaterialShapes.small
+                                    ) else Modifier
+                                )
                         )
+
                         MagicAddButtonIcon(
-                            {  /*  add time plan */ },
-                            modifier.size(dimensionResource(R.dimen.height_large))
+                            onClick = {
+                                if (subQuestName.isNotBlank()) {
+                                    onAddSubQuest(subQuestName)
+                                    isError = false
+                                } else {
+                                    isError = true
+                                }
+                            },
+                            modifier = Modifier.size(dimensionResource(R.dimen.height_large))
                         )
                     }
+
+                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
                 }
             }
-
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
-
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -207,6 +230,9 @@ private fun MagicQuestCardPreview() {
         spentTime = spentTime,
         subQuests = quest.subQuests,
         onDeleteSubQuest = {},
-        modifier = Modifier,
+        subQuestName = "text",
+        onSubQuestNameChange = {},
+        onAddSubQuest = {},
+        modifier = Modifier
     )
 }
