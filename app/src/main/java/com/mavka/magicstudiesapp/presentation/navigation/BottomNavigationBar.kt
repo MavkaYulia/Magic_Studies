@@ -56,13 +56,13 @@ fun StandardItem(item: NavigationItem, currentRoute: String?, navController: Nav
         Icon(
             imageVector = item.icon,
             contentDescription = item.title,
-            tint = if (isSelected) MagicMaterialColor.secondary else MagicMaterialColor.primary,
+            tint = if (isSelected) MagicMaterialColor.primary else MagicMaterialColor.secondary,
             modifier = Modifier.size(26.dp)
         )
         Text(
             text = item.title,
             style = MaterialTheme.typography.labelSmall,
-            color = if (isSelected) MagicMaterialColor.secondary else MagicMaterialColor.primary
+            color = if (isSelected) MagicMaterialColor.primary else MagicMaterialColor.secondary
         )
     }
 }

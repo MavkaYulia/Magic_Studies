@@ -60,7 +60,7 @@ fun MagicAddDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stringResource(R.string.dialog_title_add_subject),
+                        text = stringResource(R.string.new_quest),
                         color = MagicMaterialColor.primary,
                         style = MagicMaterialTypography.titleLarge
                     )

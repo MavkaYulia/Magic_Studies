@@ -2,6 +2,7 @@ package com.mavka.magicstudiesapp.presentation.theme.designsystem
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.wrapContentSize
@@ -26,7 +27,7 @@ import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialColor
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialShapes
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialTypography
-
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MagicTimePicker(
     onConfirmClick: (Int) -> Unit,

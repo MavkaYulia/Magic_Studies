@@ -170,7 +170,7 @@ fun MagicQuestCard(
                                 onSubQuestNameChange(it)
                                 if (it.isNotBlank()) isError = false
                             },
-                            hintText = stringResource(R.string.hint_add_subquest),
+                            hintText = stringResource(R.string.new_subquest),
                             isError = isError,
                             modifier = Modifier
                                 .weight(1f)
@@ -210,7 +210,6 @@ private fun MagicQuestCardPreview() {
         QuestModel(
             title = "title1",
             icon = Icons.Default.AcUnit,
-            order = 1,
             subQuests = listOf(
                 SubQuest(name = "subtask1", isDone = true, plannedTime = 8),
                 SubQuest(name = "subtask2", isDone = true, plannedTime = 4),

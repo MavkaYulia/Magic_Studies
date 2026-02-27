@@ -39,6 +39,7 @@ fun MagicStudiesAppTheme(
     MaterialTheme(
         colorScheme = MagicMaterialColor,
         typography = MagicMaterialTypography,
+        shapes = MagicMaterialShapes,
         content = content
     )
 }

@@ -46,11 +46,10 @@ fun QuestsScreen(
     val uiState by viewModel.uiState.collectAsState()
     QuestsScreenContent(
         uiState = uiState,
-        onAddQuest = { title, icon, order, subQuests ->
+        onAddQuest = { title, icon, subQuests ->
             viewModel.addQuest(
                 title = title,
                 icon = icon,
-                order = order,
                 subQuests = subQuests
             )
         },
@@ -62,7 +61,7 @@ fun QuestsScreen(
             )
         },
         onDeleteSubQuest = {
-            viewModel
+            viewModel.deleteSubQuest(it)
         }
     )
 }
@@ -73,7 +72,6 @@ fun QuestsScreenContent(
     onAddQuest: (
         title: String,
         icon: ImageVector,
-        order: Int,
         subQuests: List<SubQuest>
     ) -> Unit,
     onAddSubQuest: (
@@ -81,7 +79,7 @@ fun QuestsScreenContent(
         subName: String,
         plannedTime: Int
     ) -> Unit,
-    onDeleteSubQuest: () -> Unit
+    onDeleteSubQuest: (subQuestId: Int) -> Unit
 ) {
     var showMagicDialog by remember { mutableStateOf(false) }
     var showTimePicker by remember { mutableStateOf(false) }
@@ -110,7 +108,7 @@ fun QuestsScreenContent(
 
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_large)))
 
-        MagicAddButtonExpanded("New Subject", { showMagicDialog = true })
+        MagicAddButtonExpanded(stringResource(R.string.new_quest), { showMagicDialog = true })
 
         if (showMagicDialog) {
             MagicAddDialog(
@@ -119,7 +117,6 @@ fun QuestsScreenContent(
                     onAddQuest(
                         subjectName,
                         Icons.Default.AddReaction,
-                        5,
                         listOf()
                     )
                     showMagicDialog = false
@@ -138,14 +135,14 @@ fun QuestsScreenContent(
                 MagicQuestCard(
                     title = quest.title,
                     subQuestStatus = Pair(
-                        quest.subQuests.count { !it.isDone },
+                        quest.subQuests.count { it.isDone },
                         quest.subQuests.size
                     ),
                     progress = 0.5f,
                     icon = quest.icon,
                     spentTime = quest.subQuests.filter { it.isDone }.sumOf { it.plannedTime },
                     subQuests = quest.subQuests,
-                    onDeleteSubQuest = { onDeleteSubQuest() },
+                    onDeleteSubQuest = { onDeleteSubQuest(it) },
                     subQuestName = currentSubName,
                     onSubQuestNameChange = { new ->
                         pendingSubQuestNames[quest.id] = new
@@ -190,7 +187,6 @@ private fun QuestScreenPreview() {
         QuestModel(
             title = "Quest1",
             icon = Icons.Default.Science,
-            order = 1,
             subQuests = listOf(
                 SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2),
                 SubQuest(name = "SubQuest2", isDone = false, plannedTime = 6)
@@ -199,7 +195,6 @@ private fun QuestScreenPreview() {
         QuestModel(
             title = "Quest2",
             icon = Icons.Default.Shield,
-            order = 2,
             subQuests = listOf(
                 SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2)
             )
@@ -207,14 +202,13 @@ private fun QuestScreenPreview() {
         QuestModel(
             title = "Quest3",
             icon = Icons.Default.Forest,
-            order = 3,
             subQuests = emptyList()
         )
     )
     MagicStudiesAppTheme {
         QuestsScreenContent(
             uiState = QuestUiState(quests = mockQuests, isLoading = false, errorMessage = null),
-            onAddQuest = { _, _, _, _ -> }, { _, _, _ -> }, {}
+            onAddQuest = { _, _, _ -> }, { _, _, _ -> }, {}
         )
     }
 }

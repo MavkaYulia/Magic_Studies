@@ -11,7 +11,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val dataModule = module {
-    // Краще використовувати androidContext() замість get() для Room
+
     single {
         Room.databaseBuilder(
             androidContext(),

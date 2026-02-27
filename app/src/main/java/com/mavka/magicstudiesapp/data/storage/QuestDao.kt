@@ -14,10 +14,13 @@ interface QuestDao {
     suspend fun addQuest(quest: QuestEntity)
 
     @Transaction
-    @Query("SELECT * FROM quests ORDER BY orderNumber ASC")
+    @Query("SELECT * FROM quests")
     fun getAllQuestsWithSubQuests(): Flow<List<QuestWithSubQuests>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addSubQuest(subQuest: SubQuestEntity)
+
+    @Query("DELETE FROM sub_quests WHERE id = :subQuestId")
+    suspend fun deleteSubQuest(subQuestId: Int)
 
 }

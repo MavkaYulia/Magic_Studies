@@ -55,6 +55,7 @@ dependencies {
 
     implementation(libs.room)
     implementation(libs.room.runtime)
+    implementation(libs.androidx.compose.foundation.layout)
     ksp(libs.room.compiler)
 
     implementation(libs.koin.core)
