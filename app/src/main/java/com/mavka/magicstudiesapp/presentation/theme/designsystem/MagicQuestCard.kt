@@ -60,6 +60,7 @@ fun MagicQuestCard(
     subQuests: List<SubQuest>,
     subQuestName: String,
     onChangeSubQuestName: (String) -> Unit,
+    isCompleteSubQuest: (subQuest: SubQuest) -> Unit,
     onDeleteSubQuest: (subQuestId: Int) -> Unit,
     onAddSubQuest: () -> Unit,
     onDeleteQuest: () -> Unit,
@@ -190,7 +191,9 @@ fun MagicQuestCard(
                             MagicSubQuestCard(
                                 subQuest = subQuest,
                                 onDelete = { onDeleteSubQuest(subQuest.id) },
-                                isComplete = {}
+                                isComplete = {
+                                    isCompleteSubQuest(it)
+                                }
                             )
                         }
 
@@ -277,6 +280,7 @@ private fun MagicQuestCardPreview() {
         onDeleteSubQuest = {},
         onAddSubQuest = {},
         onDeleteQuest = {},
+        isCompleteSubQuest = {},
         modifier = Modifier
     )
 }

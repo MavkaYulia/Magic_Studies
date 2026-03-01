@@ -54,8 +54,8 @@ fun MagicSubQuestCard(
             .fillMaxWidth()
             .background(MagicMaterialColor.background, MagicMaterialShapes.large)
             .clickable {
-                isComplete(subQuest.copy(isDone = isDone))
                 isDone = !isDone
+                isComplete(subQuest.copy(isDone = isDone))
             }
             .border(
                 dimensionResource(R.dimen.border),
@@ -75,7 +75,7 @@ fun MagicSubQuestCard(
             Icon(
                 imageVector = if (isDone) Icons.Filled.Circle else Icons.Outlined.Circle,
                 contentDescription = null,
-                modifier = Modifier.size(30.dp),
+                modifier = Modifier.size(24.dp),
                 tint = if (isDone) MagicMaterialColor.secondary else MagicMaterialColor.primary.copy(
                     alpha = 0.5f
                 )

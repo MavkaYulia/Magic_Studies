@@ -14,5 +14,6 @@ interface QuestRepository {
 
     suspend fun deleteSubQuest(subQuestId: Int)
     suspend fun deleteQuest(questId: Int)
+    suspend fun updateQuest(questId: Int, subQuest: SubQuest)
 
 }

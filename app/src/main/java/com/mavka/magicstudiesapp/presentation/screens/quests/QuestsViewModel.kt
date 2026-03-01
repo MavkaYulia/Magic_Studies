@@ -50,6 +50,13 @@ class QuestsViewModel(private val questRepository: QuestRepository) : ViewModel(
         }
     }
 
+    fun updateSubQuest(questId: Int, subQuest: SubQuest) {
+
+        viewModelScope.launch {
+            questRepository.updateQuest(questId, subQuest)
+        }
+    }
+
     fun deleteQuest(questId: Int) {
         viewModelScope.launch {
             questRepository.deleteQuest(questId)

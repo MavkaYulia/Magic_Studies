@@ -59,11 +59,14 @@ fun QuestsScreen(
                 subPlannedTime = plannedTime
             )
         },
-        onDeleteSubQuest = {
-            viewModel.deleteSubQuest(it)
+        updateSubQuest = { questId, subQuest ->
+            viewModel.updateSubQuest(questId, subQuest)
         },
-        onDeleteQuest = {
-            viewModel.deleteQuest(it)
+        onDeleteSubQuest = { subQuest ->
+            viewModel.deleteSubQuest(subQuest)
+        },
+        onDeleteQuest = { questId ->
+            viewModel.deleteQuest(questId)
         }
     )
 }
@@ -81,6 +84,7 @@ fun QuestsScreenContent(
         subName: String,
         plannedTime: Int
     ) -> Unit,
+    updateSubQuest: (questId: Int, subquest: SubQuest) -> Unit,
     onDeleteSubQuest: (subQuestId: Int) -> Unit,
     onDeleteQuest: (Int) -> Unit
 ) {
@@ -146,6 +150,7 @@ fun QuestsScreenContent(
                     subQuests = quest.subQuests,
                     subQuestName = subQuestName,
                     onChangeSubQuestName = { subQuestName = it },
+                    isCompleteSubQuest = { updateSubQuest(quest.id, it) },
                     onDeleteSubQuest = { onDeleteSubQuest(it) },
                     onAddSubQuest = {
                         pendingQuestId = quest.id
@@ -202,7 +207,11 @@ private fun QuestScreenPreview() {
     MagicStudiesAppTheme {
         QuestsScreenContent(
             uiState = QuestUiState(quests = mockQuests, isLoading = false, errorMessage = null),
-            onAddQuest = { _, _, _ -> }, { _, _, _ -> }, {}, {}
+            onAddQuest = { _, _, _ -> },
+            { _, _, _ -> },
+            { _, _ -> },
+            {},
+            {}
         )
     }
 }

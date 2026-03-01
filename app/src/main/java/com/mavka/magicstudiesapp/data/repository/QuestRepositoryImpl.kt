@@ -45,4 +45,8 @@ class QuestRepositoryImpl(
         questDao.deleteQuest(questId)
     }
 
+    override suspend fun updateQuest(questId: Int, subQuest: SubQuest) {
+        questDao.updateSubQuest(subQuest.toEntity(questId))
+    }
+
 }

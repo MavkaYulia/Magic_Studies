@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -22,6 +23,10 @@ interface QuestDao {
 
     @Query("DELETE FROM sub_quests WHERE id = :subQuestId")
     suspend fun deleteSubQuest(subQuestId: Int)
+
+    @Update
+    suspend fun updateSubQuest(subQuest: SubQuestEntity)
+
     @Query("DELETE FROM quests WHERE id = :questId")
     suspend fun deleteQuest(questId: Int)
 
