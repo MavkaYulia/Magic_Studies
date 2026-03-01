@@ -145,15 +145,22 @@ fun MagicQuestCard(
                     }
 
                     Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_tiny)))
+
+                    val total = subQuestStatus.second.coerceAtLeast(1)
+                    val remaining = subQuestStatus.first.coerceIn(0, total)
+                    val completed = total - remaining
+
                     MagicProgressBar(
                         modifier = Modifier.padding(end = dimensionResource(R.dimen.padding_small)),
-                        progress = 1f //todo()
+                        progress = completed.toFloat() / total.toFloat()
                     )
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
+                    val hours = spentTime / 60
+                    val minutes = spentTime % 60
                     Text(
-                        text = "${spentTime}H",
+                        text = if (hours > 0) "${hours}h ${minutes}m" else "${minutes}m",
                         color = MagicMaterialColor.primary,
                         style = MagicMaterialTypography.titleMedium
                     )

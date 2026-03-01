@@ -37,7 +37,14 @@ class QuestsViewModel(private val questRepository: QuestRepository) : ViewModel(
     }
 
     fun addSubQuest(questId: Int, subName: String, subPlannedTime: Int) {
-        val newSubQuest = SubQuest(name = subName, isDone = false, plannedTime = subPlannedTime)
+        val normalizedName = subName.trim()
+        if (normalizedName.isBlank() || subPlannedTime <= 0) return
+
+        val newSubQuest = SubQuest(
+            name = normalizedName,
+            isDone = false,
+            plannedTime = subPlannedTime
+        )
         viewModelScope.launch {
             questRepository.addSubQuest(questId, newSubQuest)
         }
@@ -68,7 +75,5 @@ class QuestsViewModel(private val questRepository: QuestRepository) : ViewModel(
 data class QuestUiState(
     val quests: List<QuestModel>,
     val isLoading: Boolean,
-    val isSelectionMode: Boolean = false,
-    val selectedIds: Set<Int> = emptySet(),
     val errorMessage: String?
 )
