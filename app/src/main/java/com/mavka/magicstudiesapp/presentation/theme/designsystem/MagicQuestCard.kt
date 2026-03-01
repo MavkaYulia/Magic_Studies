@@ -34,6 +34,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -148,11 +149,12 @@ fun MagicQuestCard(
 
                     val total = subQuestStatus.second.coerceAtLeast(1)
                     val remaining = subQuestStatus.first.coerceIn(0, total)
-                    val completed = total - remaining
+                    val completed = (total - remaining).coerceAtLeast(0)
+                    val progress = if (total == 0) 0f else completed.toFloat() / total.toFloat()
 
                     MagicProgressBar(
                         modifier = Modifier.padding(end = dimensionResource(R.dimen.padding_small)),
-                        progress = completed.toFloat() / total.toFloat()
+                        progress = progress
                     )
                 }
 
@@ -195,13 +197,15 @@ fun MagicQuestCard(
 
                     if (subQuests.isNotEmpty()) {
                         subQuests.forEach { subQuest ->
-                            MagicSubQuestCard(
-                                subQuest = subQuest,
-                                onDelete = { onDeleteSubQuest(subQuest.id) },
-                                isComplete = {
-                                    isCompleteSubQuest(it)
-                                }
-                            )
+                            key(subQuest.id) {
+                                MagicSubQuestCard(
+                                    subQuest = subQuest,
+                                    onDelete = { onDeleteSubQuest(subQuest.id) },
+                                    isComplete = {
+                                        isCompleteSubQuest(it)
+                                    }
+                                )
+                            }
                         }
 
                         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_small)))
