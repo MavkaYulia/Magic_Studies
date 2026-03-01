@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -12,7 +14,20 @@ interface QuestDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addQuest(quest: QuestEntity)
 
-    @Query("SELECT * FROM quests ORDER BY orderNumber ASC")
-    fun getAllQuests(): Flow<List<QuestWithSubQuests>>
+    @Transaction
+    @Query("SELECT * FROM quests")
+    fun getAllQuestsWithSubQuests(): Flow<List<QuestWithSubQuests>>
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun addSubQuest(subQuest: SubQuestEntity)
+
+    @Query("DELETE FROM sub_quests WHERE id = :subQuestId")
+    suspend fun deleteSubQuest(subQuestId: Int)
+
+    @Update
+    suspend fun updateSubQuest(subQuest: SubQuestEntity)
+
+    @Query("DELETE FROM quests WHERE id = :questId")
+    suspend fun deleteQuest(questId: Int)
 
 }

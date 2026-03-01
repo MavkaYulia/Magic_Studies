@@ -28,12 +28,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.domain.models.SubQuest
-import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddButton
-import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicDialog
+import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddButtonExpanded
+import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddDialog
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicQuestCard
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicText
+import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTimePicker
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTitle
-import com.mavka.magicstudiesapp.presentation.theme.ui.Magic
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialColor
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -42,81 +43,137 @@ fun QuestsScreen(
     viewModel: QuestsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val countSubQuest = uiState.quests.sumOf { quest ->
-        quest.subQuests.count { !it.isDone }
-    }
-    val countQuest = uiState.quests.size
     QuestsScreenContent(
         uiState = uiState,
-        onAddQuest = { title, icon, order, subQuests ->
+        onAddQuest = { title, icon, subQuests ->
             viewModel.addQuest(
                 title = title,
                 icon = icon,
-                order = order,
                 subQuests = subQuests
             )
         },
-        countSubQuest = countSubQuest,
-        countQuest = countQuest
+        onAddSubQuest = { questId, subName, plannedTime ->
+            viewModel.addSubQuest(
+                questId = questId,
+                subName = subName,
+                subPlannedTime = plannedTime
+            )
+        },
+        updateSubQuest = { questId, subQuest ->
+            viewModel.updateSubQuest(questId, subQuest)
+        },
+        onDeleteSubQuest = { subQuest ->
+            viewModel.deleteSubQuest(subQuest)
+        },
+        onDeleteQuest = { questId ->
+            viewModel.deleteQuest(questId)
+        }
     )
 }
 
 @Composable
 fun QuestsScreenContent(
     uiState: QuestUiState,
-    onAddQuest: (title: String, icon: ImageVector, order: Int, subQuests: List<SubQuest>) -> Unit,
-    countSubQuest: Int,
-    countQuest: Int
+    onAddQuest: (
+        title: String,
+        icon: ImageVector,
+        subQuests: List<SubQuest>
+    ) -> Unit,
+    onAddSubQuest: (
+        questId: Int,
+        subName: String,
+        plannedTime: Int
+    ) -> Unit,
+    updateSubQuest: (questId: Int, subquest: SubQuest) -> Unit,
+    onDeleteSubQuest: (subQuestId: Int) -> Unit,
+    onDeleteQuest: (Int) -> Unit
 ) {
     var showMagicDialog by remember { mutableStateOf(false) }
+    var showTimePicker by remember { mutableStateOf(false) }
+
+    var pendingQuestId by remember { mutableStateOf<Int?>(null) }
+    var subQuestName by remember { mutableStateOf("") }
+
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Magic.colors.Parchment)
-            .padding(dimensionResource(R.dimen.standard_padding))
+            .background(MagicMaterialColor.background)
+            .padding(dimensionResource(R.dimen.padding_medium))
     ) {
 
         MagicTitle(stringResource(R.string.tab_title))
 
         MagicText(
-            stringResource(
+            text = stringResource(
                 id = R.string.subtitle_quests,
-                countQuest,
-                countSubQuest
+                uiState.quests.size,
+                uiState.quests.sumOf { quest ->
+                    quest.subQuests.count { !it.isDone }
+                }
             )
         )
 
-        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.large_padding)))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_large)))
 
-        MagicAddButton("New Subject", { showMagicDialog = true })
+        MagicAddButtonExpanded(stringResource(R.string.new_quest), { showMagicDialog = true })
 
         if (showMagicDialog) {
-            MagicDialog(
-                onDismiss = {
-                    showMagicDialog = false
-                },
+            MagicAddDialog(
+                onDismiss = { showMagicDialog = false },
                 onCreate = { subjectName ->
                     onAddQuest(
                         subjectName,
                         Icons.Default.AddReaction,
-                        5, //todo() add to the end
                         listOf()
                     )
-
                     showMagicDialog = false
                 }
             )
         }
 
-        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.large_padding)))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_large)))
 
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding))
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
         ) {
             items(uiState.quests) { quest ->
-                MagicQuestCard(quest)
+
+                MagicQuestCard(
+                    title = quest.title,
+                    subQuestStatus = Pair(
+                        quest.subQuests.count { it.isDone },
+                        quest.subQuests.size
+                    ),
+                    icon = quest.icon,
+                    spentTime = quest.subQuests.filter { it.isDone }.sumOf { it.plannedTime },
+                    subQuests = quest.subQuests,
+                    subQuestName = subQuestName,
+                    onChangeSubQuestName = { subQuestName = it },
+                    isCompleteSubQuest = { updateSubQuest(quest.id, it) },
+                    onDeleteSubQuest = { onDeleteSubQuest(it) },
+                    onAddSubQuest = {
+                        pendingQuestId = quest.id
+                        showTimePicker = true
+                    },
+                    onDeleteQuest = { onDeleteQuest(quest.id) }
+                )
             }
+        }
+
+        if (showTimePicker) {
+            MagicTimePicker(
+                onConfirmClick = { time ->
+                    if (time != 0) {
+                        pendingQuestId?.let { onAddSubQuest(it, subQuestName, time) }
+                        showTimePicker = false
+                        subQuestName = ""
+                    }
+                },
+                onDismissClick = {
+                    showTimePicker = false
+                }
+            )
         }
     }
 }
@@ -129,16 +186,14 @@ private fun QuestScreenPreview() {
         QuestModel(
             title = "Quest1",
             icon = Icons.Default.Science,
-            order = 1,
             subQuests = listOf(
                 SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2),
-                SubQuest(name = "SubQuest2", isDone = true, plannedTime = 2)
+                SubQuest(name = "SubQuest2", isDone = false, plannedTime = 6)
             )
         ),
         QuestModel(
             title = "Quest2",
             icon = Icons.Default.Shield,
-            order = 2,
             subQuests = listOf(
                 SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2)
             )
@@ -146,16 +201,17 @@ private fun QuestScreenPreview() {
         QuestModel(
             title = "Quest3",
             icon = Icons.Default.Forest,
-            order = 3,
             subQuests = emptyList()
         )
     )
     MagicStudiesAppTheme {
         QuestsScreenContent(
             uiState = QuestUiState(quests = mockQuests, isLoading = false, errorMessage = null),
-            onAddQuest = { _, _, _, _ -> },
-            countSubQuest = mockQuests.sumOf { it.subQuests.count { sub -> !sub.isDone } },
-            countQuest = mockQuests.size
+            onAddQuest = { _, _, _ -> },
+            { _, _, _ -> },
+            { _, _ -> },
+            {},
+            {}
         )
     }
 }

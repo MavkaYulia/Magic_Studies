@@ -11,8 +11,7 @@ data class QuestEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val title: String,
-    val icon: Int,
-    val orderNumber: Int
+    val icon: Int
 )
 
 @Entity(

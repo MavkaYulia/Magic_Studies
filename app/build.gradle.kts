@@ -51,9 +51,11 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.materialIcons)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.lottie.compose)
 
     implementation(libs.room)
     implementation(libs.room.runtime)
+    implementation(libs.androidx.compose.foundation.layout)
     ksp(libs.room.compiler)
 
     implementation(libs.koin.core)

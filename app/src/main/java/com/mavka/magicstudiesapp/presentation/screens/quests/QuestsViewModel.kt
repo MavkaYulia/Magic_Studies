@@ -29,10 +29,44 @@ class QuestsViewModel(private val questRepository: QuestRepository) : ViewModel(
         }
     }
 
-    fun addQuest(title: String, icon: ImageVector, order: Int, subQuests: List<SubQuest>) {
-        val newQuest = QuestModel(title = title, icon = icon, order = order, subQuests = subQuests)
+    fun addQuest(title: String, icon: ImageVector, subQuests: List<SubQuest>) {
+        val newQuest = QuestModel(title = title, icon = icon, subQuests = subQuests)
         viewModelScope.launch {
             questRepository.addQuest(newQuest)
+        }
+    }
+
+    fun addSubQuest(questId: Int, subName: String, subPlannedTime: Int) {
+        val normalizedName = subName.trim()
+        if (normalizedName.isBlank() || subPlannedTime <= 0) return
+
+        val newSubQuest = SubQuest(
+            name = normalizedName,
+            isDone = false,
+            plannedTime = subPlannedTime
+        )
+        viewModelScope.launch {
+            questRepository.addSubQuest(questId, newSubQuest)
+        }
+    }
+
+    fun deleteSubQuest(subQuestId: Int) {
+
+        viewModelScope.launch {
+            questRepository.deleteSubQuest(subQuestId)
+        }
+    }
+
+    fun updateSubQuest(questId: Int, subQuest: SubQuest) {
+
+        viewModelScope.launch {
+            questRepository.updateQuest(questId, subQuest)
+        }
+    }
+
+    fun deleteQuest(questId: Int) {
+        viewModelScope.launch {
+            questRepository.deleteQuest(questId)
         }
     }
 

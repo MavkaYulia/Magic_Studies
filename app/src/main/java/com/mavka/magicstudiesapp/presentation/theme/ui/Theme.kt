@@ -37,8 +37,9 @@ fun MagicStudiesAppTheme(
       }*/
 
     MaterialTheme(
-        colorScheme = MagicColorScheme,
+        colorScheme = MagicMaterialColor,
         typography = MagicMaterialTypography,
+        shapes = MagicMaterialShapes,
         content = content
     )
 }

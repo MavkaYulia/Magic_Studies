@@ -6,7 +6,6 @@ data class QuestModel(
     val id: Int = 0,
     val title: String,
     val icon: ImageVector,
-    val order: Int,
     val subQuests: List<SubQuest>
 )
 
