@@ -148,9 +148,8 @@ fun MagicQuestCard(
                     Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_tiny)))
 
                     val total = subQuestStatus.second.coerceAtLeast(1)
-                    val remaining = subQuestStatus.first.coerceIn(0, total)
-                    val completed = (total - remaining).coerceAtLeast(0)
-                    val progress = if (total == 0) 0f else completed.toFloat() / total.toFloat()
+                    val completed = subQuestStatus.first.coerceIn(0, total)
+                    val progress = completed.toFloat() / total.toFloat()
 
                     MagicProgressBar(
                         modifier = Modifier.padding(end = dimensionResource(R.dimen.padding_small)),
