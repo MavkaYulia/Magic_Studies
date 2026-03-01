@@ -22,5 +22,7 @@ interface QuestDao {
 
     @Query("DELETE FROM sub_quests WHERE id = :subQuestId")
     suspend fun deleteSubQuest(subQuestId: Int)
+    @Query("DELETE FROM quests WHERE id = :questId")
+    suspend fun deleteQuest(questId: Int)
 
 }

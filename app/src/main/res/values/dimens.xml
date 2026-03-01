@@ -4,7 +4,7 @@
     <!--    icon size    -->
     <dimen name="icon_size_small">18dp</dimen>
     <dimen name="icon_size_medium">24dp</dimen>
-    <dimen name="icon_size_large">40dp</dimen>
+    <dimen name="icon_size_large">48dp</dimen>
 
     <!--    padding    -->
     <dimen name="padding_tiny">4dp</dimen>

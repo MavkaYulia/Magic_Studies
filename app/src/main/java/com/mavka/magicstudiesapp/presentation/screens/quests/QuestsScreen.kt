@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.Shield
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -62,6 +61,9 @@ fun QuestsScreen(
         },
         onDeleteSubQuest = {
             viewModel.deleteSubQuest(it)
+        },
+        onDeleteQuest = {
+            viewModel.deleteQuest(it)
         }
     )
 }
@@ -79,13 +81,15 @@ fun QuestsScreenContent(
         subName: String,
         plannedTime: Int
     ) -> Unit,
-    onDeleteSubQuest: (subQuestId: Int) -> Unit
+    onDeleteSubQuest: (subQuestId: Int) -> Unit,
+    onDeleteQuest: (Int) -> Unit
 ) {
     var showMagicDialog by remember { mutableStateOf(false) }
     var showTimePicker by remember { mutableStateOf(false) }
 
     var pendingQuestId by remember { mutableStateOf<Int?>(null) }
-    val pendingSubQuestNames = remember { mutableStateMapOf<Int, String>() }
+    var subQuestName by remember { mutableStateOf("") }
+
 
     Column(
         modifier = Modifier
@@ -130,7 +134,6 @@ fun QuestsScreenContent(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
         ) {
             items(uiState.quests) { quest ->
-                val currentSubName = pendingSubQuestNames[quest.id] ?: ""
 
                 MagicQuestCard(
                     title = quest.title,
@@ -138,19 +141,17 @@ fun QuestsScreenContent(
                         quest.subQuests.count { it.isDone },
                         quest.subQuests.size
                     ),
-                    progress = 0.5f,
                     icon = quest.icon,
                     spentTime = quest.subQuests.filter { it.isDone }.sumOf { it.plannedTime },
                     subQuests = quest.subQuests,
+                    subQuestName = subQuestName,
+                    onChangeSubQuestName = { subQuestName = it },
                     onDeleteSubQuest = { onDeleteSubQuest(it) },
-                    subQuestName = currentSubName,
-                    onSubQuestNameChange = { new ->
-                        pendingSubQuestNames[quest.id] = new
-                    },
                     onAddSubQuest = {
                         pendingQuestId = quest.id
                         showTimePicker = true
-                    }
+                    },
+                    onDeleteQuest = { onDeleteQuest(quest.id) }
                 )
             }
         }
@@ -158,21 +159,14 @@ fun QuestsScreenContent(
         if (showTimePicker) {
             MagicTimePicker(
                 onConfirmClick = { time ->
-                    val id = pendingQuestId
-                    if (id != null) {
-                        val name = pendingSubQuestNames[id].orEmpty()
-                        if (name.isNotBlank()) {
-                            onAddSubQuest(id, name, time)
-                            pendingSubQuestNames.remove(id)
-                        }
+                    if (time != 0) {
+                        pendingQuestId?.let { onAddSubQuest(it, subQuestName, time) }
+                        showTimePicker = false
+                        subQuestName = ""
                     }
-                    showTimePicker = false
-                    pendingQuestId = null
                 },
                 onDismissClick = {
-                    pendingQuestId?.let { pendingSubQuestNames.remove(it) }
                     showTimePicker = false
-                    pendingQuestId = null
                 }
             )
         }
@@ -208,7 +202,7 @@ private fun QuestScreenPreview() {
     MagicStudiesAppTheme {
         QuestsScreenContent(
             uiState = QuestUiState(quests = mockQuests, isLoading = false, errorMessage = null),
-            onAddQuest = { _, _, _ -> }, { _, _, _ -> }, {}
+            onAddQuest = { _, _, _ -> }, { _, _, _ -> }, {}, {}
         )
     }
 }

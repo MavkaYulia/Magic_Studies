@@ -50,10 +50,18 @@ class QuestsViewModel(private val questRepository: QuestRepository) : ViewModel(
         }
     }
 
+    fun deleteQuest(questId: Int) {
+        viewModelScope.launch {
+            questRepository.deleteQuest(questId)
+        }
+    }
+
 }
 
 data class QuestUiState(
     val quests: List<QuestModel>,
     val isLoading: Boolean,
+    val isSelectionMode: Boolean = false,
+    val selectedIds: Set<Int> = emptySet(),
     val errorMessage: String?
 )

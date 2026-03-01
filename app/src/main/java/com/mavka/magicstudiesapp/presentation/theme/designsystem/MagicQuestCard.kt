@@ -5,10 +5,13 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,12 +22,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AcUnit
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -48,23 +54,31 @@ import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialTypography
 @Composable
 fun MagicQuestCard(
     title: String,
-    subQuestStatus: Pair<Int, Int>,
-    progress: Float,
     icon: ImageVector,
+    subQuestStatus: Pair<Int, Int>,
     spentTime: Int,
     subQuests: List<SubQuest>,
-    onDeleteSubQuest: (subQuestId: Int) -> Unit,
     subQuestName: String,
-    onSubQuestNameChange: (String) -> Unit,
-    onAddSubQuest: (String) -> Unit,
+    onChangeSubQuestName: (String) -> Unit,
+    onDeleteSubQuest: (subQuestId: Int) -> Unit,
+    onAddSubQuest: () -> Unit,
+    onDeleteQuest: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var isExpanded by remember { mutableStateOf(true) }
+    var isExpanded by remember { mutableStateOf(false) }
+    var showDeleteIcon by remember { mutableStateOf(false) }
 
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { isExpanded = !isExpanded },
+            .combinedClickable(
+                onClick = {
+                    if (showDeleteIcon) showDeleteIcon = false else isExpanded = !isExpanded
+                },
+                onLongClick = {
+                    showDeleteIcon = true
+                }
+            ),
         shape = MagicMaterialShapes.large,
         colors = CardDefaults.cardColors(containerColor = MagicMaterialColor.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(R.dimen.elevation))
@@ -79,7 +93,38 @@ fun MagicQuestCard(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                MagicIconBadge(icon = icon)
+
+                Box(contentAlignment = Alignment.Center) {
+                    this@Row.AnimatedVisibility(
+                        visible = !showDeleteIcon,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        MagicIconBadge(icon = icon)
+                    }
+
+                    this@Row.AnimatedVisibility(
+                        visible = showDeleteIcon,
+                        enter = scaleIn() + fadeIn(),
+                        exit = scaleOut() + fadeOut()
+                    ) {
+                        IconButton(
+                            onClick = {
+                                onDeleteQuest()
+                                showDeleteIcon = false
+                            },
+                            colors = IconButtonDefaults.iconButtonColors(
+                                containerColor = MagicMaterialColor.error.copy(alpha = 0.1f)
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Delete",
+                                tint = MagicMaterialColor.error
+                            )
+                        }
+                    }
+                }
 
                 Spacer(modifier = Modifier.width(dimensionResource(R.dimen.spacing_medium)))
 
@@ -101,7 +146,7 @@ fun MagicQuestCard(
                     Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_tiny)))
                     MagicProgressBar(
                         modifier = Modifier.padding(end = dimensionResource(R.dimen.padding_small)),
-                        progress = progress
+                        progress = 1f //todo()
                     )
                 }
 
@@ -119,7 +164,6 @@ fun MagicQuestCard(
                     )
                 }
             }
-
 
             AnimatedVisibility(
                 visible = isExpanded,
@@ -145,7 +189,8 @@ fun MagicQuestCard(
                         subQuests.forEach { subQuest ->
                             MagicSubQuestCard(
                                 subQuest = subQuest,
-                                onDeleteClick = { onDeleteSubQuest(subQuest.id) }
+                                onDelete = { onDeleteSubQuest(subQuest.id) },
+                                isComplete = {}
                             )
                         }
 
@@ -167,7 +212,7 @@ fun MagicQuestCard(
                         MagicTextField(
                             value = subQuestName,
                             onValueChange = {
-                                onSubQuestNameChange(it)
+                                onChangeSubQuestName(it)
                                 if (it.isNotBlank()) isError = false
                             },
                             hintText = stringResource(R.string.new_subquest),
@@ -186,7 +231,7 @@ fun MagicQuestCard(
                         MagicAddButtonIcon(
                             onClick = {
                                 if (subQuestName.isNotBlank()) {
-                                    onAddSubQuest(subQuestName)
+                                    onAddSubQuest()
                                     isError = false
                                 } else {
                                     isError = true
@@ -224,14 +269,14 @@ private fun MagicQuestCardPreview() {
         subQuestStatus = Pair(quest.subQuests.count {
             !it.isDone
         }, quest.subQuests.size),
-        progress = 0.5f,
         icon = quest.icon,
         spentTime = spentTime,
         subQuests = quest.subQuests,
+        subQuestName = "",
+        onChangeSubQuestName = {},
         onDeleteSubQuest = {},
-        subQuestName = "text",
-        onSubQuestNameChange = {},
         onAddSubQuest = {},
+        onDeleteQuest = {},
         modifier = Modifier
     )
 }
