@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="tab_title">The Quests</string>
+    <string name="tab_title">Thy Quests</string>
+    <string name="tab_quests">QUESTS</string>
+    <string name="tab_tome">TOME</string>
     <string name="create_new_quest">CREATE NEW QUEST</string>
     <string name="new_quest">NEW SUBJECT</string>
     <string name="dialog_subtitle_add_subject">Subject Name</string>
     <string name="dialog_hint_add_subject">e.g. Ancient Astronomy</string>
     <string name="new_subquest">New subQuest</string>
-    <string name="subtitle_quests">%1$d subjects • %2$d tasks remaining</string>
+    <string name="subtitle_quests">%1$d subjects · %2$d tasks remaining</string>
+
+    <string name="urgent">URGENT</string>
+    <string name="tasks_count">%1$d/%2$d TASKS</string>
+    <string name="remaining_count">%1$d REMAINING</string>
+    <string name="hours_format">%1$.1fH</string>
 
 
 </resources>
