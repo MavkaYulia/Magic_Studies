@@ -15,6 +15,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mavka.magicstudiesapp.R
@@ -26,26 +27,29 @@ import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialTypography
 fun MagicAddButtonExpanded(
     label: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    containerColor: Color = MagicMaterialColor.primary,
+    contentColor: Color = MagicMaterialColor.onPrimary
 ) {
     Button(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
         shape = MagicMaterialShapes.medium,
         colors = ButtonDefaults.buttonColors(
-            containerColor = MagicMaterialColor.primary
+            containerColor = containerColor,
+            contentColor = contentColor
         )
     ) {
         Icon(
             imageVector = Icons.Default.Add,
             contentDescription = "Add quest",
             modifier = Modifier.size(dimensionResource(R.dimen.icon_size_medium)),
-            tint = MagicMaterialColor.onPrimary
+            tint = contentColor
         )
         Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
         Text(
             text = label,
-            color = MagicMaterialColor.onPrimary,
+            color = contentColor,
             style = MagicMaterialTypography.labelLarge
         )
     }

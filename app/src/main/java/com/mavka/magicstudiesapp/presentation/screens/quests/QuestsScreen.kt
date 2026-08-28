@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.domain.models.SubQuest
@@ -32,9 +33,10 @@ import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddButtonE
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddDialog
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicQuestCard
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicText
-import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTimePicker
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTitle
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicColor
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialColor
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialTypography
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -51,22 +53,6 @@ fun QuestsScreen(
                 icon = icon,
                 subQuests = subQuests
             )
-        },
-        onAddSubQuest = { questId, subName, plannedTime ->
-            viewModel.addSubQuest(
-                questId = questId,
-                subName = subName,
-                subPlannedTime = plannedTime
-            )
-        },
-        updateSubQuest = { questId, subQuest ->
-            viewModel.updateSubQuest(questId, subQuest)
-        },
-        onDeleteSubQuest = { subQuest ->
-            viewModel.deleteSubQuest(subQuest)
-        },
-        onDeleteQuest = { questId ->
-            viewModel.deleteQuest(questId)
         }
     )
 }
@@ -79,21 +65,8 @@ fun QuestsScreenContent(
         icon: ImageVector,
         subQuests: List<SubQuest>
     ) -> Unit,
-    onAddSubQuest: (
-        questId: Int,
-        subName: String,
-        plannedTime: Int
-    ) -> Unit,
-    updateSubQuest: (questId: Int, subquest: SubQuest) -> Unit,
-    onDeleteSubQuest: (subQuestId: Int) -> Unit,
-    onDeleteQuest: (Int) -> Unit
 ) {
     var showMagicDialog by remember { mutableStateOf(false) }
-    var showTimePicker by remember { mutableStateOf(false) }
-
-    var pendingQuestId by remember { mutableStateOf<Int?>(null) }
-    var subQuestName by remember { mutableStateOf("") }
-
 
     Column(
         modifier = Modifier
@@ -104,6 +77,8 @@ fun QuestsScreenContent(
 
         MagicTitle(stringResource(R.string.tab_title))
 
+        Spacer(modifier = Modifier.height(4.dp))
+
         MagicText(
             text = stringResource(
                 id = R.string.subtitle_quests,
@@ -111,12 +86,17 @@ fun QuestsScreenContent(
                 uiState.quests.sumOf { quest ->
                     quest.subQuests.count { !it.isDone }
                 }
-            )
+            ),
+            style = MagicMaterialTypography.bodyMedium.copy(color = MagicColor.IronInk.copy(alpha = 0.6f))
         )
 
-        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_large)))
+        Spacer(modifier = Modifier.height(32.dp))
 
-        MagicAddButtonExpanded(stringResource(R.string.new_quest), { showMagicDialog = true })
+        MagicAddButtonExpanded(
+            label = stringResource(R.string.new_quest),
+            onClick = { showMagicDialog = true },
+            containerColor = MagicColor.IronInk
+        )
 
         if (showMagicDialog) {
             MagicAddDialog(
@@ -140,40 +120,10 @@ fun QuestsScreenContent(
             items(uiState.quests) { quest ->
 
                 MagicQuestCard(
-                    title = quest.title,
-                    subQuestStatus = Pair(
-                        quest.subQuests.count { it.isDone },
-                        quest.subQuests.size
-                    ),
-                    icon = quest.icon,
-                    spentTime = quest.subQuests.filter { it.isDone }.sumOf { it.plannedTime },
-                    subQuests = quest.subQuests,
-                    subQuestName = subQuestName,
-                    onChangeSubQuestName = { subQuestName = it },
-                    isCompleteSubQuest = { updateSubQuest(quest.id, it) },
-                    onDeleteSubQuest = { onDeleteSubQuest(it) },
-                    onAddSubQuest = {
-                        pendingQuestId = quest.id
-                        showTimePicker = true
-                    },
-                    onDeleteQuest = { onDeleteQuest(quest.id) }
+                    questModel = quest,
+                    onDetailsClicked = {}
                 )
             }
-        }
-
-        if (showTimePicker) {
-            MagicTimePicker(
-                onConfirmClick = { time ->
-                    if (time != 0) {
-                        pendingQuestId?.let { onAddSubQuest(it, subQuestName, time) }
-                        showTimePicker = false
-                        subQuestName = ""
-                    }
-                },
-                onDismissClick = {
-                    showTimePicker = false
-                }
-            )
         }
     }
 }
@@ -208,10 +158,7 @@ private fun QuestScreenPreview() {
         QuestsScreenContent(
             uiState = QuestUiState(quests = mockQuests, isLoading = false, errorMessage = null),
             onAddQuest = { _, _, _ -> },
-            { _, _, _ -> },
-            { _, _ -> },
-            {},
-            {}
+
         )
     }
 }

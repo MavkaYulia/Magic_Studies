@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import com.mavka.magicstudiesapp.presentation.screens.atlas.AtlasScreen
 import com.mavka.magicstudiesapp.presentation.screens.hall.CentralHallScreen
 import com.mavka.magicstudiesapp.presentation.screens.music.MusicScreen
-import com.mavka.magicstudiesapp.presentation.screens.quests.QuestsScreen
+import com.mavka.magicstudiesapp.presentation.screens.quests.QuestContainer
 import com.mavka.magicstudiesapp.presentation.screens.timer.TimerScreen
 
 @Composable
@@ -30,7 +30,7 @@ fun AppNavigation(
         }
 
         composable(Screen.Quests.route) {
-            QuestsScreen()
+            QuestContainer()
         }
 
         composable(Screen.Timer.route) {

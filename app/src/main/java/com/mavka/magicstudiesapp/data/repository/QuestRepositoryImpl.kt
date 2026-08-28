@@ -7,9 +7,7 @@ import com.mavka.magicstudiesapp.data.storage.QuestDao
 import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.domain.models.SubQuest
 import com.mavka.magicstudiesapp.domain.repository.QuestRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class QuestRepositoryImpl(
@@ -23,7 +21,7 @@ class QuestRepositoryImpl(
                 listFromDb.map { quest ->
                     quest.toDomain(mapper::getVectorById)
                 }
-            }.flowOn(Dispatchers.IO)
+            }
     }
 
     override suspend fun addQuest(quest: QuestModel) {
