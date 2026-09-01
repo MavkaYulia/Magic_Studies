@@ -1,5 +1,6 @@
 package com.mavka.magicstudiesapp.presentation.theme.ui
 
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 
@@ -17,7 +18,7 @@ object MagicColor {
     val UrgentRed = Color(0xFF7B1F16)
 }
 
-internal val MagicMaterialColor = lightColorScheme(
+internal val MagicMaterialLightColorScheme = lightColorScheme(
     primary = MagicColor.ForestGreen,
     onPrimary = MagicColor.Parchment,
 
@@ -34,6 +35,28 @@ internal val MagicMaterialColor = lightColorScheme(
 
     surface = MagicColor.OldPaper,
     onSurface = MagicColor.IronInk,
+
+    error = MagicColor.UrgentRed,
+    onError = Color.White
+)
+
+internal val MagicMaterialDarkColorScheme = darkColorScheme(
+    primary = MagicColor.WaxSealRed,
+    onPrimary = MagicColor.CandleLight,
+
+    secondary = MagicColor.ForestGreen,
+    onSecondary = MagicColor.Parchment,
+
+    background = MagicColor.DeepNight,
+    onBackground = MagicColor.Parchment,
+
+    tertiary = MagicColor.FadedGold,
+
+    outline = MagicColor.FadedGold,
+    outlineVariant = MagicColor.IronInk,
+
+    surface = Color(0xFF2C261D), // Darker version of OldPaper
+    onSurface = MagicColor.Parchment,
 
     error = MagicColor.UrgentRed,
     onError = Color.White

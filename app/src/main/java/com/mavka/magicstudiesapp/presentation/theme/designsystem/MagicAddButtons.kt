@@ -12,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,22 +20,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mavka.magicstudiesapp.R
-import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialColor
-import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialShapes
-import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialTypography
 
 @Composable
 fun MagicAddButtonExpanded(
     label: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    containerColor: Color = MagicMaterialColor.primary,
-    contentColor: Color = MagicMaterialColor.onPrimary
+    containerColor: Color = MaterialTheme.colorScheme.primary,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimary
 ) {
     Button(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        shape = MagicMaterialShapes.medium,
+        shape = MaterialTheme.shapes.medium,
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
             contentColor = contentColor
@@ -50,7 +48,7 @@ fun MagicAddButtonExpanded(
         Text(
             text = label,
             color = contentColor,
-            style = MagicMaterialTypography.labelLarge
+            style = MaterialTheme.typography.labelLarge
         )
     }
 }
@@ -64,15 +62,15 @@ fun MagicAddButtonIcon(
         onClick = onClick,
         modifier = modifier
             .background(
-                color = MagicMaterialColor.primary,
-                shape = MagicMaterialShapes.medium
+                color = MaterialTheme.colorScheme.primary,
+                shape = MaterialTheme.shapes.medium
             )
     ) {
         Icon(
             imageVector = Icons.Default.Add,
             contentDescription = "Add quest",
             modifier = Modifier.size(dimensionResource(R.dimen.icon_size_medium)),
-            tint = MagicMaterialColor.onPrimary
+            tint = MaterialTheme.colorScheme.onPrimary
         )
     }
 }

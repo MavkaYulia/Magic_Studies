@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.AddReaction
 import androidx.compose.material.icons.filled.Forest
 import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -34,9 +35,6 @@ import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddDialog
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicQuestCard
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicText
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTitle
-import com.mavka.magicstudiesapp.presentation.theme.ui.MagicColor
-import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialColor
-import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialTypography
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -71,7 +69,7 @@ fun QuestsScreenContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MagicMaterialColor.background)
+            .background(MaterialTheme.colorScheme.background)
             .padding(dimensionResource(R.dimen.padding_medium))
     ) {
 
@@ -87,7 +85,7 @@ fun QuestsScreenContent(
                     quest.subQuests.count { !it.isDone }
                 }
             ),
-            style = MagicMaterialTypography.bodyMedium.copy(color = MagicColor.IronInk.copy(alpha = 0.6f))
+            style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f))
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -95,7 +93,7 @@ fun QuestsScreenContent(
         MagicAddButtonExpanded(
             label = stringResource(R.string.new_quest),
             onClick = { showMagicDialog = true },
-            containerColor = MagicColor.IronInk
+            containerColor = MaterialTheme.colorScheme.tertiary
         )
 
         if (showMagicDialog) {
