@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 data class NavigationItem(
     val title: String,
     val icon: ImageVector,
-    val route: String,
+    val route: Screen,
 )
 
 val navigationItems = listOf(
@@ -19,26 +19,26 @@ val navigationItems = listOf(
     NavigationItem(
         title = "Atlas",
         icon = Icons.Default.LocationOn,
-        route = Screen.Atlas.route
+        route = Screen.Atlas
     ),
     NavigationItem(
         title = "Quests",
         icon = Icons.Default.MailOutline,
-        route = Screen.Quests.route
+        route = Screen.Quests
     ),
     NavigationItem(
         title = "CentralHall",
         icon = Icons.Default.Home,
-        route = Screen.CentralHall.route
+        route = Screen.CentralHall
     ),
     NavigationItem(
         title = "Timer",
         icon = Icons.Default.Notifications,
-        route = Screen.Timer.route
+        route = Screen.Timer
     ),
     NavigationItem(
         title = "Music",
         icon = Icons.Default.Star,
-        route = Screen.Music.route
+        route = Screen.Music
     ),
 )

@@ -18,5 +18,12 @@ data class SubQuest(
     val id: Int = 0,
     val name: String,
     val isDone: Boolean,
-    val plannedTime: Int
+    val plannedTime: Int,
+    val priority: Priority = Priority.NORMAL
 )
+
+enum class Priority{
+    URGENT,
+    NORMAL,
+    LOW
+}
