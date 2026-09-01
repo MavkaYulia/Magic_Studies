@@ -1,9 +1,20 @@
 package com.mavka.magicstudiesapp.presentation.navigation
 
-sealed class Screen(val route: String) {
-    object CentralHall: Screen("central_hall_screen")
-    object Atlas: Screen("atlas_screen")
-    object Quests: Screen("quests_screen")
-    object Music: Screen("music_screen")
-    object Timer: Screen("timer_screen")
+import kotlinx.serialization.Serializable
+
+sealed interface Screen {
+    @Serializable
+    data object CentralHall : Screen
+
+    @Serializable
+    data object Atlas : Screen
+
+    @Serializable
+    data object Quests : Screen
+
+    @Serializable
+    data object Music : Screen
+
+    @Serializable
+    data object Timer : Screen
 }
