@@ -16,6 +16,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,9 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.mavka.magicstudiesapp.R
-import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialColor
-import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialShapes
-import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialTypography
 
 @Composable
 fun MagicAddDialog(
@@ -43,8 +41,8 @@ fun MagicAddDialog(
 
     Dialog(onDismissRequest = onDismiss) {
         Card(
-            shape = MagicMaterialShapes.extraLarge,
-            colors = CardDefaults.cardColors(containerColor = MagicMaterialColor.surface),
+            shape = MaterialTheme.shapes.extraLarge,
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium))
@@ -61,8 +59,8 @@ fun MagicAddDialog(
                 ) {
                     Text(
                         text = stringResource(R.string.new_quest),
-                        color = MagicMaterialColor.primary,
-                        style = MagicMaterialTypography.titleLarge
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.titleLarge
                     )
                     IconButton(
                         onClick = onDismiss,
@@ -71,7 +69,7 @@ fun MagicAddDialog(
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Close",
-                            tint = MagicMaterialColor.primary.copy(alpha = 0.7f)
+                            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
                         )
                     }
                 }
@@ -80,8 +78,8 @@ fun MagicAddDialog(
 
                 Text(
                     text = stringResource(R.string.dialog_subtitle_add_subject),
-                    color = MagicMaterialColor.primary,
-                    style = MagicMaterialTypography.titleMedium
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium
                 )
 
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_small)))
@@ -97,13 +95,13 @@ fun MagicAddDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
-                    shape = MagicMaterialShapes.large,
-                    colors = ButtonDefaults.buttonColors(containerColor = MagicMaterialColor.primary)
+                    shape = MaterialTheme.shapes.large,
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
                         text = stringResource(R.string.create_new_quest),
-                        color = MagicMaterialColor.background,
-                        style = MagicMaterialTypography.titleMedium
+                        color = MaterialTheme.colorScheme.background,
+                        style = MaterialTheme.typography.titleMedium
                     )
                 }
             }

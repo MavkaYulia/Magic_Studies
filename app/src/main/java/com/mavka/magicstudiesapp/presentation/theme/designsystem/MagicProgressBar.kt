@@ -6,14 +6,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mavka.magicstudiesapp.R
-import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialColor
-import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialShapes
 
 @Composable
 fun MagicProgressBar(
@@ -26,15 +25,15 @@ fun MagicProgressBar(
             .height(dimensionResource(R.dimen.height_small))
             .border(
                 0.3.dp,
-                MagicMaterialColor.outline,
-                MagicMaterialShapes.small
+                MaterialTheme.colorScheme.outline,
+                MaterialTheme.shapes.small
             )
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth(progress.coerceIn(0f, 1f))
                 .fillMaxHeight()
-                .background(MagicMaterialColor.secondary, MagicMaterialShapes.small)
+                .background(MaterialTheme.colorScheme.secondary, MaterialTheme.shapes.small)
         )
     }
 }

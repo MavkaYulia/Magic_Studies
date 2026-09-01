@@ -2,6 +2,7 @@ package com.mavka.magicstudiesapp.presentation.navigation
 
 import kotlinx.serialization.Serializable
 
+@Serializable
 sealed interface Screen {
     @Serializable
     data object CentralHall : Screen

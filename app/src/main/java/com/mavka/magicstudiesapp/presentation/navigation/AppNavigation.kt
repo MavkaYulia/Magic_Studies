@@ -1,6 +1,7 @@
 package com.mavka.magicstudiesapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,11 +13,13 @@ import com.mavka.magicstudiesapp.presentation.screens.timer.TimerScreen
 
 @Composable
 fun AppNavigation(
-    navController: NavHostController
+    navController: NavHostController,
+    modifier: Modifier
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.CentralHall
+        startDestination = Screen.CentralHall,
+        modifier = modifier
     ) {
         composable<Screen.CentralHall> {
             CentralHallScreen()
