@@ -34,9 +34,6 @@ import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.domain.models.SubQuest
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicColor
-import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialColor
-import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialShapes
-import com.mavka.magicstudiesapp.presentation.theme.ui.MagicMaterialTypography
 
 @Composable
 fun MagicQuestCard(
@@ -50,11 +47,11 @@ fun MagicQuestCard(
         modifier = modifier
             .fillMaxWidth()
             .clickable { onDetailsClicked() },
-        shape = MagicMaterialShapes.medium,
+        shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
-            containerColor = MagicMaterialColor.surface
+            containerColor = MaterialTheme.colorScheme.surface
         ),
-        border = androidx.compose.foundation.BorderStroke(1.dp, MagicColor.FadedGold.copy(alpha = 0.5f))
+        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
     ) {
         Row(
             modifier = Modifier
@@ -93,8 +90,8 @@ fun MagicQuestCard(
                 ) {
                     Text(
                         text = questModel.title.uppercase(),
-                        style = MagicMaterialTypography.titleMedium,
-                        color = MagicMaterialColor.onSurface
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
                     if (isUrgent) {
@@ -118,8 +115,8 @@ fun MagicQuestCard(
                             questModel.completedSubQuestsCount,
                             questModel.totalSubQuestsCount
                         ),
-                        style = MagicMaterialTypography.bodySmall,
-                        color = MagicColor.IronInk.copy(alpha = 0.7f)
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
                     )
 
                     Row(
@@ -134,8 +131,8 @@ fun MagicQuestCard(
                         )
                         Text(
                             text = stringResource(R.string.hours_format, 24.5f), // todo() Using hardcoded value for sample
-                            style = MagicMaterialTypography.bodySmall,
-                            color = MagicColor.IronInk.copy(alpha = 0.7f)
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
                         )
                     }
 
@@ -144,8 +141,8 @@ fun MagicQuestCard(
                             R.string.remaining_count,
                             questModel.totalSubQuestsCount - questModel.completedSubQuestsCount
                         ),
-                        style = MagicMaterialTypography.bodySmall,
-                        color = MagicColor.FadedGold
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.outlineVariant
                     )
                 }
             }
@@ -167,15 +164,15 @@ private fun MagicUrgentBadge(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(MagicColor.UrgentRed.copy(alpha = 0.2f))
+            .background(MaterialTheme.colorScheme.error.copy(alpha = 0.2f))
             .padding(horizontal = 10.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         Text(
             text = stringResource(R.string.urgent),
-            style = MagicMaterialTypography.labelSmall.copy(fontWeight = FontWeight.Bold),
-            color = MagicColor.UrgentRed
+            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+            color = MaterialTheme.colorScheme.error
         )
     }
 }
@@ -206,9 +203,9 @@ private fun MagicQuestProgressBar(
 @Composable
 private fun MagicQuestCardPreview() {
     MaterialTheme(
-        colorScheme = MagicMaterialColor,
-        typography = MagicMaterialTypography,
-        shapes = MagicMaterialShapes
+        colorScheme = MaterialTheme.colorScheme,
+        typography = MaterialTheme.typography,
+        shapes = MaterialTheme.shapes
     ) {
         Box(modifier = Modifier.padding(16.dp)) {
             MagicQuestCard(
