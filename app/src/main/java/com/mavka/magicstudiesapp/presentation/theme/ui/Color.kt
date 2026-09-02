@@ -16,6 +16,7 @@ object MagicColor {
     val FadedGold = Color(0xFFC5A059)
 
     val UrgentRed = Color(0xFF7B1F16)
+    val DarkerOldPaper = Color(0xFF2C261D)
 }
 
 internal val MagicMaterialLightColorScheme = lightColorScheme(
@@ -55,7 +56,7 @@ internal val MagicMaterialDarkColorScheme = darkColorScheme(
     outline = MagicColor.FadedGold,
     outlineVariant = MagicColor.IronInk,
 
-    surface = Color(0xFF2C261D), // Darker version of OldPaper
+    surface = MagicColor.DarkerOldPaper,
     onSurface = MagicColor.Parchment,
 
     error = MagicColor.UrgentRed,

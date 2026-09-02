@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.mavka.magicstudiesapp.presentation.screens.quests.stats.StatsScreen
 import kotlinx.coroutines.launch
 
 data class QuestTab(
@@ -24,7 +25,9 @@ data class QuestTab(
 )
 
 @Composable
-fun QuestContainer() {
+fun QuestContainer(
+    onQuestClick: (Int) -> Unit
+) {
     val tabs =
         listOf(QuestTab("Quests", Icons.Default.Book), QuestTab("Stats", Icons.Default.QueryStats))
     val pagerState = rememberPagerState { tabs.size }
@@ -58,7 +61,7 @@ fun QuestContainer() {
             modifier = Modifier.weight(1f)
         ) { page ->
             when (page) {
-                0 -> QuestsScreen()
+                0 -> QuestsScreen(onQuestClick)
                 1 -> StatsScreen()
             }
         }

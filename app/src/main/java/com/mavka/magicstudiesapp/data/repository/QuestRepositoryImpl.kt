@@ -24,6 +24,12 @@ class QuestRepositoryImpl(
             }
     }
 
+    override fun getQuest(questId: Int): Flow<QuestModel> {
+        return questDao.getQuest(questId).map { quest ->
+            quest.toDomain(mapper::getVectorById)
+        }
+    }
+
     override suspend fun addQuest(quest: QuestModel) {
         questDao.addQuest(quest.toEntity(mapper::getIdByVector))
     }
