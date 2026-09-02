@@ -22,7 +22,8 @@ fun SubQuestEntity.toDomain(): SubQuest {
         id = this.id,
         name = this.name,
         isDone = this.isDone,
-        plannedTime = this.plannedTime
+        plannedTime = this.plannedTime,
+        priority = this.priority
     )
 }
 
@@ -32,7 +33,8 @@ fun SubQuest.toEntity(questId: Int): SubQuestEntity {
         questId = questId,
         name = this.name,
         isDone = this.isDone,
-        plannedTime = this.plannedTime
+        plannedTime = this.plannedTime,
+        priority = this.priority
     )
 }
 

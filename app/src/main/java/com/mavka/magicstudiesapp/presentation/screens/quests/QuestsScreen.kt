@@ -142,15 +142,15 @@ private fun QuestScreenPreview() {
             title = "Quest1",
             icon = Icons.Default.Science,
             subQuests = listOf(
-                SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2),
-                SubQuest(name = "SubQuest2", isDone = false, plannedTime = 6)
+                SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2f),
+                SubQuest(name = "SubQuest2", isDone = false, plannedTime = 6f)
             )
         ),
         QuestModel(
             title = "Quest2",
             icon = Icons.Default.Shield,
             subQuests = listOf(
-                SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2)
+                SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2f)
             )
         ),
         QuestModel(

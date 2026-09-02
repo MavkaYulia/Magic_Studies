@@ -1,6 +1,5 @@
 package com.mavka.magicstudiesapp.presentation.theme.designsystem
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
@@ -8,6 +7,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 
 @Composable
 fun MagicTitle(
@@ -38,8 +39,10 @@ fun MagicSubTitle(
 @Preview(showBackground = true)
 @Composable
 private fun MagicTitlePreview() {
-    Column {
-        MagicTitle(title = "Magic Title")
-        MagicSubTitle(subtitle = "Magic SubTitle")
+    MagicStudiesAppTheme {
+        Column {
+            MagicTitle(title = "Magic Title")
+            MagicSubTitle(subtitle = "Magic SubTitle")
+        }
     }
 }

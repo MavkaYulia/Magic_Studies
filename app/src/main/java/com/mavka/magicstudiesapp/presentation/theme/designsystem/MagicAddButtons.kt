@@ -21,6 +21,8 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mavka.magicstudiesapp.R
 
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
+
 @Composable
 fun MagicAddButtonExpanded(
     label: String,
@@ -78,8 +80,10 @@ fun MagicAddButtonIcon(
 @Preview(showBackground = true)
 @Composable
 private fun MagicButtonsPreview() {
-    Column {
-        MagicAddButtonExpanded("Magic Add Button", {})
-        MagicAddButtonIcon({})
+    MagicStudiesAppTheme {
+        Column {
+            MagicAddButtonExpanded("Magic Add Button", {})
+            MagicAddButtonIcon({})
+        }
     }
 }

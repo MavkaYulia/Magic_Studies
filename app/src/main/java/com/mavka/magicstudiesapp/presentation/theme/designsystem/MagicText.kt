@@ -7,16 +7,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
+
 @Composable
 fun MagicText(
-    modifier: Modifier = Modifier,
     text: String,
-    style: TextStyle = MaterialTheme.typography.bodyLarge
+    modifier: Modifier = Modifier,
+    style: TextStyle = MaterialTheme.typography.bodyLarge,
+    color: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurface
 ) {
     Text(
         text = text,
         style = style,
-        color = MaterialTheme.colorScheme.primary,
+        color = color,
         modifier = modifier
     )
 }
@@ -24,5 +27,7 @@ fun MagicText(
 @Preview(showBackground = true)
 @Composable
 private fun MagicTextPreview() {
-    return MagicText(text = "MagicText")
+    MagicStudiesAppTheme {
+        MagicText(text = "MagicText")
+    }
 }
