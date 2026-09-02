@@ -40,6 +40,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun QuestsScreen(
+    onQuestClick: (Int) -> Unit,
     viewModel: QuestsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -51,7 +52,8 @@ fun QuestsScreen(
                 icon = icon,
                 subQuests = subQuests
             )
-        }
+        },
+        onQuestClick
     )
 }
 
@@ -63,6 +65,7 @@ fun QuestsScreenContent(
         icon: ImageVector,
         subQuests: List<SubQuest>
     ) -> Unit,
+    onQuestClick: (Int) -> Unit
 ) {
     var showMagicDialog by remember { mutableStateOf(false) }
 
@@ -85,7 +88,11 @@ fun QuestsScreenContent(
                     quest.subQuests.count { !it.isDone }
                 }
             ),
-            style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f))
+            style = MaterialTheme.typography.bodyMedium.copy(
+                color = MaterialTheme.colorScheme.onBackground.copy(
+                    alpha = 0.6f
+                )
+            )
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -119,7 +126,7 @@ fun QuestsScreenContent(
 
                 MagicQuestCard(
                     questModel = quest,
-                    onDetailsClicked = {}
+                    onDetailsClicked = { onQuestClick(quest.id) }
                 )
             }
         }
@@ -156,7 +163,7 @@ private fun QuestScreenPreview() {
         QuestsScreenContent(
             uiState = QuestUiState(quests = mockQuests, isLoading = false, errorMessage = null),
             onAddQuest = { _, _, _ -> },
-
-        )
+            {}
+            )
     }
 }

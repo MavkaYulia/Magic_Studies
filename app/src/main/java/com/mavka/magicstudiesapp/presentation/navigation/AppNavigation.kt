@@ -5,10 +5,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.mavka.magicstudiesapp.presentation.navigation.quests.questsNavGraph
 import com.mavka.magicstudiesapp.presentation.screens.atlas.AtlasScreen
 import com.mavka.magicstudiesapp.presentation.screens.hall.CentralHallScreen
 import com.mavka.magicstudiesapp.presentation.screens.music.MusicScreen
-import com.mavka.magicstudiesapp.presentation.screens.quests.QuestContainer
 import com.mavka.magicstudiesapp.presentation.screens.timer.TimerScreen
 
 @Composable
@@ -27,9 +27,9 @@ fun AppNavigation(
         composable<Screen.Atlas> {
             AtlasScreen()
         }
-        composable<Screen.Quests> {
-            QuestContainer()
-        }
+
+        questsNavGraph(navController)
+
         composable<Screen.Music> {
             MusicScreen()
         }

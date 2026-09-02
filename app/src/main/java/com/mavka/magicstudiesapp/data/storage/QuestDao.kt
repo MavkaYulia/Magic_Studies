@@ -18,6 +18,10 @@ interface QuestDao {
     @Query("SELECT * FROM quests")
     fun getAllQuestsWithSubQuests(): Flow<List<QuestWithSubQuests>>
 
+    @Transaction
+    @Query("SELECT * FROM quests WHERE id = :questId")
+    fun getQuest(questId: Int): Flow<QuestWithSubQuests>
+
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun addSubQuest(subQuest: SubQuestEntity)
 

@@ -6,8 +6,9 @@ import com.mavka.magicstudiesapp.data.repository.QuestRepositoryImpl
 import com.mavka.magicstudiesapp.data.storage.AppDatabase
 import com.mavka.magicstudiesapp.domain.repository.QuestRepository
 import com.mavka.magicstudiesapp.presentation.screens.quests.QuestsViewModel
+import com.mavka.magicstudiesapp.presentation.screens.quests.details.DetailsViewModel
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -30,6 +31,7 @@ val dataModule = module {
 }
 
 val uiModule = module {
-    viewModel { QuestsViewModel(get()) }
+    viewModelOf(::QuestsViewModel)
+    viewModelOf(::DetailsViewModel)
 }
 
