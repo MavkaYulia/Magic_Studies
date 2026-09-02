@@ -6,6 +6,8 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
+import com.mavka.magicstudiesapp.domain.models.Priority
+
 @Entity(tableName = "quests")
 data class QuestEntity(
     @PrimaryKey(autoGenerate = true)
@@ -34,6 +36,7 @@ data class SubQuestEntity(
     val name: String,
     @ColumnInfo(name = "is_done")
     val isDone: Boolean,
-    val plannedTime: Int
+    val plannedTime: Float,
+    val priority: Priority = Priority.NORMAL
 )
 

@@ -1,7 +1,5 @@
 package com.mavka.magicstudiesapp.presentation.theme.designsystem
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Science
 import androidx.compose.material3.Card
@@ -24,24 +21,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.domain.models.SubQuest
+import com.mavka.magicstudiesapp.presentation.theme.ui.ColorPalette
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicColor
 
 @Composable
 fun MagicQuestCard(
     questModel: QuestModel,
     onDetailsClicked: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
-    val isUrgent= true //todo from subquest
+    val colorQuest = ColorPalette.getRandom()
 
     Card(
         modifier = modifier
@@ -51,7 +47,10 @@ fun MagicQuestCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+        border = androidx.compose.foundation.BorderStroke(
+            1.dp,
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+        )
     ) {
         Row(
             modifier = Modifier
@@ -59,25 +58,7 @@ fun MagicQuestCard(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(MagicColor.Parchment)
-                    .border(
-                        width = 1.dp,
-                        color = MagicColor.FadedGold.copy(alpha = 0.3f),
-                        shape = RoundedCornerShape(12.dp)
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = questModel.icon,
-                    contentDescription = null,
-                    modifier = Modifier.size(32.dp),
-                    tint = MagicColor.IronInk
-                )
-            }
+            MagicIconPlate(questModel.icon)
 
             Spacer(modifier = Modifier.width(16.dp))
 
@@ -93,15 +74,12 @@ fun MagicQuestCard(
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
-
-                    if (isUrgent) {
-                        MagicUrgentBadge()
-                    }
+                    MagicPriorityBadge(questModel.priority)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                MagicQuestProgressBar(progress = questModel.progress)
+                MagicProgressBar(progress = questModel.progress, color = colorQuest)
 
                 Spacer(modifier = Modifier.height(8.dp))
 
@@ -130,7 +108,10 @@ fun MagicQuestCard(
                             tint = MagicColor.IronInk.copy(alpha = 0.7f)
                         )
                         Text(
-                            text = stringResource(R.string.hours_format, 24.5f), // todo() Using hardcoded value for sample
+                            text = stringResource(
+                                R.string.hours_format,
+                                24.5f
+                            ), // todo() Using hardcoded value for sample
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
                         )
@@ -142,7 +123,7 @@ fun MagicQuestCard(
                             questModel.totalSubQuestsCount - questModel.completedSubQuestsCount
                         ),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.outlineVariant
+                        color = colorQuest
                     )
                 }
             }
@@ -156,46 +137,6 @@ fun MagicQuestCard(
                 tint = MagicColor.IronInk.copy(alpha = 0.3f)
             )
         }
-    }
-}
-
-@Composable
-private fun MagicUrgentBadge(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.error.copy(alpha = 0.2f))
-            .padding(horizontal = 10.dp, vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
-    ) {
-        Text(
-            text = stringResource(R.string.urgent),
-            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-            color = MaterialTheme.colorScheme.error
-        )
-    }
-}
-
-@Composable
-private fun MagicQuestProgressBar(
-    progress: Float,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(10.dp)
-            .clip(RoundedCornerShape(5.dp))
-            .background(MagicColor.IronInk.copy(alpha = 0.1f))
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(progress)
-                .height(10.dp)
-                .clip(RoundedCornerShape(5.dp))
-                .background(MagicColor.FadedGold)
-        )
     }
 }
 
@@ -213,10 +154,10 @@ private fun MagicQuestCardPreview() {
                     title = "Alchemy",
                     icon = Icons.Default.Science,
                     subQuests = listOf(
-                        SubQuest(isDone = true, name = "Task 1", plannedTime = 10),
-                        SubQuest(isDone = true, name = "Task 2", plannedTime = 5),
-                        SubQuest(isDone = false, name = "Task 3", plannedTime = 5),
-                        SubQuest(isDone = false, name = "Task 4", plannedTime = 4)
+                        SubQuest(isDone = true, name = "Task 1", plannedTime = 10f),
+                        SubQuest(isDone = true, name = "Task 2", plannedTime = 5f),
+                        SubQuest(isDone = false, name = "Task 3", plannedTime = 5f),
+                        SubQuest(isDone = false, name = "Task 4", plannedTime = 4f)
                     )
                 ),
                 onDetailsClicked = {},
