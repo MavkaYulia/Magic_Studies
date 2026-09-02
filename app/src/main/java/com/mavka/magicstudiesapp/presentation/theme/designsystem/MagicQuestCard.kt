@@ -17,19 +17,20 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.domain.models.SubQuest
 import com.mavka.magicstudiesapp.presentation.theme.ui.ColorPalette
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicColor
+
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 
 @Composable
 fun MagicQuestCard(
@@ -48,28 +49,28 @@ fun MagicQuestCard(
             containerColor = MaterialTheme.colorScheme.surface
         ),
         border = androidx.compose.foundation.BorderStroke(
-            1.dp,
+            dimensionResource(R.dimen.border),
             MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
         )
     ) {
         Row(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(dimensionResource(R.dimen.padding_medium))
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             MagicIconPlate(questModel.icon)
 
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
 
             Column(
                 modifier = Modifier.weight(1f)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
                 ) {
-                    Text(
+                    MagicText(
                         text = questModel.title.uppercase(),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface
@@ -77,17 +78,17 @@ fun MagicQuestCard(
                     MagicPriorityBadge(questModel.priority)
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
 
                 MagicProgressBar(progress = questModel.progress, color = colorQuest)
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
                 ) {
-                    Text(
+                    MagicText(
                         text = stringResource(
                             R.string.tasks_count,
                             questModel.completedSubQuestsCount,
@@ -99,25 +100,25 @@ fun MagicQuestCard(
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_tiny))
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_clock),
                             contentDescription = null,
-                            modifier = Modifier.size(14.dp),
+                            modifier = Modifier.size(dimensionResource(R.dimen.icon_size_small) * 0.8f),
                             tint = MagicColor.IronInk.copy(alpha = 0.7f)
                         )
-                        Text(
+                        MagicText(
                             text = stringResource(
                                 R.string.hours_format,
                                 24.5f
-                            ), // todo() Using hardcoded value for sample
+                            ),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
                         )
                     }
 
-                    Text(
+                    MagicText(
                         text = stringResource(
                             R.string.remaining_count,
                             questModel.totalSubQuestsCount - questModel.completedSubQuestsCount
@@ -128,12 +129,12 @@ fun MagicQuestCard(
                 }
             }
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
 
             Icon(
                 painter = painterResource(id = R.drawable.ic_chevron_right),
                 contentDescription = null,
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(dimensionResource(R.dimen.icon_size_medium)),
                 tint = MagicColor.IronInk.copy(alpha = 0.3f)
             )
         }
@@ -143,12 +144,8 @@ fun MagicQuestCard(
 @Preview(showBackground = true)
 @Composable
 private fun MagicQuestCardPreview() {
-    MaterialTheme(
-        colorScheme = MaterialTheme.colorScheme,
-        typography = MaterialTheme.typography,
-        shapes = MaterialTheme.shapes
-    ) {
-        Box(modifier = Modifier.padding(16.dp)) {
+    MagicStudiesAppTheme {
+        Box(modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))) {
             MagicQuestCard(
                 questModel = QuestModel(
                     title = "Alchemy",

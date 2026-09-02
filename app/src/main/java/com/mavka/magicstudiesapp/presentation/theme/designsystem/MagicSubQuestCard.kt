@@ -22,7 +22,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,16 +29,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.Priority
 import com.mavka.magicstudiesapp.domain.models.SubQuest
+
+import androidx.compose.ui.graphics.graphicsLayer
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 
 @Composable
 fun MagicSubQuestCard(
     task: SubQuest,
     onToggleDone: () -> Unit,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val backgroundColor = if (task.isDone) {
         MaterialTheme.colorScheme.surface.copy(alpha = 0.3f)
@@ -51,10 +54,10 @@ fun MagicSubQuestCard(
     }
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .border(
-                1.dp,
+                dimensionResource(R.dimen.border),
                 MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
                 MaterialTheme.shapes.medium
             ),
@@ -68,13 +71,13 @@ fun MagicSubQuestCard(
         ) {
             Box(
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(dimensionResource(R.dimen.icon_size_medium))
                     .clip(CircleShape)
                     .background(
                         if (task.isDone) MaterialTheme.colorScheme.primary.copy(alpha = 0.6f) else Color.Transparent
                     )
                     .border(
-                        1.dp,
+                        dimensionResource(R.dimen.border),
                         MaterialTheme.colorScheme.outlineVariant,
                         CircleShape
                     )
@@ -85,7 +88,7 @@ fun MagicSubQuestCard(
                     Icon(
                         imageVector = Icons.Default.Check,
                         contentDescription = null,
-                        modifier = Modifier.size(16.dp),
+                        modifier = Modifier.size(dimensionResource(R.dimen.icon_size_small) * 0.9f),
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
@@ -94,27 +97,32 @@ fun MagicSubQuestCard(
             Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
 
             Column(modifier = Modifier.weight(1f)) {
-                Text(
+                MagicText(
                     text = task.name,
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        textDecoration = if (task.isDone) TextDecoration.LineThrough else TextDecoration.None
+                    ),
                     color = MaterialTheme.colorScheme.onBackground,
-                    textDecoration = if (task.isDone) TextDecoration.LineThrough else TextDecoration.None
+                    modifier = Modifier.graphicsLayer {
+                        if (task.isDone) alpha = 0.6f
+                    }
                 )
+                
                 Row(
-                    modifier = Modifier.padding(top = 4.dp),
+                    modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_tiny)),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
                 ) {
                     MagicPriorityBadge(priority = task.priority)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Default.Schedule,
                             contentDescription = null,
-                            modifier = Modifier.size(14.dp),
+                            modifier = Modifier.size(dimensionResource(R.dimen.icon_size_small) * 0.8f),
                             tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                         )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
+                        Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_tiny)))
+                        MagicText(
                             text = "${task.plannedTime}h",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
@@ -131,5 +139,17 @@ fun MagicSubQuestCard(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MagicSubQuestCardPreview() {
+    MagicStudiesAppTheme {
+        MagicSubQuestCard(
+            task = SubQuest(name = "Magic SubQuest", priority = Priority.URGENT, plannedTime = 2f, isDone = false),
+            onToggleDone = {},
+            onDelete = {}
+        )
     }
 }

@@ -22,8 +22,8 @@ import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 
 @Composable
 fun MagicProgressBar(
-    modifier: Modifier = Modifier,
     progress: Float,
+    modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary
 ) {
     Box(
@@ -35,7 +35,7 @@ fun MagicProgressBar(
                 MaterialTheme.shapes.small
             )
             .border(
-                0.1.dp,
+                dimensionResource(R.dimen.border) * 0.1f,
                 color.copy(alpha = 0.4f),
                 MaterialTheme.shapes.small
             )

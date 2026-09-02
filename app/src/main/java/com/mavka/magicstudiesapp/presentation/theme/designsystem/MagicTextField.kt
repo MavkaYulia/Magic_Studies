@@ -11,14 +11,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 
 
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
+
 @Composable
 fun MagicTextField(
     value: String,
     onValueChange: (String) -> Unit,
     hintText: String,
+    modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     isError: Boolean = false,
-    modifier: Modifier = Modifier
 ) {
     OutlinedTextField(
         value = value,
@@ -49,7 +51,9 @@ fun MagicTextField(
 @Preview(showBackground = true)
 @Composable
 private fun MagicTextFieldPreview() {
-    MagicTextField(
-        "", {}, "Hint text"
-    )
+    MagicStudiesAppTheme {
+        MagicTextField(
+            "", {}, "Hint text"
+        )
+    }
 }

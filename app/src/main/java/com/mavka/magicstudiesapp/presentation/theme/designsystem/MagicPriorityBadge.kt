@@ -23,6 +23,11 @@ import androidx.compose.ui.unit.dp
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.Priority
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
+
 @Composable
 fun MagicPriorityBadge(priority: Priority, modifier: Modifier = Modifier) {
 
@@ -48,16 +53,19 @@ fun MagicPriorityBadge(priority: Priority, modifier: Modifier = Modifier) {
 
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(dimensionResource(R.dimen.padding_small)))
             .background(color.copy(alpha = 0.2f))
-            .padding(horizontal = 8.dp, vertical = 2.dp),
+            .padding(
+                horizontal = dimensionResource(R.dimen.padding_small),
+                vertical = dimensionResource(R.dimen.padding_tiny) / 2
+            ),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_tiny))
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            modifier = Modifier.size(12.dp),
+            modifier = Modifier.size(dimensionResource(R.dimen.icon_size_small) * 0.7f),
             tint = color
         )
         Text(
@@ -65,6 +73,18 @@ fun MagicPriorityBadge(priority: Priority, modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
             color = color
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MagicPriorityBadgePreview() {
+    MagicStudiesAppTheme {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            MagicPriorityBadge(priority = Priority.URGENT)
+            MagicPriorityBadge(priority = Priority.NORMAL)
+            MagicPriorityBadge(priority = Priority.LOW)
+        }
     }
 }
 

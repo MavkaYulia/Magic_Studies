@@ -12,28 +12,45 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.mavka.magicstudiesapp.R
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
+
 @Composable
-fun MagicSectionTitle(title: String, count: Int, icon: ImageVector? = null) {
+fun MagicSectionTitle(
+    title: String,
+    count: Int,
+    modifier: Modifier = Modifier,
+    icon: ImageVector? = null
+) {
     Row(
-        modifier = Modifier.padding(vertical = 4.dp),
+        modifier = modifier.padding(vertical = dimensionResource(R.dimen.padding_tiny)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (icon != null) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                modifier = Modifier.size(16.dp),
+                modifier = Modifier.size(dimensionResource(R.dimen.icon_size_small)),
                 tint = MaterialTheme.colorScheme.outlineVariant
             )
-            Spacer(modifier = Modifier.width(4.dp))
+            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_tiny)))
         }
         Text(
             text = "$title — $count",
             style = MaterialTheme.typography.labelMedium.copy(letterSpacing = 1.sp),
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MagicSectionTitlePreview() {
+    MagicStudiesAppTheme {
+        MagicSectionTitle(title = "Section", count = 5)
     }
 }

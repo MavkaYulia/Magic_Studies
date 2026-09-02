@@ -14,23 +14,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
+import com.mavka.magicstudiesapp.R
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
+
 @Composable
-fun MagicIconPlate(icon: ImageVector) {
+fun MagicIconPlate(
+    icon: ImageVector,
+    modifier: Modifier = Modifier
+) {
     Box(
-        modifier = Modifier
-            .size(80.dp)
+        modifier = modifier
+            .size(dimensionResource(R.dimen.icon_size_large) * 1.6f)
             .background(
                 MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
-                RoundedCornerShape(16.dp)
+                RoundedCornerShape(dimensionResource(R.dimen.padding_medium))
             )
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(16.dp)),
+            .border(
+                dimensionResource(R.dimen.border),
+                MaterialTheme.colorScheme.outlineVariant,
+                RoundedCornerShape(dimensionResource(R.dimen.padding_medium))
+            ),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            modifier = Modifier.size(48.dp),
+            modifier = Modifier.size(dimensionResource(R.dimen.icon_size_large)),
             tint = MaterialTheme.colorScheme.primary
         )
     }
@@ -39,9 +49,11 @@ fun MagicIconPlate(icon: ImageVector) {
 @Preview(showBackground = true)
 @Composable
 private fun MagicIconPlatePreview() {
-    MagicIconPlate(
-        Icons.Default.Science
-    )
+    MagicStudiesAppTheme {
+        MagicIconPlate(
+            Icons.Default.Science
+        )
+    }
 }
 
 
