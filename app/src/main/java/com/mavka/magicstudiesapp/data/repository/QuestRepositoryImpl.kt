@@ -19,19 +19,19 @@ class QuestRepositoryImpl(
         return questDao.getAllQuestsWithSubQuests()
             .map { listFromDb ->
                 listFromDb.map { quest ->
-                    quest.toDomain(mapper::getVectorById)
+                    quest.toDomain(mapper::getIconById)
                 }
             }
     }
 
     override fun getQuest(questId: Int): Flow<QuestModel> {
         return questDao.getQuest(questId).map { quest ->
-            quest.toDomain(mapper::getVectorById)
+            quest.toDomain(mapper::getIconById)
         }
     }
 
     override suspend fun addQuest(quest: QuestModel) {
-        questDao.addQuest(quest.toEntity(mapper::getIdByVector))
+        questDao.addQuest(quest.toEntity(mapper::getIdByIcon))
     }
 
     override suspend fun addSubQuest(

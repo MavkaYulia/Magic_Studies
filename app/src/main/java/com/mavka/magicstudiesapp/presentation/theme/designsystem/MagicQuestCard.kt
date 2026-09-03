@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Science
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -20,16 +18,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.domain.models.SubQuest
 import com.mavka.magicstudiesapp.presentation.theme.ui.ColorPalette
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicColor
-
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 
 @Composable
@@ -55,16 +52,18 @@ fun MagicQuestCard(
     ) {
         Row(
             modifier = Modifier
-                .padding(dimensionResource(R.dimen.padding_medium))
+                .padding(dimensionResource(R.dimen.padding_small))
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            MagicIconPlate(questModel.icon)
+            MagicIconPlate(icon = questModel.icon, size = R.dimen.icon_size_extra_large)
 
             Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
 
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(vertical = dimensionResource(R.dimen.padding_small))
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -149,7 +148,7 @@ private fun MagicQuestCardPreview() {
             MagicQuestCard(
                 questModel = QuestModel(
                     title = "Alchemy",
-                    icon = Icons.Default.Science,
+                    icon = R.drawable.img_magic_9,
                     subQuests = listOf(
                         SubQuest(isDone = true, name = "Task 1", plannedTime = 10f),
                         SubQuest(isDone = true, name = "Task 2", plannedTime = 5f),
