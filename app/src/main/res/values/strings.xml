@@ -6,6 +6,7 @@
     <string name="duration_custom">Custom time…</string>
 
     <string name="dialog_confirm">OK</string>
+    <string name="dialog_next">Next</string>
     <string name="dialog_cancel">Cancel</string>
 
     <string name="duration_dialog_title">Select duration</string>
@@ -14,23 +15,5 @@
 
     <string name="back_to_presets">Back to quick selection</string>
     <string name="back">Back</string>
-
-    <string name="quest_progress">Quest Progress</string>
-    <string name="studied">studied</string>
-    <string name="tasks">tasks</string>
-    <string name="filter_label">Filter:</string>
-    <string name="filter_all">ALL</string>
-    <string name="filter_urgent">URGENT</string>
-    <string name="filter_normal">NORMAL</string>
-    <string name="filter_low">LOW</string>
-    <string name="filter_hide_done">HIDE DONE</string>
-    <string name="active">ACTIVE</string>
-    <string name="completed">COMPLETED</string>
-    <string name="add_new_task">ADD NEW TASK</string>
-    <string name="task_hint">Describe thy quest task…</string>
-    <string name="add_to_quest_line">ADD TO QUEST LINE</string>
-    <string name="normal">NORMAL</string>
-    <string name="low">LOW</string>
-    <string name="est_hours">Est. hours</string>
 
 </resources>

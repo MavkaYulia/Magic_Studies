@@ -1,32 +1,40 @@
 package com.mavka.magicstudiesapp.data.mapper
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.QuestionMark
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.ui.graphics.vector.ImageVector
+import com.mavka.magicstudiesapp.R
+import com.mavka.magicstudiesapp.domain.provider.QuestIconProvider
 
-class IconMapper {
-
+class IconMapper : QuestIconProvider {
 
     private val iconMap = mapOf(
-        1 to Icons.Default.Home,
-        2 to Icons.Default.Star,
-        3 to Icons.Default.CheckCircle,
-        4 to Icons.Default.Settings,
-        5 to Icons.Default.LocationOn
+        1 to R.drawable.img_magic_1,
+        2 to R.drawable.img_magic_2,
+        3 to R.drawable.img_magic_3,
+        4 to R.drawable.img_magic_4,
+        5 to R.drawable.img_magic_5,
+        6 to R.drawable.img_magic_6,
+        7 to R.drawable.img_magic_7,
+        8 to R.drawable.img_magic_8,
+        9 to R.drawable.img_magic_9,
+        10 to R.drawable.img_magic_10,
+        11 to R.drawable.img_magic_11,
+        12 to R.drawable.img_magic_12,
+        13 to R.drawable.img_magic_13,
+        14 to R.drawable.img_magic_14,
+        15 to R.drawable.img_magic_15,
+        16 to R.drawable.img_magic_16,
+        17 to R.drawable.img_magic_17,
+        18 to R.drawable.img_magic_18,
     )
 
     private val idMap = iconMap.entries.associate { it.value to it.key }
 
-    fun getVectorById(id: Int): ImageVector {
-        return iconMap[id] ?: Icons.Default.QuestionMark
+    override fun getAvailableIcons(): List<Int> = iconMap.values.toList()
+
+    fun getIconById(id: Int): Int {
+        return iconMap[id] ?: R.drawable.img_magic_9
     }
 
-    fun getIdByVector(vector: ImageVector): Int {
-        return idMap[vector] ?: 0
+    fun getIdByIcon(icon: Int): Int {
+        return idMap[icon] ?: 0
     }
 }

@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material.icons.outlined.LocalFireDepartment
@@ -220,7 +219,7 @@ fun DetailsScreenContent(
 
 @Composable
 fun SubQuestHeader(
-    icon: ImageVector,
+    icon: Int,
     title: String,
     studiedTime: Float,
     tasksDone: Int,
@@ -443,7 +442,7 @@ private fun DetailsScreenPreview() {
         DetailsScreenContent(
             uiState = QuestModel(
                 title = "Study Magic",
-                icon = Icons.Default.Science,
+                icon = R.drawable.img_magic_9,
                 subQuests = listOf(
                     SubQuest(
                         id = 1,

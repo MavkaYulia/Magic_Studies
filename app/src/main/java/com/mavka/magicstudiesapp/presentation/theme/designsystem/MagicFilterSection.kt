@@ -51,17 +51,17 @@ fun MagicFilterSection(
             onClick = { onFilterSelected(QuestFilter.All) }
         )
         FilterChip(
-            label = stringResource(R.string.filter_urgent),
+            label = stringResource(R.string.urgent),
             selected = selectedFilter == QuestFilter.Urgent,
             onClick = { onFilterSelected(QuestFilter.Urgent) }
         )
         FilterChip(
-            label = stringResource(R.string.filter_normal),
+            label = stringResource(R.string.normal),
             selected = selectedFilter == QuestFilter.Normal,
             onClick = { onFilterSelected(QuestFilter.Normal) }
         )
         FilterChip(
-            label = stringResource(R.string.filter_low),
+            label = stringResource(R.string.low),
             selected = selectedFilter == QuestFilter.Low,
             onClick = { onFilterSelected(QuestFilter.Low) }
         )

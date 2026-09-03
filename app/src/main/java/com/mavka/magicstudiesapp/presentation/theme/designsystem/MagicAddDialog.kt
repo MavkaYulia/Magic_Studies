@@ -35,7 +35,7 @@ import com.mavka.magicstudiesapp.R
 @Composable
 fun MagicAddDialog(
     onDismiss: () -> Unit,
-    onCreate: (String) -> Unit
+    onNext: (String) -> Unit,
 ) {
     var subjectName by remember { mutableStateOf("") }
 
@@ -84,24 +84,25 @@ fun MagicAddDialog(
 
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_small)))
 
-                MagicTextField(value = subjectName,
+                MagicTextField(
+                    value = subjectName,
                     { subjectName = it },
-                    stringResource(R.string.dialog_hint_add_subject))
+                    stringResource(R.string.dialog_hint_add_subject)
+                )
 
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_extra_large)))
 
                 Button(
-                    onClick = { onCreate(subjectName) },
+                    onClick = { onNext(subjectName) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = MaterialTheme.shapes.large,
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text(
-                        text = stringResource(R.string.create_new_quest),
-                        color = MaterialTheme.colorScheme.background,
-                        style = MaterialTheme.typography.titleMedium
+                    MagicText(
+                        text = stringResource(R.string.dialog_next),
+                        color = MaterialTheme.colorScheme.background
                     )
                 }
             }
@@ -113,6 +114,7 @@ fun MagicAddDialog(
 @Composable
 private fun MagicAddDialogPreview() {
     MagicAddDialog(
-        {}, {}
+        onDismiss = {},
+        onNext = {}
     )
 }

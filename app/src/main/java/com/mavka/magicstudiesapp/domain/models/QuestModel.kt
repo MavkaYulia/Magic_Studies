@@ -1,11 +1,9 @@
 package com.mavka.magicstudiesapp.domain.models
 
-import androidx.compose.ui.graphics.vector.ImageVector
-
 data class QuestModel(
     val id: Int = 0,
     val title: String,
-    val icon: ImageVector,
+    val icon: Int,
     val subQuests: List<SubQuest>
 ) {
     val completedSubQuestsCount: Int get() = subQuests.count { it.isDone }
