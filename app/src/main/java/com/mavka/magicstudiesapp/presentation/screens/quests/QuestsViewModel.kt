@@ -45,18 +45,6 @@ class QuestsViewModel(
             questRepository.addQuest(newQuest)
         }
     }
-
-
-    fun deleteQuest(questId: Int) {
-        viewModelScope.launch {
-            questRepository.deleteQuest(questId)
-        }
-    }
-
-    fun sumOfDoneSubQuest() = uiState.value.quests.sumOf { quest ->
-        quest.subQuests.count { !it.isDone }
-    }
-
 }
 
 data class QuestUiState(

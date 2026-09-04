@@ -24,9 +24,9 @@ class QuestRepositoryImpl(
             }
     }
 
-    override fun getQuest(questId: Int): Flow<QuestModel> {
+    override fun getQuest(questId: Int): Flow<QuestModel?> {
         return questDao.getQuest(questId).map { quest ->
-            quest.toDomain(mapper::getIconById)
+            quest?.toDomain(mapper::getIconById)
         }
     }
 

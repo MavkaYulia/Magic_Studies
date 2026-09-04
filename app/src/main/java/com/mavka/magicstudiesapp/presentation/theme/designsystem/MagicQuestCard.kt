@@ -74,7 +74,9 @@ fun MagicQuestCard(
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
-                    MagicPriorityBadge(questModel.priority)
+                    if (questModel.subQuests.isNotEmpty()) {
+                        MagicPriorityBadge(questModel.getPriority)
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
@@ -110,7 +112,7 @@ fun MagicQuestCard(
                         MagicText(
                             text = stringResource(
                                 R.string.hours_format,
-                                24.5f
+                                questModel.totalSpentTime
                             ),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)

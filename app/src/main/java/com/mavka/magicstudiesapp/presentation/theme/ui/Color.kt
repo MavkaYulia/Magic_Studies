@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.Color
 
 object MagicColor {
     val Parchment = Color(0xFFF5E6CA)
-    val OldPaper = Color(0xFFE8D4B4)
+    val OldPaper = Color(0xFFECD2AA)
     val CandleLight = Color(0xFFFFE082)
     val WaxSealRed = Color(0xFF8C4A32)
     val IronInk = Color(0xFF3E2723)

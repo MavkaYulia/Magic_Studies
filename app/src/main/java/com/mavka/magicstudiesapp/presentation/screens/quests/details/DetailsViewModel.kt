@@ -35,18 +35,19 @@ class DetailsViewModel(
         _filter,
         _hideDone
     ) { quest, filter, hideDone ->
-        val filteredSubQuests = quest.subQuests.filter { sub ->
-            val matchesFilter = when (filter) {
-                QuestFilter.All -> true
-                QuestFilter.Urgent -> sub.priority == Priority.URGENT
-                QuestFilter.Normal -> sub.priority == Priority.NORMAL
-                QuestFilter.Low -> sub.priority == Priority.LOW
+        quest?.let {
+            val filteredSubQuests = it.subQuests.filter { sub ->
+                val matchesFilter = when (filter) {
+                    QuestFilter.All -> true
+                    QuestFilter.Urgent -> sub.priority == Priority.URGENT
+                    QuestFilter.Normal -> sub.priority == Priority.NORMAL
+                    QuestFilter.Low -> sub.priority == Priority.LOW
+                }
+                val matchesDone = if (hideDone) !sub.isDone else true
+                matchesFilter && matchesDone
             }
-            val matchesDone = if (hideDone) !sub.isDone else true
-            matchesFilter && matchesDone
+            it.copy(subQuests = filteredSubQuests)
         }
-        quest.copy(subQuests = filteredSubQuests)
-
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -79,6 +80,12 @@ class DetailsViewModel(
     fun deleteSubQuest(subQuestId: Int) {
         viewModelScope.launch {
             questRepository.deleteSubQuest(subQuestId)
+        }
+    }
+
+    fun deleteQuest(questId: Int) {
+        viewModelScope.launch {
+            questRepository.deleteQuest(questId)
         }
     }
 
