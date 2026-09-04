@@ -68,7 +68,10 @@ fun QuestsScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(dimensionResource(R.dimen.padding_medium))
+            .padding(
+                vertical = dimensionResource(R.dimen.padding_small),
+                horizontal = dimensionResource(R.dimen.padding_medium)
+            )
     ) {
 
         MagicTabHeader(
@@ -86,7 +89,7 @@ fun QuestsScreenContent(
         MagicAddButtonExpanded(
             label = stringResource(R.string.new_quest),
             onClick = { showNameDialog = true },
-            containerColor = MaterialTheme.colorScheme.tertiary
+            containerColor = MaterialTheme.colorScheme.secondary
         )
 
         if (showNameDialog) {
@@ -103,7 +106,7 @@ fun QuestsScreenContent(
         if (showIconDialog) {
             MagicIconSelectionDialog(
                 availableIcons = uiState.availableIcons,
-                onDismiss = { showIconDialog = false },
+                onDismiss = { showIconDialog = true },
                 onSelect = { icon ->
                     onAddQuest(
                         tempName,

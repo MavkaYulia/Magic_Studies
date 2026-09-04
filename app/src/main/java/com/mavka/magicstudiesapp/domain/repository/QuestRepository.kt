@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface QuestRepository {
 
     fun getQuests(): Flow<List<QuestModel>>
-    fun getQuest(questId: Int): Flow<QuestModel>
+    fun getQuest(questId: Int): Flow<QuestModel?>
 
     suspend fun addQuest(quest: QuestModel)
 

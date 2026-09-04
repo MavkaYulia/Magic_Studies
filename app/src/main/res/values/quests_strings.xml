@@ -2,6 +2,7 @@
 <resources>
     <string name="tab_title">Thy Quests</string>
     <string name="tab_quests">QUESTS</string>
+    <string name="tab_stats">STATS</string>
     <string name="tab_tome">TOME</string>
 
     <string name="create_new_quest">CREATE NEW QUEST</string>
@@ -33,6 +34,9 @@
     <string name="active">ACTIVE</string>
     <string name="completed">COMPLETED</string>
     <string name="add_new_task">ADD NEW TASK</string>
+
+    <string name="priority">PRIORITY</string>
+    <string name="time">ESTIMATED TIME</string>
 
     <string name="task_hint">Describe thy quest task…</string>
     <string name="add_to_quest_line">ADD TO QUEST LINE</string>
