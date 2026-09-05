@@ -13,7 +13,8 @@ data class QuestEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val title: String,
-    val icon: Int
+    val icon: Int,
+    val color: Int = 0
 )
 
 @Entity(

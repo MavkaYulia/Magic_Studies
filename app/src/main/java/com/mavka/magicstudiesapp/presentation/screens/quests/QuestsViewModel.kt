@@ -1,5 +1,6 @@
 package com.mavka.magicstudiesapp.presentation.screens.quests
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mavka.magicstudiesapp.domain.models.QuestModel
@@ -39,8 +40,8 @@ class QuestsViewModel(
         }
     }
 
-    fun addQuest(title: String, icon: Int, subQuests: List<SubQuest>) {
-        val newQuest = QuestModel(title = title, icon = icon, subQuests = subQuests)
+    fun addQuest(title: String, icon: Int, color: Color, subQuests: List<SubQuest>) {
+        val newQuest = QuestModel(title = title, icon = icon, color = color, subQuests = subQuests)
         viewModelScope.launch {
             questRepository.addQuest(newQuest)
         }
