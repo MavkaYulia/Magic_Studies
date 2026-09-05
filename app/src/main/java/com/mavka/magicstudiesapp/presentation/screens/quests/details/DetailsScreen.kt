@@ -49,6 +49,7 @@ import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicSectionTit
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicSubQuestCard
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTitle
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTopAppBar
+import com.mavka.magicstudiesapp.presentation.theme.ui.ColorPalette
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -333,7 +334,8 @@ private fun DetailsScreenPreview() {
                         plannedTime = 4f,
                         priority = Priority.NORMAL
                     )
-                )
+                ),
+                color = ColorPalette.getRandom()
             ),
             filter = QuestFilter.All,
             hideDone = false,

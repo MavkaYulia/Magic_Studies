@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 
 @Database(
     entities = [QuestEntity::class, SubQuestEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(PriorityConverter::class)

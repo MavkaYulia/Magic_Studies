@@ -35,7 +35,6 @@ fun MagicQuestCard(
     onDetailsClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val colorQuest = ColorPalette.getRandom()
 
     Card(
         modifier = modifier
@@ -81,7 +80,7 @@ fun MagicQuestCard(
 
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
 
-                MagicProgressBar(progress = questModel.progress, color = colorQuest)
+                MagicProgressBar(progress = questModel.progress, color = questModel.color)
 
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
 
@@ -125,7 +124,7 @@ fun MagicQuestCard(
                             questModel.totalSubQuestsCount - questModel.completedSubQuestsCount
                         ),
                         style = MaterialTheme.typography.bodySmall,
-                        color = colorQuest
+                        color = questModel.color
                     )
                 }
             }
@@ -156,10 +155,12 @@ private fun MagicQuestCardPreview() {
                         SubQuest(isDone = true, name = "Task 2", plannedTime = 5f),
                         SubQuest(isDone = false, name = "Task 3", plannedTime = 5f),
                         SubQuest(isDone = false, name = "Task 4", plannedTime = 4f)
-                    )
+                    ),
+                    color = ColorPalette.getAt(1)
                 ),
                 onDetailsClicked = {},
-            )
+
+                )
         }
     }
 }

@@ -1,9 +1,12 @@
 package com.mavka.magicstudiesapp.domain.models
 
+import androidx.compose.ui.graphics.Color
+
 data class QuestModel(
     val id: Int = 0,
     val title: String,
     val icon: Int,
+    val color: Color,
     val subQuests: List<SubQuest>
 ) {
     val completedSubQuestsCount: Int get() = subQuests.count { it.isDone }
