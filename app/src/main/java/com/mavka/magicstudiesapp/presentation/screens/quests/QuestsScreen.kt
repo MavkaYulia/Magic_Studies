@@ -45,7 +45,7 @@ fun QuestsScreen(
             viewModel.addQuest(
                 title = title,
                 icon = icon,
-                color = color,
+                color = ColorPalette.getIndex(color),
                 subQuests = subQuests
             )
         },
@@ -153,7 +153,7 @@ private fun QuestScreenPreview() {
                 SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2f),
                 SubQuest(name = "SubQuest2", isDone = false, plannedTime = 6f)
             ),
-            color = ColorPalette.getAt(2)
+            color = 4
         ),
         QuestModel(
             title = "Quest2",
@@ -161,13 +161,13 @@ private fun QuestScreenPreview() {
             subQuests = listOf(
                 SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2f)
             ),
-            color = ColorPalette.getAt(3)
+            color = 2
         ),
         QuestModel(
             title = "Quest3",
             icon = R.drawable.img_magic_9,
             subQuests = emptyList(),
-            color = ColorPalette.getAt(4)
+            color = 6
         )
     )
     MagicStudiesAppTheme {

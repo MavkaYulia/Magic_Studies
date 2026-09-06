@@ -80,7 +80,7 @@ fun MagicQuestCard(
 
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
 
-                MagicProgressBar(progress = questModel.progress, color = questModel.color)
+                MagicProgressBar(progress = questModel.progress, color = ColorPalette.getAt(questModel.color))
 
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
 
@@ -124,7 +124,7 @@ fun MagicQuestCard(
                             questModel.totalSubQuestsCount - questModel.completedSubQuestsCount
                         ),
                         style = MaterialTheme.typography.bodySmall,
-                        color = questModel.color
+                        color = ColorPalette.getAt(questModel.color)
                     )
                 }
             }
@@ -156,7 +156,7 @@ private fun MagicQuestCardPreview() {
                         SubQuest(isDone = false, name = "Task 3", plannedTime = 5f),
                         SubQuest(isDone = false, name = "Task 4", plannedTime = 4f)
                     ),
-                    color = ColorPalette.getAt(1)
+                    color = 8
                 ),
                 onDetailsClicked = {},
 

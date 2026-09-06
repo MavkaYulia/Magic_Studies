@@ -36,6 +36,12 @@ object ColorPalette {
     }
 
     fun getAt(index: Int): Color {
-        return all[index % all.size]
+        val safeIndex = ((index % all.size) + all.size) % all.size
+        return all[safeIndex]
+    }
+
+    fun getIndex(color: Color): Int {
+        val index = all.indexOf(color)
+        return if (index != -1) index else 0
     }
 }

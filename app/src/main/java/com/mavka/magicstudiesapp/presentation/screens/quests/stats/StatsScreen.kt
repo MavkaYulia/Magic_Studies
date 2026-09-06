@@ -58,6 +58,7 @@ import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicFourGrid
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicPeriodToggle
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicText
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTitle
+import com.mavka.magicstudiesapp.presentation.theme.ui.ColorPalette
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
@@ -248,7 +249,7 @@ fun SubjectDistributionChart(uiState: StatsState) {
                     DonutSlice(
                         label = quest.title,
                         value = quest.progress,
-                        color = quest.color
+                        color = ColorPalette.getAt(quest.color)
                     )
                 }
             }
