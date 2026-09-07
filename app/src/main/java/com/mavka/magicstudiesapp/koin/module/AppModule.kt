@@ -11,15 +11,11 @@ import com.mavka.magicstudiesapp.presentation.screens.quests.QuestsViewModel
 import com.mavka.magicstudiesapp.presentation.screens.quests.details.DetailsViewModel
 import com.mavka.magicstudiesapp.presentation.screens.quests.stats.StatsViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-val dataModule = module {
-
-    single { CoroutineScope(SupervisorJob() + Dispatchers.Default) }
+fun dataModule(applicationScope: CoroutineScope) = module {
 
     single {
         Room.databaseBuilder(
@@ -39,14 +35,14 @@ val dataModule = module {
         QuestRepositoryImpl(
             questDao = get(),
             mapper = get(),
-            scope = get()
+            scope = applicationScope
         )
     }
 
     single {
         QuestMetricsProvider(
             questRepository = get(),
-            externalScope = get()
+            externalScope = applicationScope
         )
     }
 }

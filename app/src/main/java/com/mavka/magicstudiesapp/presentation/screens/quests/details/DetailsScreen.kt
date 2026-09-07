@@ -25,7 +25,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +35,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.Priority
 import com.mavka.magicstudiesapp.domain.models.PathModel
@@ -57,9 +57,9 @@ fun DetailsScreen(
     onBack: () -> Unit,
     viewModel: DetailsViewModel = koinViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-    val filter by viewModel.filter.collectAsState()
-    val hideDone by viewModel.hideDone.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val filter by viewModel.filter.collectAsStateWithLifecycle()
+    val hideDone by viewModel.hideDone.collectAsStateWithLifecycle()
 
     DetailsScreenContent(
         uiState = uiState,
@@ -348,4 +348,3 @@ private fun DetailsScreenPreview() {
         )
     }
 }
-
