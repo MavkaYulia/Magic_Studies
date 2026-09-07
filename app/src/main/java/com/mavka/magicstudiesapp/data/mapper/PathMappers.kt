@@ -4,7 +4,7 @@ import com.mavka.magicstudiesapp.data.storage.PathEntity
 import com.mavka.magicstudiesapp.data.storage.PathWithQuests
 import com.mavka.magicstudiesapp.data.storage.QuestEntity
 import com.mavka.magicstudiesapp.domain.models.PathModel
-import com.mavka.magicstudiesapp.domain.models.Quest
+import com.mavka.magicstudiesapp.domain.models.QuestModel
 
 
 fun PathWithQuests.toDomain(mapIcon: (Int) -> Int): PathModel {
@@ -17,8 +17,8 @@ fun PathWithQuests.toDomain(mapIcon: (Int) -> Int): PathModel {
     )
 }
 
-fun QuestEntity.toDomain(): Quest {
-    return Quest(
+fun QuestEntity.toDomain(): QuestModel {
+    return QuestModel(
         id = this.id,
         name = this.name,
         isDone = this.isDone,
@@ -27,7 +27,7 @@ fun QuestEntity.toDomain(): Quest {
     )
 }
 
-fun Quest.toEntity(pathId: Int): QuestEntity {
+fun QuestModel.toEntity(pathId: Int): QuestEntity {
     return QuestEntity(
         id = this.id,
         pathId = pathId,

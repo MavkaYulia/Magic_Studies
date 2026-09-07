@@ -39,7 +39,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.Priority
 import com.mavka.magicstudiesapp.domain.models.PathModel
-import com.mavka.magicstudiesapp.domain.models.Quest
+import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddButtonIcon
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicFilterSection
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicIconPlate
@@ -84,7 +84,7 @@ fun DetailsScreenContent(
     onBack: () -> Unit,
     onFilterSelected: (QuestFilter) -> Unit,
     onHideDoneToggle: () -> Unit,
-    onToggleQuestDone: (Quest) -> Unit,
+    onToggleQuestDone: (QuestModel) -> Unit,
     onDeleteQuest: (Int) -> Unit,
     onAddQuest: (String, Int, Priority) -> Unit,
     onDeletePath: () -> Unit,
@@ -153,7 +153,7 @@ fun DetailsScreenContent(
         },
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
-        uiState?.let { quest ->
+        uiState?.let { path ->
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -163,16 +163,16 @@ fun DetailsScreenContent(
             ) {
                 item {
                     PathHeader(
-                        icon = quest.icon,
-                        title = quest.title,
-                        studiedTime = quest.completedPlannedTimeMinutes,
-                        questsDone = quest.completedQuestsCount,
-                        totalQuests = quest.totalQuestsCount
+                        icon = path.icon,
+                        title = path.title,
+                        studiedTime = path.completedPlannedTimeMinutes,
+                        questsDone = path.completedQuestsCount,
+                        totalQuests = path.totalQuestsCount
                     )
                 }
 
                 item {
-                    ProgressSection(progress = quest.progress)
+                    ProgressSection(progress = path.progress)
                 }
 
                 item {
@@ -192,38 +192,38 @@ fun DetailsScreenContent(
                     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                 }
 
-                val activeTasks = quest.quests.filter { !it.isDone }
-                val completedTasks = quest.quests.filter { it.isDone }
+                val activeQuests = path.quests.filter { !it.isDone }
+                val completedQuests = path.quests.filter { it.isDone }
 
-                if (activeTasks.isNotEmpty()) {
+                if (activeQuests.isNotEmpty()) {
                     item {
                         MagicSectionTitle(
                             title = stringResource(R.string.active).uppercase(),
-                            count = activeTasks.size
+                            count = activeQuests.size
                         )
                     }
-                    items(activeTasks) { task ->
+                    items(activeQuests) { quest ->
                         MagicQuestCard(
-                            task = task,
-                            onToggleDone = { onToggleQuestDone(task) },
-                            onDelete = { onDeleteQuest(task.id) }
+                            task = quest,
+                            onToggleDone = { onToggleQuestDone(quest) },
+                            onDelete = { onDeleteQuest(quest.id) }
                         )
                     }
                 }
 
-                if (completedTasks.isNotEmpty()) {
+                if (completedQuests.isNotEmpty()) {
                     item {
                         MagicSectionTitle(
                             title = stringResource(R.string.completed).uppercase(),
-                            count = completedTasks.size,
+                            count = completedQuests.size,
                             icon = Icons.Default.Star
                         )
                     }
-                    items(completedTasks) { task ->
+                    items(completedQuests) { quest ->
                         MagicQuestCard(
-                            task = task,
-                            onToggleDone = { onToggleQuestDone(task) },
-                            onDelete = { onDeleteQuest(task.id) }
+                            task = quest,
+                            onToggleDone = { onToggleQuestDone(quest) },
+                            onDelete = { onDeleteQuest(quest.id) }
                         )
                     }
                 }
@@ -319,14 +319,14 @@ private fun DetailsScreenPreview() {
                 title = "Study Magic",
                 icon = R.drawable.img_magic_9,
                 quests = listOf(
-                    Quest(
+                    QuestModel(
                         id = 1,
                         name = "Learn Fireball",
                         isDone = false,
                         plannedTime = 2,
                         priority = Priority.URGENT
                     ),
-                    Quest(
+                    QuestModel(
                         id = 2,
                         name = "Learn Levitation",
                         isDone = false,

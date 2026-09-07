@@ -5,7 +5,7 @@ data class PathModel(
     val title: String,
     val icon: Int,
     val color: Int,
-    val quests: List<Quest>
+    val quests: List<QuestModel>
 ) {
     val completedQuestsCount: Int get() = quests.count { it.isDone }
     val totalQuestsCount: Int get() = quests.size

@@ -33,14 +33,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.Priority
-import com.mavka.magicstudiesapp.domain.models.Quest
+import com.mavka.magicstudiesapp.domain.models.QuestModel
 
 import androidx.compose.ui.graphics.graphicsLayer
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 
 @Composable
 fun MagicQuestCard(
-    task: Quest,
+    task: QuestModel,
     onToggleDone: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
@@ -148,7 +148,7 @@ fun MagicQuestCard(
 private fun MagicQuestCardPreview() {
     MagicStudiesAppTheme {
         MagicQuestCard(
-            task = Quest(name = "Magic Quest", priority = Priority.URGENT, plannedTime = 2, isDone = false),
+            task = QuestModel(name = "Magic Quest", priority = Priority.URGENT, plannedTime = 2, isDone = false),
             onToggleDone = {},
             onDelete = {}
         )

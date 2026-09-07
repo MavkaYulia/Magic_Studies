@@ -5,7 +5,7 @@ import com.mavka.magicstudiesapp.data.mapper.toDomain
 import com.mavka.magicstudiesapp.data.mapper.toEntity
 import com.mavka.magicstudiesapp.data.storage.PathDao
 import com.mavka.magicstudiesapp.domain.models.PathModel
-import com.mavka.magicstudiesapp.domain.models.Quest
+import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.domain.repository.PathRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -52,7 +52,7 @@ class PathRepositoryImpl(
 
     override suspend fun addQuest(
         pathId: Int,
-        quest: Quest
+        quest: QuestModel
     ) {
         pathDao.addQuest(quest.toEntity(pathId))
     }
@@ -67,7 +67,7 @@ class PathRepositoryImpl(
 
     override suspend fun updateQuest(
         pathId: Int,
-        quest: Quest
+        quest: QuestModel
     ) {
         pathDao.updateQuest(
             quest.toEntity(pathId)

@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.PathModel
-import com.mavka.magicstudiesapp.domain.models.Quest
+import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.presentation.theme.ui.ColorPalette
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicColor
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
@@ -151,10 +151,10 @@ private fun MagicPathCardPreview() {
                     title = "Alchemy",
                     icon = R.drawable.img_magic_9,
                     quests = listOf(
-                        Quest(isDone = true, name = "Task 1", plannedTime = 10),
-                        Quest(isDone = true, name = "Task 2", plannedTime = 5),
-                        Quest(isDone = false, name = "Task 3", plannedTime = 5),
-                        Quest(isDone = false, name = "Task 4", plannedTime = 4)
+                        QuestModel(isDone = true, name = "Task 1", plannedTime = 10),
+                        QuestModel(isDone = true, name = "Task 2", plannedTime = 5),
+                        QuestModel(isDone = false, name = "Task 3", plannedTime = 5),
+                        QuestModel(isDone = false, name = "Task 4", plannedTime = 4)
                     ),
                     color = 8
                 ),

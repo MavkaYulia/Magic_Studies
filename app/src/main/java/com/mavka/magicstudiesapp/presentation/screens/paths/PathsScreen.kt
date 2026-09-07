@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.PathModel
-import com.mavka.magicstudiesapp.domain.models.Quest
+import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddButtonExpanded
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddPathDialog
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicIconSelectionDialog
@@ -60,7 +60,7 @@ fun PathsScreenContent(
         title: String,
         icon: Int,
         color: Color,
-        quests: List<Quest>
+        quests: List<QuestModel>
     ) -> Unit,
     onPathClick: (Int) -> Unit
 ) {
@@ -146,24 +146,24 @@ private fun PathScreenPreview() {
 
     val mockPaths = listOf(
         PathModel(
-            title = "Quest1",
+            title = "Path1",
             icon = R.drawable.img_magic_9,
             quests = listOf(
-                Quest(name = "Quest1", isDone = true, plannedTime = 2),
-                Quest(name = "Quest2", isDone = false, plannedTime = 6)
+                QuestModel(name = "Quest1", isDone = true, plannedTime = 2),
+                QuestModel(name = "Quest2", isDone = false, plannedTime = 6)
             ),
             color = 4
         ),
         PathModel(
-            title = "Quest2",
+            title = "Path2",
             icon = R.drawable.img_magic_9,
             quests = listOf(
-                Quest(name = "Quest1", isDone = true, plannedTime = 2)
+                QuestModel(name = "Quest1", isDone = true, plannedTime = 2)
             ),
             color = 2
         ),
         PathModel(
-            title = "Quest3",
+            title = "Path3",
             icon = R.drawable.img_magic_9,
             quests = emptyList(),
             color = 6

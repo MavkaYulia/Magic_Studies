@@ -3,7 +3,7 @@ package com.mavka.magicstudiesapp.presentation.screens.paths
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mavka.magicstudiesapp.domain.models.PathModel
-import com.mavka.magicstudiesapp.domain.models.Quest
+import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.domain.provider.PathIconProvider
 import com.mavka.magicstudiesapp.domain.provider.PathOverviewProvider
 import com.mavka.magicstudiesapp.domain.repository.PathRepository
@@ -38,7 +38,7 @@ class PathsViewModel(
         title: String,
         icon: Int,
         color: Int,
-        quests: List<Quest>
+        quests: List<QuestModel>
     ) {
         val newPath = PathModel(
             title = title,

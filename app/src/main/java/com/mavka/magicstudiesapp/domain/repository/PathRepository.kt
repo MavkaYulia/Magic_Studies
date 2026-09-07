@@ -1,7 +1,7 @@
 package com.mavka.magicstudiesapp.domain.repository
 
 import com.mavka.magicstudiesapp.domain.models.PathModel
-import com.mavka.magicstudiesapp.domain.models.Quest
+import com.mavka.magicstudiesapp.domain.models.QuestModel
 import kotlinx.coroutines.flow.Flow
 
 interface PathRepository {
@@ -11,11 +11,11 @@ interface PathRepository {
 
     suspend fun addPath(path: PathModel)
 
-    suspend fun addQuest(pathId: Int, quest: Quest)
+    suspend fun addQuest(pathId: Int, quest: QuestModel)
 
     suspend fun deleteQuest(questId: Int)
     suspend fun deletePath(pathId: Int)
-    suspend fun updateQuest(pathId: Int, quest: Quest)
+    suspend fun updateQuest(pathId: Int, quest: QuestModel)
 
     // suspend fun dayCompleted(data:Long): Flow<Quest?>
 

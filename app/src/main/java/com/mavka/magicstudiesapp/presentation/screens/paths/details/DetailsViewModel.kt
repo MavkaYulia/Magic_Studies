@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.mavka.magicstudiesapp.domain.models.PathModel
 import com.mavka.magicstudiesapp.domain.models.Priority
-import com.mavka.magicstudiesapp.domain.models.Quest
+import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.domain.repository.PathRepository
 import com.mavka.magicstudiesapp.presentation.navigation.paths.DetailsRoute
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -63,7 +63,7 @@ class DetailsViewModel(
         viewModelScope.launch {
             pathRepository.addQuest(
                 pathId,
-                Quest(
+                QuestModel(
                     name = normalizedName,
                     isDone = false,
                     plannedTime = plannedTime,
@@ -85,7 +85,7 @@ class DetailsViewModel(
         }
     }
 
-    fun toggleQuestDone(quest: Quest) {
+    fun toggleQuestDone(quest: QuestModel) {
         viewModelScope.launch {
             pathRepository.updateQuest(
                 pathId,
