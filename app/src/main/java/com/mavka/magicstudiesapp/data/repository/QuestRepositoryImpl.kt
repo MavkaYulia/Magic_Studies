@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
@@ -36,10 +37,11 @@ class QuestRepositoryImpl(
     override fun getQuests(): StateFlow<List<PathModel>> = quests
 
     override fun getQuest(questId: Int): Flow<PathModel?> {
-        return questDao.getQuest(questId)
-            .map { quest ->
-                quest?.toDomain(mapper::getIconById)
+        return quests
+            .map { questList ->
+                questList.find { it.id == questId }
             }
+            .distinctUntilChanged()
     }
 
     override suspend fun addQuest(quest: PathModel) {

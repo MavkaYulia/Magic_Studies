@@ -3,11 +3,10 @@ package com.mavka.magicstudiesapp.presentation.screens.quests.stats
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mavka.magicstudiesapp.domain.models.PathModel
-import com.mavka.magicstudiesapp.domain.provider.QuestMetricsProvider
-import com.mavka.magicstudiesapp.domain.repository.QuestRepository
+import com.mavka.magicstudiesapp.domain.provider.QuestOverviewProvider
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 data class StatsUiState(
@@ -24,15 +23,12 @@ data class StatsUiState(
     val isLoading: Boolean = true
 )
 class StatsViewModel(
-    private val questRepository: QuestRepository,
-    private val questMetricsProvider: QuestMetricsProvider,
+    private val questOverviewProvider: QuestOverviewProvider,
 ) : ViewModel() {
 
     val uiState: StateFlow<StatsUiState> =
-        combine(
-            questRepository.getQuests(),
-            questMetricsProvider.questMetrics
-        ) { quests, metrics ->
+        questOverviewProvider.overview.map { snapshot ->
+            val metrics = snapshot.metrics
             StatsUiState(
                 completedSubquestsCount = metrics.completedSubquestsCount,
                 completedPlannedTimeMinutes = metrics.completedPlannedTimeMinutes,
@@ -41,7 +37,7 @@ class StatsViewModel(
                 totalSubQuestsCount = metrics.totalSubQuestsCount,
                 remainingQuestsCount = metrics.remainingQuestsCount,
                 estimationAccuracyPercentage = metrics.estimationAccuracyPercentage,
-                quests = quests,
+                quests = snapshot.quests,
                 isLoading = false
             )
         }.stateIn(
