@@ -1,4 +1,4 @@
-package com.mavka.magicstudiesapp.presentation.screens.quests
+package com.mavka.magicstudiesapp.presentation.screens.paths
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,24 +13,24 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.mavka.magicstudiesapp.R
-import com.mavka.magicstudiesapp.presentation.screens.quests.stats.StatsScreen
-import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicQuestTabSwitch
-import com.mavka.magicstudiesapp.presentation.theme.designsystem.QuestTab
+import com.mavka.magicstudiesapp.presentation.screens.paths.stats.StatsScreen
+import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicPathTabSwitch
+import com.mavka.magicstudiesapp.presentation.theme.designsystem.PathTab
 import kotlinx.coroutines.launch
 
 @Composable
-fun QuestContainer(
-    onQuestClick: (Int) -> Unit
+fun PathContainer(
+    onPathClick: (Int) -> Unit
 ) {
     val tabs = listOf(
-        QuestTab(stringResource(id = R.string.tab_quests), Icons.Default.Book),
-        QuestTab(stringResource(id = R.string.tab_stats), Icons.Default.QueryStats)
+        PathTab(stringResource(id = R.string.tab_paths), Icons.Default.Book),
+        PathTab(stringResource(id = R.string.tab_stats), Icons.Default.QueryStats)
     )
     val pagerState = rememberPagerState { tabs.size }
     val coroutineScope = rememberCoroutineScope()
 
     Column(modifier = Modifier.fillMaxSize()) {
-        MagicQuestTabSwitch(
+        MagicPathTabSwitch(
             modifier = Modifier.fillMaxWidth(),
             selectedIndex = pagerState.currentPage,
             items = tabs,
@@ -46,7 +46,7 @@ fun QuestContainer(
             modifier = Modifier.weight(1f)
         ) { page ->
             when (page) {
-                0 -> QuestsScreen(onQuestClick)
+                0 -> PathsScreen(onPathClick)
                 1 -> StatsScreen()
             }
         }

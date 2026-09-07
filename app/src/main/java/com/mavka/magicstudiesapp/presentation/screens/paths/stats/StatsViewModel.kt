@@ -1,43 +1,43 @@
-package com.mavka.magicstudiesapp.presentation.screens.quests.stats
+package com.mavka.magicstudiesapp.presentation.screens.paths.stats
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mavka.magicstudiesapp.domain.models.PathModel
-import com.mavka.magicstudiesapp.domain.provider.QuestOverviewProvider
+import com.mavka.magicstudiesapp.domain.provider.PathOverviewProvider
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 data class StatsUiState(
-    val completedSubquestsCount: Int = 0,
+    val completedQuestsCount: Int = 0,
     val completedPlannedTimeMinutes: Int = 0,
     val totalPlannedTimeMinutes: Int = 0,
+    val totalPathsCount: Int = 0,
     val totalQuestsCount: Int = 0,
-    val totalSubQuestsCount: Int = 0,
     val remainingQuestsCount: Int = 0,
     val estimationAccuracyPercentage: Double = 0.0,
 
-    val quests: List<PathModel> = emptyList(),
+    val paths: List<PathModel> = emptyList(),
 
     val isLoading: Boolean = true
 )
 class StatsViewModel(
-    private val questOverviewProvider: QuestOverviewProvider,
+    private val pathOverviewProvider: PathOverviewProvider,
 ) : ViewModel() {
 
     val uiState: StateFlow<StatsUiState> =
-        questOverviewProvider.overview.map { snapshot ->
+        pathOverviewProvider.overview.map { snapshot ->
             val metrics = snapshot.metrics
             StatsUiState(
-                completedSubquestsCount = metrics.completedSubquestsCount,
+                completedQuestsCount = metrics.completedQuestsCount,
                 completedPlannedTimeMinutes = metrics.completedPlannedTimeMinutes,
                 totalPlannedTimeMinutes = metrics.totalPlannedTimeMinutes,
+                totalPathsCount = metrics.totalPathsCount,
                 totalQuestsCount = metrics.totalQuestsCount,
-                totalSubQuestsCount = metrics.totalSubQuestsCount,
                 remainingQuestsCount = metrics.remainingQuestsCount,
                 estimationAccuracyPercentage = metrics.estimationAccuracyPercentage,
-                quests = snapshot.quests,
+                paths = snapshot.paths,
                 isLoading = false
             )
         }.stateIn(

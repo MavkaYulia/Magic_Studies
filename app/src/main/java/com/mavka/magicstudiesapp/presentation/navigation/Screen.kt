@@ -11,7 +11,7 @@ sealed interface Screen {
     data object Atlas : Screen
 
     @Serializable
-    data object Quests : Screen
+    data object Paths : Screen
 
     @Serializable
     data object Music : Screen

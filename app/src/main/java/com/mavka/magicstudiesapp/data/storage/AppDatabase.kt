@@ -5,13 +5,13 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    entities = [QuestEntity::class, SubQuestEntity::class],
-    version = 4,
+    entities = [PathEntity::class, QuestEntity::class],
+    version = 5,
     exportSchema = false
 )
 @TypeConverters(PriorityConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun questDao(): QuestDao
+    abstract fun pathDao(): PathDao
 
 }

@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey
 
 import com.mavka.magicstudiesapp.domain.models.Priority
 
-@Entity(tableName = "quests")
-data class QuestEntity(
+@Entity(tableName = "paths")
+data class PathEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val title: String,
@@ -18,22 +18,22 @@ data class QuestEntity(
 )
 
 @Entity(
-    tableName = "sub_quests",
+    tableName = "quests",
     foreignKeys = [
         ForeignKey(
-            entity = QuestEntity::class,
+            entity = PathEntity::class,
             parentColumns = ["id"],
-            childColumns = ["quest_id"],
+            childColumns = ["path_id"],
             onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index(value = ["quest_id"])]
+    indices = [Index(value = ["path_id"])]
 )
-data class SubQuestEntity(
+data class QuestEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    @ColumnInfo(name = "quest_id")
-    val questId: Int,
+    @ColumnInfo(name = "path_id")
+    val pathId: Int,
     val name: String,
     @ColumnInfo(name = "is_done")
     val isDone: Boolean,

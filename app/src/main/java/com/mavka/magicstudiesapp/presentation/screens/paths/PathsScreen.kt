@@ -1,4 +1,4 @@
-package com.mavka.magicstudiesapp.presentation.screens.quests
+package com.mavka.magicstudiesapp.presentation.screens.paths
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,46 +23,46 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.PathModel
-import com.mavka.magicstudiesapp.domain.models.SubQuest
+import com.mavka.magicstudiesapp.domain.models.Quest
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddButtonExpanded
-import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddQuestDialog
+import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddPathDialog
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicIconSelectionDialog
-import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicQuestCard
+import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicPathCard
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTabHeader
 import com.mavka.magicstudiesapp.presentation.theme.ui.ColorPalette
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun QuestsScreen(
-    onQuestClick: (Int) -> Unit,
-    viewModel: QuestsViewModel = koinViewModel()
+fun PathsScreen(
+    onPathClick: (Int) -> Unit,
+    viewModel: PathsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    QuestsScreenContent(
+    PathsScreenContent(
         uiState = uiState,
-        onAddQuest = { title, icon, color, subQuests ->
-            viewModel.addQuest(
+        onAddPath = { title, icon, color, quests ->
+            viewModel.addPath(
                 title = title,
                 icon = icon,
                 color = ColorPalette.getIndex(color),
-                subQuests = subQuests
+                quests = quests
             )
         },
-        onQuestClick
+        onPathClick
     )
 }
 
 @Composable
-fun QuestsScreenContent(
-    uiState: QuestsUiState,
-    onAddQuest: (
+fun PathsScreenContent(
+    uiState: PathsUiState,
+    onAddPath: (
         title: String,
         icon: Int,
         color: Color,
-        subQuests: List<SubQuest>
+        quests: List<Quest>
     ) -> Unit,
-    onQuestClick: (Int) -> Unit
+    onPathClick: (Int) -> Unit
 ) {
     var showNameDialog by remember { mutableStateOf(false) }
     var showIconDialog by remember { mutableStateOf(false) }
@@ -82,8 +82,8 @@ fun QuestsScreenContent(
         MagicTabHeader(
             title = stringResource(R.string.tab_title),
             subTitle = stringResource(
-                id = R.string.subtitle_quests,
-                uiState.totalQuestsCount,
+                id = R.string.subtitle_paths,
+                uiState.totalPathsCount,
                 uiState.remainingQuestsCount
             )
         )
@@ -91,13 +91,13 @@ fun QuestsScreenContent(
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.margin_large)))
 
         MagicAddButtonExpanded(
-            label = stringResource(R.string.new_quest),
+            label = stringResource(R.string.new_path),
             onClick = { showNameDialog = true },
             containerColor = MaterialTheme.colorScheme.secondary
         )
 
         if (showNameDialog) {
-            MagicAddQuestDialog(
+            MagicAddPathDialog(
                 onDismiss = { showNameDialog = false },
                 onNext = { name, color ->
                     tempName = name
@@ -113,7 +113,7 @@ fun QuestsScreenContent(
                 availableIcons = uiState.availableIcons,
                 onDismiss = { showIconDialog = true },
                 onSelect = { icon ->
-                    onAddQuest(
+                    onAddPath(
                         tempName,
                         icon,
                         tempColor,
@@ -129,11 +129,11 @@ fun QuestsScreenContent(
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
         ) {
-            items(uiState.quests) { quest ->
+            items(uiState.paths) { path ->
 
-                MagicQuestCard(
-                    pathModel = quest,
-                    onDetailsClicked = { onQuestClick(quest.id) }
+                MagicPathCard(
+                    pathModel = path,
+                    onDetailsClicked = { onPathClick(path.id) }
                 )
             }
         }
@@ -142,40 +142,40 @@ fun QuestsScreenContent(
 
 @Preview(showBackground = true)
 @Composable
-private fun QuestScreenPreview() {
+private fun PathScreenPreview() {
 
-    val mockQuests = listOf(
+    val mockPaths = listOf(
         PathModel(
             title = "Quest1",
             icon = R.drawable.img_magic_9,
-            subQuests = listOf(
-                SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2),
-                SubQuest(name = "SubQuest2", isDone = false, plannedTime = 6)
+            quests = listOf(
+                Quest(name = "Quest1", isDone = true, plannedTime = 2),
+                Quest(name = "Quest2", isDone = false, plannedTime = 6)
             ),
             color = 4
         ),
         PathModel(
             title = "Quest2",
             icon = R.drawable.img_magic_9,
-            subQuests = listOf(
-                SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2)
+            quests = listOf(
+                Quest(name = "Quest1", isDone = true, plannedTime = 2)
             ),
             color = 2
         ),
         PathModel(
             title = "Quest3",
             icon = R.drawable.img_magic_9,
-            subQuests = emptyList(),
+            quests = emptyList(),
             color = 6
         )
     )
     MagicStudiesAppTheme {
-        QuestsScreenContent(
-            uiState = QuestsUiState(
-                quests = mockQuests,
+        PathsScreenContent(
+            uiState = PathsUiState(
+                paths = mockPaths,
                 3, 6, isLoading = false
             ),
-            onAddQuest = { _, _, _, _ -> },
+            onAddPath = { _, _, _, _ -> },
             {}
         )
     }

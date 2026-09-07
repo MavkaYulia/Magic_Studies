@@ -49,7 +49,7 @@ fun MagicModalBottomSheet(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
     ) {
         Text(
-            text = stringResource(R.string.add_new_task).uppercase(),
+            text = stringResource(R.string.add_new_quest).uppercase(),
             style = MaterialTheme.typography.labelMedium.copy(letterSpacing = 1.sp),
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
         )
@@ -57,7 +57,7 @@ fun MagicModalBottomSheet(
         MagicTextField(
             value = name,
             onValueChange = onNameChange,
-            hintText = stringResource(R.string.task_hint)
+            hintText = stringResource(R.string.path_hint)
         )
 
         Text(
@@ -116,7 +116,7 @@ fun MagicModalBottomSheet(
         )
 
         MagicAddButtonExpanded(
-            label = stringResource(R.string.add_to_quest_line),
+            label = stringResource(R.string.add_to_path_line),
             onClick = onAdd,
             containerColor = MaterialTheme.colorScheme.outlineVariant,
             contentColor = MaterialTheme.colorScheme.onPrimary

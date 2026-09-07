@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.mavka.magicstudiesapp.presentation.navigation.quests.questsNavGraph
+import com.mavka.magicstudiesapp.presentation.navigation.paths.pathsNavGraph
 import com.mavka.magicstudiesapp.presentation.screens.atlas.AtlasScreen
 import com.mavka.magicstudiesapp.presentation.screens.hall.CentralHallScreen
 import com.mavka.magicstudiesapp.presentation.screens.music.MusicScreen
@@ -28,7 +28,7 @@ fun AppNavigation(
             AtlasScreen()
         }
 
-        questsNavGraph(navController)
+        pathsNavGraph(navController)
 
         composable<Screen.Music> {
             MusicScreen()

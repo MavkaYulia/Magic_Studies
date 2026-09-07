@@ -1,5 +1,5 @@
 package com.mavka.magicstudiesapp.domain.provider
 
-interface QuestIconProvider {
+interface PathIconProvider {
     fun getAvailableIcons(): List<Int>
 }
