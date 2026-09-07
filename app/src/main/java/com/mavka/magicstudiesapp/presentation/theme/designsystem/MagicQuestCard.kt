@@ -23,7 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mavka.magicstudiesapp.R
-import com.mavka.magicstudiesapp.domain.models.QuestModel
+import com.mavka.magicstudiesapp.domain.models.PathModel
 import com.mavka.magicstudiesapp.domain.models.SubQuest
 import com.mavka.magicstudiesapp.presentation.theme.ui.ColorPalette
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicColor
@@ -31,7 +31,7 @@ import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 
 @Composable
 fun MagicQuestCard(
-    questModel: QuestModel,
+    pathModel: PathModel,
     onDetailsClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -55,7 +55,7 @@ fun MagicQuestCard(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            MagicIconPlate(icon = questModel.icon, size = R.dimen.icon_size_extra_large)
+            MagicIconPlate(icon = pathModel.icon, size = R.dimen.icon_size_extra_large)
 
             Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
 
@@ -69,18 +69,18 @@ fun MagicQuestCard(
                     horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
                 ) {
                     MagicText(
-                        text = questModel.title.uppercase(),
+                        text = pathModel.title.uppercase(),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
-                    if (questModel.subQuests.isNotEmpty()) {
-                        MagicPriorityBadge(questModel.getPriority)
+                    if (pathModel.subQuests.isNotEmpty()) {
+                        MagicPriorityBadge(pathModel.getPriority)
                     }
                 }
 
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
 
-                MagicProgressBar(progress = questModel.progress, color = ColorPalette.getAt(questModel.color))
+                MagicProgressBar(progress = pathModel.progress, color = ColorPalette.getAt(pathModel.color))
 
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
 
@@ -91,8 +91,8 @@ fun MagicQuestCard(
                     MagicText(
                         text = stringResource(
                             R.string.tasks_count,
-                            questModel.completedSubQuestsCount,
-                            questModel.totalSubQuestsCount
+                            pathModel.completedSubQuestsCount,
+                            pathModel.totalSubQuestsCount
                         ),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
@@ -110,8 +110,8 @@ fun MagicQuestCard(
                         )
                         MagicText(
                             text = stringResource(
-                                R.string.hours_format,
-                                questModel.totalSpentTime
+                                R.string.duration_minutes,
+                                pathModel.totalPlannedTimeMinutes
                             ),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
@@ -121,10 +121,10 @@ fun MagicQuestCard(
                     MagicText(
                         text = stringResource(
                             R.string.remaining_count,
-                            questModel.totalSubQuestsCount - questModel.completedSubQuestsCount
+                            pathModel.remaining
                         ),
                         style = MaterialTheme.typography.bodySmall,
-                        color = ColorPalette.getAt(questModel.color)
+                        color = ColorPalette.getAt(pathModel.color)
                     )
                 }
             }
@@ -147,14 +147,14 @@ private fun MagicQuestCardPreview() {
     MagicStudiesAppTheme {
         Box(modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))) {
             MagicQuestCard(
-                questModel = QuestModel(
+                pathModel = PathModel(
                     title = "Alchemy",
                     icon = R.drawable.img_magic_9,
                     subQuests = listOf(
-                        SubQuest(isDone = true, name = "Task 1", plannedTime = 10f),
-                        SubQuest(isDone = true, name = "Task 2", plannedTime = 5f),
-                        SubQuest(isDone = false, name = "Task 3", plannedTime = 5f),
-                        SubQuest(isDone = false, name = "Task 4", plannedTime = 4f)
+                        SubQuest(isDone = true, name = "Task 1", plannedTime = 10),
+                        SubQuest(isDone = true, name = "Task 2", plannedTime = 5),
+                        SubQuest(isDone = false, name = "Task 3", plannedTime = 5),
+                        SubQuest(isDone = false, name = "Task 4", plannedTime = 4)
                     ),
                     color = 8
                 ),

@@ -3,12 +3,12 @@ package com.mavka.magicstudiesapp.data.mapper
 import com.mavka.magicstudiesapp.data.storage.QuestEntity
 import com.mavka.magicstudiesapp.data.storage.QuestWithSubQuests
 import com.mavka.magicstudiesapp.data.storage.SubQuestEntity
-import com.mavka.magicstudiesapp.domain.models.QuestModel
+import com.mavka.magicstudiesapp.domain.models.PathModel
 import com.mavka.magicstudiesapp.domain.models.SubQuest
 
 
-fun QuestWithSubQuests.toDomain(mapIcon: (Int) -> Int): QuestModel {
-    return QuestModel(
+fun QuestWithSubQuests.toDomain(mapIcon: (Int) -> Int): PathModel {
+    return PathModel(
         id = this.quest.id,
         title = this.quest.title,
         icon = mapIcon(this.quest.icon),
@@ -38,7 +38,7 @@ fun SubQuest.toEntity(questId: Int): SubQuestEntity {
     )
 }
 
-fun QuestModel.toEntity(mapIconToId: (Int) -> Int): QuestEntity {
+fun PathModel.toEntity(mapIconToId: (Int) -> Int): QuestEntity {
     return QuestEntity(
         id = this.id,
         title = this.title,

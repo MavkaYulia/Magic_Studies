@@ -16,7 +16,7 @@
 
     <string name="tasks_count">%1$d/%2$d TASKS</string>
     <string name="remaining_count">%1$d REMAINING</string>
-    <string name="hours_format">%1$.1fH</string>
+    <string name="hours_format">%1$d min</string>
 
     <string name="text_icon_piker">Pick your icon</string>
 

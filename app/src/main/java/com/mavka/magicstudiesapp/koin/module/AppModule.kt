@@ -5,15 +5,21 @@ import com.mavka.magicstudiesapp.data.mapper.IconMapper
 import com.mavka.magicstudiesapp.data.repository.QuestRepositoryImpl
 import com.mavka.magicstudiesapp.data.storage.AppDatabase
 import com.mavka.magicstudiesapp.domain.provider.QuestIconProvider
+import com.mavka.magicstudiesapp.domain.provider.QuestMetricsProvider
 import com.mavka.magicstudiesapp.domain.repository.QuestRepository
 import com.mavka.magicstudiesapp.presentation.screens.quests.QuestsViewModel
 import com.mavka.magicstudiesapp.presentation.screens.quests.details.DetailsViewModel
 import com.mavka.magicstudiesapp.presentation.screens.quests.stats.StatsViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val dataModule = module {
+
+    single { CoroutineScope(SupervisorJob() + Dispatchers.Default) }
 
     single {
         Room.databaseBuilder(
@@ -30,7 +36,18 @@ val dataModule = module {
     single<QuestIconProvider> { get<IconMapper>() }
 
     single<QuestRepository> {
-        QuestRepositoryImpl(questDao = get(), mapper = get())
+        QuestRepositoryImpl(
+            questDao = get(),
+            mapper = get(),
+            scope = get()
+        )
+    }
+
+    single {
+        QuestMetricsProvider(
+            questRepository = get(),
+            externalScope = get()
+        )
     }
 }
 
@@ -39,4 +56,3 @@ val uiModule = module {
     viewModelOf(::DetailsViewModel)
     viewModelOf(::StatsViewModel)
 }
-

@@ -38,7 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.Priority
-import com.mavka.magicstudiesapp.domain.models.QuestModel
+import com.mavka.magicstudiesapp.domain.models.PathModel
 import com.mavka.magicstudiesapp.domain.models.SubQuest
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddButtonIcon
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicFilterSection
@@ -78,7 +78,7 @@ fun DetailsScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreenContent(
-    uiState: QuestModel?,
+    uiState: PathModel?,
     filter: QuestFilter,
     hideDone: Boolean,
     onBack: () -> Unit,
@@ -86,12 +86,12 @@ fun DetailsScreenContent(
     onHideDoneToggle: () -> Unit,
     onToggleSubQuestDone: (SubQuest) -> Unit,
     onDeleteSubQuest: (Int) -> Unit,
-    onAddSubQuest: (String, Float, Priority) -> Unit,
-    onDeleteQuest: (Int) -> Unit,
+    onAddSubQuest: (String, Int, Priority) -> Unit,
+    onDeleteQuest: () -> Unit,
 ) {
     var newTaskName by remember { mutableStateOf("") }
     var newTaskPriority by remember { mutableStateOf(Priority.NORMAL) }
-    var newTaskHours by remember { mutableStateOf("") }
+    var newTaskMinutes by remember { mutableStateOf("") }
 
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -107,16 +107,16 @@ fun DetailsScreenContent(
                 onNameChange = { newTaskName = it },
                 priority = newTaskPriority,
                 onPriorityChange = { newTaskPriority = it },
-                hours = newTaskHours,
-                onHoursChange = { newTaskHours = it },
+                minutes = newTaskMinutes,
+                onMinutesChange = { newTaskMinutes = it },
                 onAdd = {
                     onAddSubQuest(
                         newTaskName,
-                        newTaskHours.toFloatOrNull() ?: 0f,
+                        newTaskMinutes.toIntOrNull() ?: 0,
                         newTaskPriority
                     )
                     newTaskName = ""
-                    newTaskHours = ""
+                    newTaskMinutes = ""
                     newTaskPriority = Priority.NORMAL
                     showBottomSheet = false
                 },
@@ -136,7 +136,7 @@ fun DetailsScreenContent(
                     IconButton(onClick = {
                         onBack()
                         uiState?.id?.let {
-                            onDeleteQuest(it)
+                            onDeleteQuest()
                         }
                     }) {
                         Icon(
@@ -165,7 +165,7 @@ fun DetailsScreenContent(
                     SubQuestHeader(
                         icon = quest.icon,
                         title = quest.title,
-                        studiedTime = quest.totalSpentTime,
+                        studiedTime = quest.completedPlannedTimeMinutes,
                         tasksDone = quest.completedSubQuestsCount,
                         totalTasks = quest.totalSubQuestsCount
                     )
@@ -240,7 +240,7 @@ fun DetailsScreenContent(
 fun SubQuestHeader(
     icon: Int,
     title: String,
-    studiedTime: Float,
+    studiedTime: Int,
     tasksDone: Int,
     totalTasks: Int
 ) {
@@ -268,7 +268,7 @@ fun SubQuestHeader(
                 Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_tiny)))
                 Text(
                     text = stringResource(
-                        R.string.hours_format,
+                        R.string.duration_minutes,
                         studiedTime
                     ) + " " + stringResource(R.string.studied),
                     style = MaterialTheme.typography.bodyMedium,
@@ -315,7 +315,7 @@ fun ProgressSection(progress: Float) {
 private fun DetailsScreenPreview() {
     MagicStudiesAppTheme {
         DetailsScreenContent(
-            uiState = QuestModel(
+            uiState = PathModel(
                 title = "Study Magic",
                 icon = R.drawable.img_magic_9,
                 subQuests = listOf(
@@ -323,14 +323,14 @@ private fun DetailsScreenPreview() {
                         id = 1,
                         name = "Learn Fireball",
                         isDone = false,
-                        plannedTime = 2f,
+                        plannedTime = 2,
                         priority = Priority.URGENT
                     ),
                     SubQuest(
                         id = 2,
                         name = "Learn Levitation",
                         isDone = false,
-                        plannedTime = 4f,
+                        plannedTime = 4,
                         priority = Priority.NORMAL
                     )
                 ),

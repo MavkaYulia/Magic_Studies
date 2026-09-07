@@ -2,57 +2,51 @@ package com.mavka.magicstudiesapp.presentation.screens.quests.stats
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mavka.magicstudiesapp.domain.models.QuestModel
+import com.mavka.magicstudiesapp.domain.models.PathModel
+import com.mavka.magicstudiesapp.domain.provider.QuestMetricsProvider
 import com.mavka.magicstudiesapp.domain.repository.QuestRepository
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 
-data class StatsState(
-    val totalQuests: Int = 0,
-    val totalHours: Float = 0f,
-    val totalSessions: Int = 0,
-    val completionRate: Float = 0f,
-    val quests: List<QuestModel> = emptyList(),
+data class StatsUiState(
+    val completedSubquestsCount: Int = 0,
+    val completedPlannedTimeMinutes: Int = 0,
+    val totalPlannedTimeMinutes: Int = 0,
+    val totalQuestsCount: Int = 0,
+    val totalSubQuestsCount: Int = 0,
+    val remainingQuestsCount: Int = 0,
+    val estimationAccuracyPercentage: Double = 0.0,
+
+    val quests: List<PathModel> = emptyList(),
+
     val isLoading: Boolean = true
 )
-
 class StatsViewModel(
     private val questRepository: QuestRepository,
+    private val questMetricsProvider: QuestMetricsProvider,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(StatsState())
-    val uiState: StateFlow<StatsState> = _state.asStateFlow()
-
-    init {
-        loadStats()
-    }
-
-    private fun loadStats() {
-        questRepository.getQuests()
-            .onEach { quests ->
-                val totalQuests = quests.size
-                val totalHours = quests.sumOf { it.totalSpentTime.toDouble() }.toFloat()
-                val totalSubQuests = quests.sumOf { it.totalSubQuestsCount }
-                val completedSubQuests = quests.sumOf { it.completedSubQuestsCount }
-                val completionRate = if (totalSubQuests > 0) {
-                    completedSubQuests.toFloat() / totalSubQuests
-                } else 0f
-
-                _state.update {
-                    it.copy(
-                        totalQuests = totalQuests,
-                        totalHours = totalHours,
-                        totalSessions = totalSubQuests,
-                        completionRate = completionRate,
-                        quests = quests,
-                        isLoading = false
-                    )
-                }
-            }
-            .launchIn(viewModelScope)
-    }
+    val uiState: StateFlow<StatsUiState> =
+        combine(
+            questRepository.getQuests(),
+            questMetricsProvider.questMetrics
+        ) { quests, metrics ->
+            StatsUiState(
+                completedSubquestsCount = metrics.completedSubquestsCount,
+                completedPlannedTimeMinutes = metrics.completedPlannedTimeMinutes,
+                totalPlannedTimeMinutes = metrics.totalPlannedTimeMinutes,
+                totalQuestsCount = metrics.totalQuestsCount,
+                totalSubQuestsCount = metrics.totalSubQuestsCount,
+                remainingQuestsCount = metrics.remainingQuestsCount,
+                estimationAccuracyPercentage = metrics.estimationAccuracyPercentage,
+                quests = quests,
+                isLoading = false
+            )
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = StatsUiState()
+        )
 }

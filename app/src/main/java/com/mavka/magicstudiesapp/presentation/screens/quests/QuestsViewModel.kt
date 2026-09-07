@@ -2,54 +2,72 @@ package com.mavka.magicstudiesapp.presentation.screens.quests
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mavka.magicstudiesapp.domain.models.QuestModel
+import com.mavka.magicstudiesapp.domain.models.PathModel
 import com.mavka.magicstudiesapp.domain.models.SubQuest
 import com.mavka.magicstudiesapp.domain.provider.QuestIconProvider
+import com.mavka.magicstudiesapp.domain.provider.QuestMetricsProvider
 import com.mavka.magicstudiesapp.domain.repository.QuestRepository
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class QuestsViewModel(
     private val questRepository: QuestRepository,
+    questMetricsProvider: QuestMetricsProvider,
     iconProvider: QuestIconProvider
 ) : ViewModel() {
-    private val _uiState =
-        MutableStateFlow(
-            QuestUiState(
-                quests = listOf(),
-                availableIcons = iconProvider.getAvailableIcons(),
-                isLoading = true,
-                errorMessage = null
+
+    private val availableIcons = iconProvider.getAvailableIcons()
+
+    val uiState: StateFlow<QuestsUiState> =
+        combine(
+            questRepository.getQuests(),
+            questMetricsProvider.questMetrics
+        ) { quests, metrics ->
+            QuestsUiState(
+                quests = quests,
+                totalQuestsCount = metrics.totalQuestsCount,
+                remainingQuestsCount = metrics.remainingQuestsCount,
+                availableIcons = availableIcons,
+                isLoading = false
+            )
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = QuestsUiState(
+                quests = emptyList(),
+                totalQuestsCount = 0,
+                remainingQuestsCount = 0,
+                availableIcons = availableIcons,
+                isLoading = true
             )
         )
-    val uiState: StateFlow<QuestUiState> = _uiState
 
-    init {
-        viewModelScope.launch {
-            questRepository.getQuests().collect { quests ->
-                _uiState.update {
-                    it.copy(
-                        quests = quests,
-                        isLoading = false
-                    )
-                }
-            }
-        }
-    }
+    fun addQuest(
+        title: String,
+        icon: Int,
+        color: Int,
+        subQuests: List<SubQuest>
+    ) {
+        val newQuest = PathModel(
+            title = title,
+            icon = icon,
+            color = color,
+            subQuests = subQuests
+        )
 
-    fun addQuest(title: String, icon: Int, color: Int, subQuests: List<SubQuest>) {
-        val newQuest = QuestModel(title = title, icon = icon, color = color, subQuests = subQuests)
         viewModelScope.launch {
             questRepository.addQuest(newQuest)
         }
     }
 }
 
-data class QuestUiState(
-    val quests: List<QuestModel>,
+data class QuestsUiState(
+    val quests: List<PathModel> = emptyList(),
+    val totalQuestsCount: Int,
+    val remainingQuestsCount: Int,
     val availableIcons: List<Int> = emptyList(),
-    val isLoading: Boolean,
-    val errorMessage: String?
+    val isLoading: Boolean = true
 )
