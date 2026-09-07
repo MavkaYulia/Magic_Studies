@@ -25,7 +25,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,9 +35,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.Priority
-import com.mavka.magicstudiesapp.domain.models.QuestModel
+import com.mavka.magicstudiesapp.domain.models.PathModel
 import com.mavka.magicstudiesapp.domain.models.SubQuest
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddButtonIcon
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicFilterSection
@@ -49,7 +49,6 @@ import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicSectionTit
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicSubQuestCard
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTitle
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTopAppBar
-import com.mavka.magicstudiesapp.presentation.theme.ui.ColorPalette
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -58,9 +57,9 @@ fun DetailsScreen(
     onBack: () -> Unit,
     viewModel: DetailsViewModel = koinViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-    val filter by viewModel.filter.collectAsState()
-    val hideDone by viewModel.hideDone.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val filter by viewModel.filter.collectAsStateWithLifecycle()
+    val hideDone by viewModel.hideDone.collectAsStateWithLifecycle()
 
     DetailsScreenContent(
         uiState = uiState,
@@ -79,7 +78,7 @@ fun DetailsScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreenContent(
-    uiState: QuestModel?,
+    uiState: PathModel?,
     filter: QuestFilter,
     hideDone: Boolean,
     onBack: () -> Unit,
@@ -87,12 +86,12 @@ fun DetailsScreenContent(
     onHideDoneToggle: () -> Unit,
     onToggleSubQuestDone: (SubQuest) -> Unit,
     onDeleteSubQuest: (Int) -> Unit,
-    onAddSubQuest: (String, Float, Priority) -> Unit,
-    onDeleteQuest: (Int) -> Unit,
+    onAddSubQuest: (String, Int, Priority) -> Unit,
+    onDeleteQuest: () -> Unit,
 ) {
     var newTaskName by remember { mutableStateOf("") }
     var newTaskPriority by remember { mutableStateOf(Priority.NORMAL) }
-    var newTaskHours by remember { mutableStateOf("") }
+    var newTaskMinutes by remember { mutableStateOf("") }
 
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -108,16 +107,16 @@ fun DetailsScreenContent(
                 onNameChange = { newTaskName = it },
                 priority = newTaskPriority,
                 onPriorityChange = { newTaskPriority = it },
-                hours = newTaskHours,
-                onHoursChange = { newTaskHours = it },
+                minutes = newTaskMinutes,
+                onMinutesChange = { newTaskMinutes = it },
                 onAdd = {
                     onAddSubQuest(
                         newTaskName,
-                        newTaskHours.toFloatOrNull() ?: 0f,
+                        newTaskMinutes.toIntOrNull() ?: 0,
                         newTaskPriority
                     )
                     newTaskName = ""
-                    newTaskHours = ""
+                    newTaskMinutes = ""
                     newTaskPriority = Priority.NORMAL
                     showBottomSheet = false
                 },
@@ -137,7 +136,7 @@ fun DetailsScreenContent(
                     IconButton(onClick = {
                         onBack()
                         uiState?.id?.let {
-                            onDeleteQuest(it)
+                            onDeleteQuest()
                         }
                     }) {
                         Icon(
@@ -166,7 +165,7 @@ fun DetailsScreenContent(
                     SubQuestHeader(
                         icon = quest.icon,
                         title = quest.title,
-                        studiedTime = quest.totalSpentTime,
+                        studiedTime = quest.completedPlannedTimeMinutes,
                         tasksDone = quest.completedSubQuestsCount,
                         totalTasks = quest.totalSubQuestsCount
                     )
@@ -241,7 +240,7 @@ fun DetailsScreenContent(
 fun SubQuestHeader(
     icon: Int,
     title: String,
-    studiedTime: Float,
+    studiedTime: Int,
     tasksDone: Int,
     totalTasks: Int
 ) {
@@ -269,7 +268,7 @@ fun SubQuestHeader(
                 Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_tiny)))
                 Text(
                     text = stringResource(
-                        R.string.hours_format,
+                        R.string.duration_minutes,
                         studiedTime
                     ) + " " + stringResource(R.string.studied),
                     style = MaterialTheme.typography.bodyMedium,
@@ -316,7 +315,7 @@ fun ProgressSection(progress: Float) {
 private fun DetailsScreenPreview() {
     MagicStudiesAppTheme {
         DetailsScreenContent(
-            uiState = QuestModel(
+            uiState = PathModel(
                 title = "Study Magic",
                 icon = R.drawable.img_magic_9,
                 subQuests = listOf(
@@ -324,18 +323,18 @@ private fun DetailsScreenPreview() {
                         id = 1,
                         name = "Learn Fireball",
                         isDone = false,
-                        plannedTime = 2f,
+                        plannedTime = 2,
                         priority = Priority.URGENT
                     ),
                     SubQuest(
                         id = 2,
                         name = "Learn Levitation",
                         isDone = false,
-                        plannedTime = 4f,
+                        plannedTime = 4,
                         priority = Priority.NORMAL
                     )
                 ),
-                color = ColorPalette.getRandom()
+                color = 9
             ),
             filter = QuestFilter.All,
             hideDone = false,
@@ -349,4 +348,3 @@ private fun DetailsScreenPreview() {
         )
     }
 }
-

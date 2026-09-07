@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,8 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mavka.magicstudiesapp.R
-import com.mavka.magicstudiesapp.domain.models.QuestModel
+import com.mavka.magicstudiesapp.domain.models.PathModel
 import com.mavka.magicstudiesapp.domain.models.SubQuest
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddButtonExpanded
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddQuestDialog
@@ -38,14 +38,14 @@ fun QuestsScreen(
     onQuestClick: (Int) -> Unit,
     viewModel: QuestsViewModel = koinViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     QuestsScreenContent(
         uiState = uiState,
         onAddQuest = { title, icon, color, subQuests ->
             viewModel.addQuest(
                 title = title,
                 icon = icon,
-                color = color,
+                color = ColorPalette.getIndex(color),
                 subQuests = subQuests
             )
         },
@@ -55,7 +55,7 @@ fun QuestsScreen(
 
 @Composable
 fun QuestsScreenContent(
-    uiState: QuestUiState,
+    uiState: QuestsUiState,
     onAddQuest: (
         title: String,
         icon: Int,
@@ -83,11 +83,10 @@ fun QuestsScreenContent(
             title = stringResource(R.string.tab_title),
             subTitle = stringResource(
                 id = R.string.subtitle_quests,
-                uiState.quests.size,
-                uiState.quests.sumOf { quest ->
-                    quest.subQuests.count { !it.isDone }
-                }
-            ))
+                uiState.totalQuestsCount,
+                uiState.remainingQuestsCount
+            )
+        )
 
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.margin_large)))
 
@@ -133,7 +132,7 @@ fun QuestsScreenContent(
             items(uiState.quests) { quest ->
 
                 MagicQuestCard(
-                    questModel = quest,
+                    pathModel = quest,
                     onDetailsClicked = { onQuestClick(quest.id) }
                 )
             }
@@ -146,33 +145,36 @@ fun QuestsScreenContent(
 private fun QuestScreenPreview() {
 
     val mockQuests = listOf(
-        QuestModel(
+        PathModel(
             title = "Quest1",
             icon = R.drawable.img_magic_9,
             subQuests = listOf(
-                SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2f),
-                SubQuest(name = "SubQuest2", isDone = false, plannedTime = 6f)
+                SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2),
+                SubQuest(name = "SubQuest2", isDone = false, plannedTime = 6)
             ),
-            color = ColorPalette.getAt(2)
+            color = 4
         ),
-        QuestModel(
+        PathModel(
             title = "Quest2",
             icon = R.drawable.img_magic_9,
             subQuests = listOf(
-                SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2f)
+                SubQuest(name = "SubQuest1", isDone = true, plannedTime = 2)
             ),
-            color = ColorPalette.getAt(3)
+            color = 2
         ),
-        QuestModel(
+        PathModel(
             title = "Quest3",
             icon = R.drawable.img_magic_9,
             subQuests = emptyList(),
-            color = ColorPalette.getAt(4)
+            color = 6
         )
     )
     MagicStudiesAppTheme {
         QuestsScreenContent(
-            uiState = QuestUiState(quests = mockQuests, isLoading = false, errorMessage = null),
+            uiState = QuestsUiState(
+                quests = mockQuests,
+                3, 6, isLoading = false
+            ),
             onAddQuest = { _, _, _, _ -> },
             {}
         )

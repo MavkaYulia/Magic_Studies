@@ -35,14 +35,14 @@ fun MagicModalBottomSheet(
     onNameChange: (String) -> Unit,
     priority: Priority,
     onPriorityChange: (Priority) -> Unit,
-    hours: String,
-    onHoursChange: (String) -> Unit,
+    minutes: String,
+    onMinutesChange: (String) -> Unit,
     onAdd: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val initialTime = hours.toFloatOrNull() ?: 1f
-    val initialHours = initialTime.toInt()
-    val initialMinutes = ((initialTime - initialHours) * 60).toInt()
+    val initialTime = minutes.toIntOrNull() ?: 60
+    val initialHours = initialTime / 60
+    val initialMinutes = initialTime % 60
 
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -109,8 +109,8 @@ fun MagicModalBottomSheet(
             initialHours = initialHours,
             initialMinutes = initialMinutes,
             onTimeSelected = { h, m ->
-                val totalHours = h + (m / 60f)
-                onHoursChange(totalHours.toString())
+                val totalMinutes = h * 60 + m
+                onMinutesChange(totalMinutes.toString())
             },
             modifier = Modifier.fillMaxWidth()
         )

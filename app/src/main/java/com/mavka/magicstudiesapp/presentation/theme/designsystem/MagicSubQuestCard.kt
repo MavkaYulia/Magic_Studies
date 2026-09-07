@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import com.mavka.magicstudiesapp.R
@@ -123,7 +124,7 @@ fun MagicSubQuestCard(
                         )
                         Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_tiny)))
                         MagicText(
-                            text = "${task.plannedTime}h",
+                            text = stringResource(R.string.duration_minutes, task.plannedTime),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                         )
@@ -147,7 +148,7 @@ fun MagicSubQuestCard(
 private fun MagicSubQuestCardPreview() {
     MagicStudiesAppTheme {
         MagicSubQuestCard(
-            task = SubQuest(name = "Magic SubQuest", priority = Priority.URGENT, plannedTime = 2f, isDone = false),
+            task = SubQuest(name = "Magic SubQuest", priority = Priority.URGENT, plannedTime = 2, isDone = false),
             onToggleDone = {},
             onDelete = {}
         )

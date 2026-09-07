@@ -1,19 +1,21 @@
 package com.mavka.magicstudiesapp.domain.models
 
-import androidx.compose.ui.graphics.Color
-
-data class QuestModel(
+data class PathModel(
     val id: Int = 0,
     val title: String,
     val icon: Int,
-    val color: Color,
+    val color: Int,
     val subQuests: List<SubQuest>
 ) {
     val completedSubQuestsCount: Int get() = subQuests.count { it.isDone }
     val totalSubQuestsCount: Int get() = subQuests.size
-    val totalSpentTime: Float
-        get() = subQuests.filter { it.isDone }.sumOf { it.plannedTime.toDouble() }.toFloat()
+    val completedPlannedTimeMinutes: Int
+        get() = subQuests.filter { it.isDone }.sumOf { it.plannedTime }
+
+    val totalPlannedTimeMinutes: Int
+        get() = subQuests.sumOf { it.plannedTime }
     val progress: Float get() = if (subQuests.isEmpty()) 0f else completedSubQuestsCount.toFloat() / totalSubQuestsCount
+    val remaining = totalSubQuestsCount - completedSubQuestsCount
 
     val getPriority: Priority
         get() {
@@ -27,18 +29,4 @@ data class QuestModel(
 
             return priority
         }
-}
-
-data class SubQuest(
-    val id: Int = 0,
-    val name: String,
-    val isDone: Boolean,
-    val plannedTime: Float,
-    val priority: Priority = Priority.NORMAL
-)
-
-enum class Priority {
-    URGENT,
-    NORMAL,
-    LOW
 }

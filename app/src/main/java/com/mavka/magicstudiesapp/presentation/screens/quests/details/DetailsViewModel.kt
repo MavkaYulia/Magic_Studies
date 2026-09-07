@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.mavka.magicstudiesapp.domain.models.PathModel
 import com.mavka.magicstudiesapp.domain.models.Priority
-import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.domain.models.SubQuest
 import com.mavka.magicstudiesapp.domain.repository.QuestRepository
 import com.mavka.magicstudiesapp.presentation.navigation.quests.DetailsRoute
@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DetailsViewModel(
@@ -30,50 +31,45 @@ class DetailsViewModel(
     private val _hideDone = MutableStateFlow(false)
     val hideDone: StateFlow<Boolean> = _hideDone
 
-    val uiState: StateFlow<QuestModel?> = combine(
-        questRepository.getQuest(questId),
-        _filter,
-        _hideDone
-    ) { quest, filter, hideDone ->
-        quest?.let {
-            val filteredSubQuests = it.subQuests.filter { sub ->
-                val matchesFilter = when (filter) {
-                    QuestFilter.All -> true
-                    QuestFilter.Urgent -> sub.priority == Priority.URGENT
-                    QuestFilter.Normal -> sub.priority == Priority.NORMAL
-                    QuestFilter.Low -> sub.priority == Priority.LOW
-                }
-                val matchesDone = if (hideDone) !sub.isDone else true
-                matchesFilter && matchesDone
-            }
-            it.copy(subQuests = filteredSubQuests)
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = null
-    )
+    val uiState: StateFlow<PathModel?> =
+        combine(
+            questRepository.getQuest(questId),
+            _filter,
+            _hideDone
+        ) { quest, filter, hideDone ->
+            quest?.filterSubQuests(filter, hideDone)
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = null
+        )
 
     fun setFilter(filter: QuestFilter) {
         _filter.value = filter
     }
 
     fun toggleHideDone() {
-        _hideDone.value = !_hideDone.value
+        _hideDone.update { !it }
     }
 
-    fun addSubQuest(name: String, plannedTime: Float, priority: Priority) {
+    fun addSubQuest(
+        name: String,
+        plannedTime: Int,
+        priority: Priority
+    ) {
         val normalizedName = name.trim()
-        if (normalizedName.isBlank() || plannedTime < 0f) return
+        if (normalizedName.isBlank() || plannedTime < 0) return
 
-        val newSubQuest = SubQuest(
-            name = normalizedName,
-            isDone = false,
-            plannedTime = plannedTime,
-            priority = priority
-        )
         viewModelScope.launch {
-            questRepository.addSubQuest(questId, newSubQuest)
+            questRepository.addSubQuest(
+                questId,
+                SubQuest(
+                    name = normalizedName,
+                    isDone = false,
+                    plannedTime = plannedTime,
+                    priority = priority
+                )
+            )
         }
     }
 
@@ -83,7 +79,7 @@ class DetailsViewModel(
         }
     }
 
-    fun deleteQuest(questId: Int) {
+    fun deleteQuest() {
         viewModelScope.launch {
             questRepository.deleteQuest(questId)
         }
@@ -91,10 +87,33 @@ class DetailsViewModel(
 
     fun toggleSubQuestDone(subQuest: SubQuest) {
         viewModelScope.launch {
-            questRepository.updateQuest(questId, subQuest.copy(isDone = !subQuest.isDone))
+            questRepository.updateQuest(
+                questId,
+                subQuest.copy(isDone = !subQuest.isDone)
+            )
         }
     }
+
 }
+
+fun PathModel.filterSubQuests(
+    filter: QuestFilter,
+    hideDone: Boolean
+): PathModel =
+    copy(
+        subQuests = subQuests.filter { sub ->
+            val matchesFilter = when (filter) {
+                QuestFilter.All -> true
+                QuestFilter.Urgent -> sub.priority == Priority.URGENT
+                QuestFilter.Normal -> sub.priority == Priority.NORMAL
+                QuestFilter.Low -> sub.priority == Priority.LOW
+            }
+
+            val matchesDone = !hideDone || !sub.isDone
+
+            matchesFilter && matchesDone
+        }
+    )
 
 sealed class QuestFilter {
     object All : QuestFilter()

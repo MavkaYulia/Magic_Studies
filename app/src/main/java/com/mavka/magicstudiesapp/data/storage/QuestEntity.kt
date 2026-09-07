@@ -37,7 +37,7 @@ data class SubQuestEntity(
     val name: String,
     @ColumnInfo(name = "is_done")
     val isDone: Boolean,
-    val plannedTime: Float,
+    val plannedTime: Int,
     val priority: Priority = Priority.NORMAL
 )
 

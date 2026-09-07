@@ -34,7 +34,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -48,6 +47,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.presentation.theme.dashedGridBackground
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.DonutSlice
@@ -58,21 +58,21 @@ import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicFourGrid
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicPeriodToggle
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicText
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTitle
+import com.mavka.magicstudiesapp.presentation.theme.ui.ColorPalette
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
 import org.koin.androidx.compose.koinViewModel
-import java.util.Locale
 
 @Composable
 fun StatsScreen(
     viewModel: StatsViewModel = koinViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     StatsScreenContent(uiState = uiState)
 }
 
 @Composable
 fun StatsScreenContent(
-    uiState: StatsState
+    uiState: StatsUiState
 ) {
     val scrollState = rememberScrollState()
     var selectedPeriod by remember { mutableIntStateOf(0) } // 0 for Week, 1 for Month
@@ -100,31 +100,23 @@ fun StatsScreenContent(
             items = listOf(
                 MagicCardData(
                     icon = Icons.Outlined.AccessTime,
-                    value = "${uiState.totalHours.toInt()}H",
-                    label = "Total Hours"
+                    value = "${uiState.totalSubQuestsCount}H",
+                    label = "загальна кількість зроблених квестів"
                 ),
                 MagicCardData(
                     icon = Icons.Outlined.RadioButtonChecked,
-                    value = "${uiState.totalSessions}",
-                    label = "Sessions"
+                    value = "${uiState.completedPlannedTimeMinutes}",
+                    label = "кількість запланованого часу на виконані підквести"
                 ),
                 MagicCardData(
                     icon = Icons.Outlined.Timeline,
-                    value = if (uiState.totalSessions > 0) String.format(
-                        Locale.getDefault(),
-                        "%.1fH",
-                        uiState.totalHours / uiState.totalSessions
-                    ) else "0H",
-                    label = "Avg Session"
+                    value = "00",
+                    label = "фактичний загальний час всіх сесій за період"
                 ),
                 MagicCardData(
                     icon = Icons.Default.School,
-                    value = String.format(
-                        Locale.getDefault(),
-                        "%.0f%%",
-                        uiState.completionRate * 100
-                    ),
-                    label = "Task Rate"
+                    value = "${uiState.estimationAccuracyPercentage}",
+                    label = "Точність естімації (фактичний vs запланований час)"
                 )
             )
         )
@@ -225,7 +217,7 @@ fun WeeklyStudyHoursChart() {
 }
 
 @Composable
-fun SubjectDistributionChart(uiState: StatsState) {
+fun SubjectDistributionChart(uiState: StatsUiState) {
     MagicChartContainer(
         title = stringResource(R.string.subject_distribution),
         icon = Icons.Default.Book
@@ -248,7 +240,7 @@ fun SubjectDistributionChart(uiState: StatsState) {
                     DonutSlice(
                         label = quest.title,
                         value = quest.progress,
-                        color = quest.color
+                        color = ColorPalette.getAt(quest.color)
                     )
                 }
             }
@@ -423,6 +415,6 @@ fun TableRow(data: TableData) {
 @Composable
 fun StatsScreenPreview() {
     MagicStudiesAppTheme {
-        StatsScreenContent(uiState = StatsState())
+        StatsScreenContent(uiState = StatsUiState())
     }
 }
