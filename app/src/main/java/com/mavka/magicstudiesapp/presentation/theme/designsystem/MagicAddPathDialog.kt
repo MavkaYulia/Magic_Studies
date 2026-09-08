@@ -42,7 +42,7 @@ import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.presentation.theme.ui.ColorPalette
 
 @Composable
-fun MagicAddQuestDialog(
+fun MagicAddPathDialog(
     onDismiss: () -> Unit,
     onNext: (String, Color) -> Unit,
 ) {
@@ -68,7 +68,7 @@ fun MagicAddQuestDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stringResource(R.string.new_quest),
+                        text = stringResource(R.string.new_path),
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.titleLarge
                     )
@@ -166,8 +166,8 @@ private fun ColorCircle(
 
 @Preview(showBackground = true)
 @Composable
-private fun MagicAddDialogPreview() {
-    MagicAddQuestDialog(
+private fun MagicAddPathDialogPreview() {
+    MagicAddPathDialog(
         onDismiss = {},
         onNext = { _, _ -> }
     )

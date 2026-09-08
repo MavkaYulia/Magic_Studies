@@ -22,9 +22,9 @@ val navigationItems = listOf(
         route = Screen.Atlas
     ),
     NavigationItem(
-        title = "Quests",
+        title = "Paths",
         icon = Icons.Default.MailOutline,
-        route = Screen.Quests
+        route = Screen.Paths
     ),
     NavigationItem(
         title = "CentralHall",

@@ -2,14 +2,14 @@ package com.mavka.magicstudiesapp.koin.module
 
 import androidx.room.Room
 import com.mavka.magicstudiesapp.data.mapper.IconMapper
-import com.mavka.magicstudiesapp.data.repository.QuestRepositoryImpl
+import com.mavka.magicstudiesapp.data.repository.PathRepositoryImpl
 import com.mavka.magicstudiesapp.data.storage.AppDatabase
-import com.mavka.magicstudiesapp.domain.provider.QuestIconProvider
-import com.mavka.magicstudiesapp.domain.provider.QuestOverviewProvider
-import com.mavka.magicstudiesapp.domain.repository.QuestRepository
-import com.mavka.magicstudiesapp.presentation.screens.quests.QuestsViewModel
-import com.mavka.magicstudiesapp.presentation.screens.quests.details.DetailsViewModel
-import com.mavka.magicstudiesapp.presentation.screens.quests.stats.StatsViewModel
+import com.mavka.magicstudiesapp.domain.provider.PathIconProvider
+import com.mavka.magicstudiesapp.domain.provider.PathOverviewProvider
+import com.mavka.magicstudiesapp.domain.repository.PathRepository
+import com.mavka.magicstudiesapp.presentation.screens.paths.PathsViewModel
+import com.mavka.magicstudiesapp.presentation.screens.paths.details.DetailsViewModel
+import com.mavka.magicstudiesapp.presentation.screens.paths.stats.StatsViewModel
 import kotlinx.coroutines.CoroutineScope
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModelOf
@@ -26,29 +26,29 @@ fun dataModule(applicationScope: CoroutineScope) = module {
             .build()
     }
 
-    single { get<AppDatabase>().questDao() }
+    single { get<AppDatabase>().pathDao() }
 
     single { IconMapper() }
-    single<QuestIconProvider> { get<IconMapper>() }
+    single<PathIconProvider> { get<IconMapper>() }
 
-    single<QuestRepository> {
-        QuestRepositoryImpl(
-            questDao = get(),
+    single<PathRepository> {
+        PathRepositoryImpl(
+            pathDao = get(),
             mapper = get(),
             scope = applicationScope
         )
     }
 
     single {
-        QuestOverviewProvider(
-            questRepository = get(),
+        PathOverviewProvider(
+            pathRepository = get(),
             externalScope = applicationScope
         )
     }
 }
 
 val uiModule = module {
-    viewModelOf(::QuestsViewModel)
+    viewModelOf(::PathsViewModel)
     viewModelOf(::DetailsViewModel)
     viewModelOf(::StatsViewModel)
 }

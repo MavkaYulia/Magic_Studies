@@ -1,4 +1,4 @@
-package com.mavka.magicstudiesapp.presentation.screens.quests.stats
+package com.mavka.magicstudiesapp.presentation.screens.paths.stats
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -70,6 +70,8 @@ fun StatsScreen(
     StatsScreenContent(uiState = uiState)
 }
 
+//  TODO  позбутись домейн імпортів
+// TODO позбутись в дизайн системі моделів
 @Composable
 fun StatsScreenContent(
     uiState: StatsUiState
@@ -100,13 +102,13 @@ fun StatsScreenContent(
             items = listOf(
                 MagicCardData(
                     icon = Icons.Outlined.AccessTime,
-                    value = "${uiState.totalSubQuestsCount}H",
-                    label = "загальна кількість зроблених квестів"
+                    value = "${uiState.totalQuestsCount}",
+                    label = "загальна кількість квестів"
                 ),
                 MagicCardData(
                     icon = Icons.Outlined.RadioButtonChecked,
                     value = "${uiState.completedPlannedTimeMinutes}",
-                    label = "кількість запланованого часу на виконані підквести"
+                    label = "кількість запланованого часу на виконані квести"
                 ),
                 MagicCardData(
                     icon = Icons.Outlined.Timeline,
@@ -222,7 +224,7 @@ fun SubjectDistributionChart(uiState: StatsUiState) {
         title = stringResource(R.string.subject_distribution),
         icon = Icons.Default.Book
     ) {
-        if (uiState.quests.isEmpty()) {
+        if (uiState.paths.isEmpty()) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -235,12 +237,12 @@ fun SubjectDistributionChart(uiState: StatsUiState) {
                 )
             }
         } else {
-            val slices = remember(uiState.quests) {
-                uiState.quests.map { quest ->
+            val slices = remember(uiState.paths) {
+                uiState.paths.map { path ->
                     DonutSlice(
-                        label = quest.title,
-                        value = quest.progress,
-                        color = ColorPalette.getAt(quest.color)
+                        label = path.title,
+                        value = path.progress,
+                        color = ColorPalette.getAt(path.color)
                     )
                 }
             }

@@ -2,7 +2,7 @@ package com.mavka.magicstudiesapp.domain.models
 
 import java.time.Instant
 
-data class SubQuest(
+data class QuestModel(
     val id: Int = 0,
     val name: String,
     val isDone: Boolean,

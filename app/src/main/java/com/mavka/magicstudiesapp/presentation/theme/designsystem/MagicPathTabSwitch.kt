@@ -53,16 +53,16 @@ fun ContentDrawScope.drawWithLayer(block: ContentDrawScope.() -> Unit) {
     }
 }
 
-data class QuestTab(
+data class PathTab(
     val title: String,
     val icon: ImageVector
 )
 
 @Composable
-fun MagicQuestTabSwitch(
+fun MagicPathTabSwitch(
     modifier: Modifier = Modifier,
     selectedIndex: Int,
-    items: List<QuestTab>,
+    items: List<PathTab>,
     onSelectionChange: (Int) -> Unit
 ) {
     if (items.isEmpty()) return
@@ -155,13 +155,13 @@ fun MagicQuestTabSwitch(
 
 @Preview(showBackground = true)
 @Composable
-private fun MagicQuestTabSwitchPreview() {
+private fun MagicPathTabSwitchPreview() {
     val tabs = listOf(
-        QuestTab("Quests", Icons.Default.Book),
-        QuestTab("Stats", Icons.Default.QueryStats)
+        PathTab("Paths", Icons.Default.Book),
+        PathTab("Stats", Icons.Default.QueryStats)
     )
     MagicStudiesAppTheme {
-        MagicQuestTabSwitch(
+        MagicPathTabSwitch(
             modifier = Modifier.fillMaxWidth(),
             selectedIndex = 0,
             items = tabs,

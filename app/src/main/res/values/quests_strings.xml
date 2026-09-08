@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="tab_title">Thy Quests</string>
-    <string name="tab_quests">QUESTS</string>
+    <string name="tab_title">Thy Paths</string>
+    <string name="tab_paths">PATHS</string>
     <string name="tab_stats">STATS</string>
-    <string name="tab_tome">TOME</string>
 
-    <string name="create_new_quest">CREATE NEW QUEST</string>
-    <string name="new_quest">NEW SUBJECT</string>
+    <string name="create_new_path">CREATE NEW PATH</string>
+    <string name="new_path">ADD NEW PATH</string>
 
-    <string name="dialog_subtitle_add_subject">Subject Name</string>
+    <string name="dialog_subtitle_add_subject">New Path Name</string>
     <string name="dialog_hint_add_subject">e.g. Ancient Astronomy</string>
 
-    <string name="new_subquest">New subQuest</string>
-    <string name="subtitle_quests">%1$d subjects · %2$d tasks remaining</string>
+    <string name="new_quest">New Quest</string>
+    <string name="subtitle_paths">%1$d paths · %2$d quests remaining</string>
 
-    <string name="tasks_count">%1$d/%2$d TASKS</string>
+    <string name="quests_count">%1$d/%2$d QUESTS</string>
     <string name="remaining_count">%1$d REMAINING</string>
     <string name="hours_format">%1$d min</string>
 
     <string name="text_icon_piker">Pick your icon</string>
 
-    <string name="quest_progress">Quest Progress</string>
+    <string name="path_progress">Path Progress</string>
     <string name="studied">studied</string>
-    <string name="tasks">tasks</string>
+    <string name="quests">quests</string>
 
     <string name="filter_label">Filter:</string>
     <string name="filter_all">ALL</string>
@@ -33,13 +32,13 @@
 
     <string name="active">ACTIVE</string>
     <string name="completed">COMPLETED</string>
-    <string name="add_new_task">ADD NEW TASK</string>
+    <string name="add_new_quest">ADD NEW QUEST</string>
 
     <string name="priority">PRIORITY</string>
     <string name="time">ESTIMATED TIME</string>
 
-    <string name="task_hint">Describe thy quest task…</string>
-    <string name="add_to_quest_line">ADD TO QUEST LINE</string>
+    <string name="path_hint">Describe thy path quest…</string>
+    <string name="add_to_path_line">ADD TO PATH LINE</string>
     <string name="est_hours">Est. hours</string>
 
 </resources>

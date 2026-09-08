@@ -42,7 +42,7 @@ fun MagicAddButtonExpanded(
     ) {
         Icon(
             imageVector = Icons.Default.Add,
-            contentDescription = "Add quest",
+            contentDescription = "Add",
             modifier = Modifier.size(dimensionResource(R.dimen.icon_size_medium)),
             tint = contentColor
         )
@@ -70,7 +70,7 @@ fun MagicAddButtonIcon(
     ) {
         Icon(
             imageVector = Icons.Default.Add,
-            contentDescription = "Add quest",
+            contentDescription = "Add",
             modifier = Modifier.size(dimensionResource(R.dimen.icon_size_medium)),
             tint = MaterialTheme.colorScheme.onPrimary
         )

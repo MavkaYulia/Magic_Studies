@@ -3,11 +3,11 @@ package com.mavka.magicstudiesapp.data.storage
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class QuestWithSubQuests(
-    @Embedded val quest: QuestEntity,
+data class PathWithQuests(
+    @Embedded val path: PathEntity,
     @Relation(
         parentColumn = "id",
-        entityColumn = "quest_id"
+        entityColumn = "path_id"
     )
-    val subQuests: List<SubQuestEntity>
+    val quests: List<QuestEntity>
 )

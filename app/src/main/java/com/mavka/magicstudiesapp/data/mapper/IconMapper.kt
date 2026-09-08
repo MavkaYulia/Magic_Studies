@@ -1,9 +1,9 @@
 package com.mavka.magicstudiesapp.data.mapper
 
 import com.mavka.magicstudiesapp.R
-import com.mavka.magicstudiesapp.domain.provider.QuestIconProvider
+import com.mavka.magicstudiesapp.domain.provider.PathIconProvider
 
-class IconMapper : QuestIconProvider {
+class IconMapper : PathIconProvider {
 
     private val iconMap = mapOf(
         1 to R.drawable.img_magic_1,

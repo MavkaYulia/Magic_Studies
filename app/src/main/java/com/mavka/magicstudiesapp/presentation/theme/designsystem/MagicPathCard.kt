@@ -1,0 +1,166 @@
+package com.mavka.magicstudiesapp.presentation.theme.designsystem
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.mavka.magicstudiesapp.R
+import com.mavka.magicstudiesapp.domain.models.PathModel
+import com.mavka.magicstudiesapp.domain.models.QuestModel
+import com.mavka.magicstudiesapp.presentation.theme.ui.ColorPalette
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicColor
+import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
+
+@Composable
+fun MagicPathCard(
+    pathModel: PathModel,
+    onDetailsClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onDetailsClicked() },
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        border = androidx.compose.foundation.BorderStroke(
+            dimensionResource(R.dimen.border),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(dimensionResource(R.dimen.padding_small))
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            MagicIconPlate(icon = pathModel.icon, size = R.dimen.icon_size_extra_large)
+
+            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(vertical = dimensionResource(R.dimen.padding_small))
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
+                ) {
+                    MagicText(
+                        text = pathModel.title.uppercase(),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    if (pathModel.quests.isNotEmpty()) {
+                        MagicPriorityBadge(pathModel.getPriority)
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
+
+                MagicProgressBar(progress = pathModel.progress, color = ColorPalette.getAt(pathModel.color))
+
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
+                ) {
+                    MagicText(
+                        text = stringResource(
+                            R.string.quests_count,
+                            pathModel.completedQuestsCount,
+                            pathModel.totalQuestsCount
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                    )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_tiny))
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_clock),
+                            contentDescription = null,
+                            modifier = Modifier.size(dimensionResource(R.dimen.icon_size_small) * 0.8f),
+                            tint = MagicColor.IronInk.copy(alpha = 0.7f)
+                        )
+                        MagicText(
+                            text = stringResource(
+                                R.string.duration_minutes,
+                                pathModel.totalPlannedTimeMinutes
+                            ),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                        )
+                    }
+
+                    MagicText(
+                        text = stringResource(
+                            R.string.remaining_count,
+                            pathModel.remaining
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = ColorPalette.getAt(pathModel.color)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
+
+            Icon(
+                painter = painterResource(id = R.drawable.ic_chevron_right),
+                contentDescription = null,
+                modifier = Modifier.size(dimensionResource(R.dimen.icon_size_medium)),
+                tint = MagicColor.IronInk.copy(alpha = 0.3f)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MagicPathCardPreview() {
+    MagicStudiesAppTheme {
+        Box(modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))) {
+            MagicPathCard(
+                pathModel = PathModel(
+                    title = "Alchemy",
+                    icon = R.drawable.img_magic_9,
+                    quests = listOf(
+                        QuestModel(isDone = true, name = "Task 1", plannedTime = 10),
+                        QuestModel(isDone = true, name = "Task 2", plannedTime = 5),
+                        QuestModel(isDone = false, name = "Task 3", plannedTime = 5),
+                        QuestModel(isDone = false, name = "Task 4", plannedTime = 4)
+                    ),
+                    color = 8
+                ),
+                onDetailsClicked = {},
+
+                )
+        }
+    }
+}

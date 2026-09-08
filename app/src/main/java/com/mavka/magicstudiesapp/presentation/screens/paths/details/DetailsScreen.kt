@@ -1,4 +1,4 @@
-package com.mavka.magicstudiesapp.presentation.screens.quests.details
+package com.mavka.magicstudiesapp.presentation.screens.paths.details
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,14 +39,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mavka.magicstudiesapp.R
 import com.mavka.magicstudiesapp.domain.models.Priority
 import com.mavka.magicstudiesapp.domain.models.PathModel
-import com.mavka.magicstudiesapp.domain.models.SubQuest
+import com.mavka.magicstudiesapp.domain.models.QuestModel
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicAddButtonIcon
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicFilterSection
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicIconPlate
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicModalBottomSheet
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicProgressBar
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicSectionTitle
-import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicSubQuestCard
+import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicQuestCard
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTitle
 import com.mavka.magicstudiesapp.presentation.theme.designsystem.MagicTopAppBar
 import com.mavka.magicstudiesapp.presentation.theme.ui.MagicStudiesAppTheme
@@ -68,10 +68,10 @@ fun DetailsScreen(
         onBack = onBack,
         onFilterSelected = viewModel::setFilter,
         onHideDoneToggle = viewModel::toggleHideDone,
-        onToggleSubQuestDone = viewModel::toggleSubQuestDone,
-        onDeleteSubQuest = viewModel::deleteSubQuest,
-        onAddSubQuest = viewModel::addSubQuest,
-        onDeleteQuest = viewModel::deleteQuest
+        onToggleQuestDone = viewModel::toggleQuestDone,
+        onDeleteQuest = viewModel::deleteQuest,
+        onAddQuest = viewModel::addQuest,
+        onDeletePath = viewModel::deletePath
     )
 }
 
@@ -84,10 +84,10 @@ fun DetailsScreenContent(
     onBack: () -> Unit,
     onFilterSelected: (QuestFilter) -> Unit,
     onHideDoneToggle: () -> Unit,
-    onToggleSubQuestDone: (SubQuest) -> Unit,
-    onDeleteSubQuest: (Int) -> Unit,
-    onAddSubQuest: (String, Int, Priority) -> Unit,
-    onDeleteQuest: () -> Unit,
+    onToggleQuestDone: (QuestModel) -> Unit,
+    onDeleteQuest: (Int) -> Unit,
+    onAddQuest: (String, Int, Priority) -> Unit,
+    onDeletePath: () -> Unit,
 ) {
     var newTaskName by remember { mutableStateOf("") }
     var newTaskPriority by remember { mutableStateOf(Priority.NORMAL) }
@@ -110,7 +110,7 @@ fun DetailsScreenContent(
                 minutes = newTaskMinutes,
                 onMinutesChange = { newTaskMinutes = it },
                 onAdd = {
-                    onAddSubQuest(
+                    onAddQuest(
                         newTaskName,
                         newTaskMinutes.toIntOrNull() ?: 0,
                         newTaskPriority
@@ -130,13 +130,13 @@ fun DetailsScreenContent(
     Scaffold(
         topBar = {
             MagicTopAppBar(
-                title = stringResource(R.string.tab_quests).uppercase(),
+                title = stringResource(R.string.tab_paths).uppercase(),
                 onBackClick = onBack,
                 actions = {
                     IconButton(onClick = {
                         onBack()
                         uiState?.id?.let {
-                            onDeleteQuest()
+                            onDeletePath()
                         }
                     }) {
                         Icon(
@@ -153,7 +153,7 @@ fun DetailsScreenContent(
         },
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
-        uiState?.let { quest ->
+        uiState?.let { path ->
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -162,17 +162,17 @@ fun DetailsScreenContent(
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
             ) {
                 item {
-                    SubQuestHeader(
-                        icon = quest.icon,
-                        title = quest.title,
-                        studiedTime = quest.completedPlannedTimeMinutes,
-                        tasksDone = quest.completedSubQuestsCount,
-                        totalTasks = quest.totalSubQuestsCount
+                    PathHeader(
+                        icon = path.icon,
+                        title = path.title,
+                        studiedTime = path.completedPlannedTimeMinutes,
+                        questsDone = path.completedQuestsCount,
+                        totalQuests = path.totalQuestsCount
                     )
                 }
 
                 item {
-                    ProgressSection(progress = quest.progress)
+                    ProgressSection(progress = path.progress)
                 }
 
                 item {
@@ -192,38 +192,38 @@ fun DetailsScreenContent(
                     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                 }
 
-                val activeTasks = quest.subQuests.filter { !it.isDone }
-                val completedTasks = quest.subQuests.filter { it.isDone }
+                val activeQuests = path.quests.filter { !it.isDone }
+                val completedQuests = path.quests.filter { it.isDone }
 
-                if (activeTasks.isNotEmpty()) {
+                if (activeQuests.isNotEmpty()) {
                     item {
                         MagicSectionTitle(
                             title = stringResource(R.string.active).uppercase(),
-                            count = activeTasks.size
+                            count = activeQuests.size
                         )
                     }
-                    items(activeTasks) { task ->
-                        MagicSubQuestCard(
-                            task = task,
-                            onToggleDone = { onToggleSubQuestDone(task) },
-                            onDelete = { onDeleteSubQuest(task.id) }
+                    items(activeQuests) { quest ->
+                        MagicQuestCard(
+                            task = quest,
+                            onToggleDone = { onToggleQuestDone(quest) },
+                            onDelete = { onDeleteQuest(quest.id) }
                         )
                     }
                 }
 
-                if (completedTasks.isNotEmpty()) {
+                if (completedQuests.isNotEmpty()) {
                     item {
                         MagicSectionTitle(
                             title = stringResource(R.string.completed).uppercase(),
-                            count = completedTasks.size,
+                            count = completedQuests.size,
                             icon = Icons.Default.Star
                         )
                     }
-                    items(completedTasks) { task ->
-                        MagicSubQuestCard(
-                            task = task,
-                            onToggleDone = { onToggleSubQuestDone(task) },
-                            onDelete = { onDeleteSubQuest(task.id) }
+                    items(completedQuests) { quest ->
+                        MagicQuestCard(
+                            task = quest,
+                            onToggleDone = { onToggleQuestDone(quest) },
+                            onDelete = { onDeleteQuest(quest.id) }
                         )
                     }
                 }
@@ -237,12 +237,12 @@ fun DetailsScreenContent(
 }
 
 @Composable
-fun SubQuestHeader(
+fun PathHeader(
     icon: Int,
     title: String,
     studiedTime: Int,
-    tasksDone: Int,
-    totalTasks: Int
+    questsDone: Int,
+    totalQuests: Int
 ) {
     Row(
         modifier = Modifier
@@ -276,7 +276,7 @@ fun SubQuestHeader(
                 )
                 Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
                 Text(
-                    text = stringResource(R.string.tasks_count, tasksDone, totalTasks),
+                    text = stringResource(R.string.quests_count, questsDone, totalQuests),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                 )
@@ -293,7 +293,7 @@ fun ProgressSection(progress: Float) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = stringResource(R.string.quest_progress),
+                text = stringResource(R.string.path_progress),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
             )
@@ -318,15 +318,15 @@ private fun DetailsScreenPreview() {
             uiState = PathModel(
                 title = "Study Magic",
                 icon = R.drawable.img_magic_9,
-                subQuests = listOf(
-                    SubQuest(
+                quests = listOf(
+                    QuestModel(
                         id = 1,
                         name = "Learn Fireball",
                         isDone = false,
                         plannedTime = 2,
                         priority = Priority.URGENT
                     ),
-                    SubQuest(
+                    QuestModel(
                         id = 2,
                         name = "Learn Levitation",
                         isDone = false,
@@ -341,10 +341,10 @@ private fun DetailsScreenPreview() {
             onBack = {},
             onFilterSelected = {},
             onHideDoneToggle = {},
-            onToggleSubQuestDone = {},
-            onDeleteSubQuest = {},
-            onAddSubQuest = { _, _, _ -> },
-            onDeleteQuest = {}
+            onToggleQuestDone = {},
+            onDeleteQuest = {},
+            onAddQuest = { _, _, _ -> },
+            onDeletePath = {}
         )
     }
 }
