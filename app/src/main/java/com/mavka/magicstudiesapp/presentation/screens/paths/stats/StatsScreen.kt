@@ -70,6 +70,8 @@ fun StatsScreen(
     StatsScreenContent(uiState = uiState)
 }
 
+//  TODO  позбутись домейн імпортів
+// TODO позбутись в дизайн системі моделів
 @Composable
 fun StatsScreenContent(
     uiState: StatsUiState
